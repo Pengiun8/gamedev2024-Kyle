@@ -1,2 +1,1 @@
-# gamedev2024-Kyle
-game dev things
+https://pengiun8.github.io/gamedev2024-Kyle/public/index.html
