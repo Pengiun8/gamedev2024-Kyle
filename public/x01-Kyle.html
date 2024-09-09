@@ -16,6 +16,7 @@
 </head>
 <body>
     <h1>Webcam Capture</h1>
+    <input type="text" id="filename" placeholder="Enter file name" />
     <video id="video" autoplay></video>
     <button id="capture">Capture Photo</button>
     <canvas id="canvas"></canvas>
@@ -24,6 +25,7 @@
             const video = document.getElementById('video');
             const canvas = document.getElementById('canvas');
             const captureButton = document.getElementById('capture');
+            const filenameInput = document.getElementById('filename');
             const context = canvas.getContext('2d');
 
             // Access the webcam
@@ -37,6 +39,7 @@
 
             // Capture the photo
             captureButton.addEventListener('click', () => {
+                const filename = filenameInput.value || 'webcam_capture';
                 canvas.width = video.videoWidth;
                 canvas.height = video.videoHeight;
                 context.drawImage(video, 0, 0, canvas.width, canvas.height);
@@ -44,7 +47,7 @@
                 // Create a link to download the image
                 const link = document.createElement('a');
                 link.href = canvas.toDataURL('image/jpeg');
-                link.download = 'webcam_capture.jpg';
+                link.download = `${filename}.jpg`;
                 link.click();
             });
         });
