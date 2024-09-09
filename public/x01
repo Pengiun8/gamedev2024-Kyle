@@ -53,7 +53,7 @@
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
             ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-            
+
             // Convert canvas image to data URL and create a download link
             canvas.toBlob((blob) => {
                 const url = URL.createObjectURL(blob);
