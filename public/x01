@@ -5,73 +5,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Webcam Capture</title>
     <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background: #f0f0f0;
-        }
         #video {
-            border: 1px solid #ccc;
+            width: 100%;
+            max-width: 600px;
         }
-        #controls {
-            margin-top: 10px;
+        #canvas {
+            display: none;
         }
     </style>
 </head>
 <body>
-    <div id="app">
-        <video id="video" autoplay></video>
-        <div id="controls">
-            <button id="capture">Capture Image</button>
-        </div>
-        <canvas id="canvas" style="display:none;"></canvas>
-    </div>
+    <h1>Webcam Capture</h1>
+    <video id="video" autoplay></video>
+    <button id="capture">Capture Photo</button>
+    <canvas id="canvas"></canvas>
     <script>
-        const video = document.getElementById('video');
-        const canvas = document.getElementById('canvas');
-        const captureButton = document.getElementById('capture');
-        const ctx = canvas.getContext('2d');
+        document.addEventListener('DOMContentLoaded', () => {
+            const video = document.getElementById('video');
+            const canvas = document.getElementById('canvas');
+            const captureButton = document.getElementById('capture');
+            const context = canvas.getContext('2d');
 
-        // Access webcam and stream to video element
-        async function startWebcam() {
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-                video.srcObject = stream;
-                video.onloadedmetadata = () => {
-                    video.play();
-                };
-            } catch (err) {
-                console.error('Error accessing webcam: ', err);
-            }
-        }
+            // Access the webcam
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(stream => {
+                    video.srcObject = stream;
+                })
+                .catch(err => {
+                    console.error('Error accessing the webcam: ', err);
+                });
 
-        // Capture image from video and save as JPEG
-        function captureImage() {
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            // Capture the photo
+            captureButton.addEventListener('click', () => {
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-            // Convert canvas image to data URL and create a download link
-            canvas.toBlob((blob) => {
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'webcam_image.jpg';
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-            }, 'image/jpeg');
-        }
-
-        // Set up event listeners
-        captureButton.addEventListener('click', captureImage);
-
-        // Start the webcam when the page loads
-        window.onload = startWebcam;
+                // Create a link to download the image
+                const link = document.createElement('a');
+                link.href = canvas.toDataURL('image/jpeg');
+                link.download = 'webcam_capture.jpg';
+                link.click();
+            });
+        });
     </script>
 </body>
 </html>
