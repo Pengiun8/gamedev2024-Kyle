@@ -2,20 +2,47 @@
   <fieldset>
     <legend>Questionaire</legend>
     <style>
-
-      body{
+      body {
         font-family: serif;
+        background-color: #f0f8ff; /* Light blue background */
+        margin: 0;
+        padding: 20px;
       }
-   
-      legend{
+      fieldset {
+        border: 2px solid #4CAF50; /* Green border */
+        padding: 20px;
+        border-radius: 10px; /* Rounded corners */
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+      }
+      legend {
         font-size: 2em;
+        color: #4CAF50; /* Green text */
+      }
+      input, select, textarea {
+        width: 100%; /* Full width */
+        padding: 10px;
+        margin: 5px 0 20px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+      }
+      .submit-button, .reset-button {
+        width: 100%;
+        background-color: #4CAF50; /* Green background */
+        color: white;
+        padding: 14px 20px;
+        margin: 8px 0;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
       }
       .submit-button:hover {
-      background-color: lightgreen;
-    }
+        background-color: lightgreen;
+      }
       .reset-button:hover {
-      background-color: #FF7F7F;
-    }
+        background-color: #FF7F7F;
+      }
     </style>
 
     Name:<input type="text" id="name" name="name"><br><br>
@@ -38,11 +65,9 @@
       <option value="red">red</option>
     </select><br><br>
 
-    Message:<br><textarea id="message" name="message" rows="4" cols="50">
-      
-    </textarea><br><br>
+    Message:<br><textarea id="message" name="message" rows="4" cols="50"></textarea><br><br>
 
-      <button type="submit" class="submit-button">Submit</button>
-      <button type="reset" class="reset-button">Reset</button>
+    <button type="submit" class="submit-button">Submit</button>
+    <button type="reset" class="reset-button">Reset</button>
   </fieldset>
 </form>
