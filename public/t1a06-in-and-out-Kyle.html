@@ -1,5 +1,14 @@
-<h1></h1>
+<h1>t1a06-in-out-kyle.html</h1>
 <style>
   h1{
-    align
+    text-align: center;
 </style>
+
+Input:<input type=text id="myFirstName" value=kyle>
+<input type=button value="show on page" onclick="{
+//comments example
+  document.getelementById('myDiv01').innerHTML = 'Your name is' + document.getelementById('myFirstName').value
+
+
+}'>
+<div id='myDiv01">...</div>
