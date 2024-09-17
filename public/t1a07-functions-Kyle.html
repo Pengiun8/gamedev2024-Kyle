@@ -6,6 +6,10 @@
   function showName(){
      myVar('myDiv01').innerHTML = 'Your name is ' + myVar('myFirstName').value
   }
+    function showDate() {
+    const currentDate = new Date().toLocaleDateString();
+    myVar('myDiv02').innerHTML = 'Today\'s date is ' + currentDate;
+  }
 </script>
 <style>
   h1{
@@ -20,6 +24,7 @@
 
 <p>Input:<input type=text id="myFirstName" value="kyle">
 <input type=button value="show on page" onclick="{showName()}">
+<input type="button" value="Show Date" onclick="showDate()">
 
  
 
