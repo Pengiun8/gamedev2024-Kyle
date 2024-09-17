@@ -2,6 +2,10 @@
 <script>
   function myVar(myIn){
      return document.getElementById(myIn)}
+
+  function showName(){
+     myVar('myDiv01').innerHTML = 'Your name is ' + myVar('myFirstName').value
+  }
 </script>
 <style>
   h1{
@@ -15,12 +19,9 @@
 </style>
 
 <p>Input:<input type=text id="myFirstName" value="kyle">
-<input type=button value="show on page" onclick="{
+<input type=button value="show on page" onclick="{showName()}">
 //comments example
  
- myVar('myDiv01').innerHTML = 'Your name is ' + myVar('myFirstName').value
-  
 
-}">
 <div id="myDiv01">...</div>
 </p>
