@@ -18,6 +18,7 @@
 <body>
   <h1>Catch the Ball Game</h1>
   <canvas id="gameCanvas" width="480" height="320"></canvas>
+  <p>Score: <span id="score">0</span></p>
   <script>
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
@@ -29,11 +30,12 @@
     let ballRadius = 10;
     let x = canvas.width / 2;
     let y = canvas.height - 30;
-    let dx = 4; // Increased speed
-    let dy = -4; // Increased speed
+    let dx = 8; // Increased speed
+    let dy = -8; // Increased speed
 
     let rightPressed = false;
     let leftPressed = false;
+    let score = 0;
 
     document.addEventListener('keydown', keyDownHandler, false);
     document.addEventListener('keyup', keyUpHandler, false);
@@ -70,10 +72,15 @@
       ctx.closePath();
     }
 
+    function drawScore() {
+      document.getElementById('score').textContent = score;
+    }
+
     function draw() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       drawBall();
       drawPaddle();
+      drawScore();
 
       if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
         dx = -dx;
@@ -83,6 +90,7 @@
       } else if (y + dy > canvas.height - ballRadius) {
         if (x > paddleX && x < paddleX + paddleWidth) {
           dy = -dy;
+          score++; // Increase score when the ball hits the paddle
         } else {
           document.location.reload();
         }
@@ -103,4 +111,3 @@
   </script>
 </body>
 </html>
-
