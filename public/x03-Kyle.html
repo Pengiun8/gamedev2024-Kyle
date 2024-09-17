@@ -90,6 +90,7 @@
       } else if (y + dy > canvas.height - ballRadius) {
         if (x > paddleX && x < paddleX + paddleWidth) {
           dy = -dy;
+          dx += (Math.random() - 0.5) * 2; // Randomize horizontal direction
           score++; // Increase score when the ball hits the paddle
         } else {
           document.location.reload();
