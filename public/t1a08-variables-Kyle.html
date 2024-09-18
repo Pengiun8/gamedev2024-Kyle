@@ -2,6 +2,23 @@
 <style>
   h1{
     text-align:center;}
+  p{
+    text-align: center;}
+    #myDiv01 {
+    text-align: center; 
+  }
 </style>
 <a href="https://www.w3schools.com/js/js_variables.asp">Visit W3Schools</a>
+
+Input 1:<input type=text id="myIn01" value="5">
+Input 2:<input type=text id="myIn02" value="7">
+<p>Input:<input type=text id="myFirstName" value="kyle">
+<input type=button value="show on page" onclick="{
+//comments example
+  document.getElementById('myDiv01').innerHTML = 'Your name is ' + document.getElementById('myFirstName').value
+
+
+}">
+<div id="myDiv01">...</div>
+</p>
 
