@@ -25,7 +25,6 @@
     let myTotal = document.getElementById('myIn01').value + document.getElementById('myIn02').value;
     document.getElementById('myDiv01').innerHTML = 'Your answer is ' + myTotal;
   }">
-  <div id="myDiv01">...</div>
   <br><br>
   <div class="center">
     <input type="button" value="Add" onclick="{
@@ -34,7 +33,28 @@
       let myTotal = myX + myY;
       document.getElementById('myDiv01').innerHTML = 'Your answer is ' + myTotal;
     }">
+    <br><br>
+    <input type="button" value="Subtract" onclick="{
+      let myX = Number(document.getElementById('myIn01').value);
+      let myY = Number(document.getElementById('myIn02').value);
+      let myTotal = myX - myY;
+      document.getElementById('myDiv01').innerHTML = 'Your answer is ' + myTotal;
+    }">
+    <br><br>
+    <input type="button" value="Multiply" onclick="{
+      let myX = Number(document.getElementById('myIn01').value);
+      let myY = Number(document.getElementById('myIn02').value);
+      let myTotal = myX * myY;
+      document.getElementById('myDiv01').innerHTML = 'Your answer is ' + myTotal;
+    }">
+    <br><br>
+    <input type="button" value="Divide" onclick="{
+      let myX = Number(document.getElementById('myIn01').value);
+      let myY = Number(document.getElementById('myIn02').value);
+      let myTotal = myX / myY;
+      document.getElementById('myDiv01').innerHTML = 'Your answer is ' + myTotal;
+    }">
   </div>
+  <div id="myDiv01">...</div>
 </p>
-
 
