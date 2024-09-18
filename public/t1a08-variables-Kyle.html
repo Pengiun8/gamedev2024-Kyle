@@ -10,6 +10,9 @@
   #myDiv01 {
     text-align: center;
   }
+  .center {
+    text-align: center;
+  }
 </style>
 <p>
   <a href="https://www.w3schools.com/js/js_variables.asp">Visit W3Schools</a>
@@ -24,12 +27,14 @@
   }">
   <div id="myDiv01">...</div>
   <br><br>
-  <input type="button" value="other button" onclick="{
-    let myX = Number(document.getElementById('myIn01').value);
-    let myY = Number(document.getElementById('myIn02').value);
-    let myTotal = myX + myY;
-    document.getElementById('myDiv01').innerHTML = 'Your answer is ' + myTotal;
-  }">
+  <div class="center">
+    <input type="button" value="other button" onclick="{
+      let myX = Number(document.getElementById('myIn01').value);
+      let myY = Number(document.getElementById('myIn02').value);
+      let myTotal = myX + myY;
+      document.getElementById('myDiv01').innerHTML = 'Your answer is ' + myTotal;
+    }">
+  </div>
 </p>
 
 
