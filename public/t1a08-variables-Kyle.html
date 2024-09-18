@@ -1,61 +1,91 @@
-<h1>t1a08-variables-kyle</h1>
-<style>
-  h1 {
-    text-align: center;
-  }
-  p {
-    text-align: center;
-    font-size: 20px;
-  }
-  #myDiv01 {
-    text-align: center;
-  }
-  .center {
-    text-align: center;
-  }
-</style>
-<p>
-  <a href="https://www.w3schools.com/js/js_variables.asp">Visit W3Schools</a>
-  <br>
-  Input 1: <input type="text" id="myIn01" value="5">
-  <br>
-  Input 2: <input type="text" id="myIn02" value="7">
-  <br>
-  <div class="center">
-  <input type="button" value="Combine" onclick="{
-    let myTotal = document.getElementById('myIn01').value + document.getElementById('myIn02').value;
-    document.getElementById('myDiv01').innerHTML = 'Your answer is ' + myTotal;
-  }">
-  <br>
-
-    <input type="button" value="Add" onclick="{
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    h1 {
+      text-align: center;
+    }
+    p {
+      text-align: center;
+      font-size: 20px;
+    }
+    #myDiv01 {
+      text-align: center;
+    }
+    .center {
+      text-align: center;
+    }
+    .no-margin {
+      margin-bottom: 5px; /* Adjust this value as needed */
+    }
+  </style>
+</head>
+<body>
+  <h1>t1a08-variables-kyle</h1>
+  <p>
+    <a href="https://www.w3schools.com/js/js_variables.asp">Visit W3Schools</a>
+    <br>
+    Input 1: <input type="text" id="myIn01" value="5">
+    <br>
+    Input 2: <input type="text" id="myIn02" value="7">
+    <br>
+    <input type="button" class="no-margin" value="Combine" onclick="{
       let myX = Number(document.getElementById('myIn01').value);
       let myY = Number(document.getElementById('myIn02').value);
       let myTotal = myX + myY;
       document.getElementById('myDiv01').innerHTML = 'Your answer is ' + myTotal;
     }">
     <br>
-    <input type="button" value="Subtract" onclick="{
-      let myX = Number(document.getElementById('myIn01').value);
-      let myY = Number(document.getElementById('myIn02').value);
-      let myTotal = myX - myY;
-      document.getElementById('myDiv01').innerHTML = 'Your answer is ' + myTotal;
-    }">
-    <br>
-    <input type="button" value="Multiply" onclick="{
-      let myX = Number(document.getElementById('myIn01').value);
-      let myY = Number(document.getElementById('myIn02').value);
-      let myTotal = myX * myY;
-      document.getElementById('myDiv01').innerHTML = 'Your answer is ' + myTotal;
-    }">
-    <br>
-    <input type="button" value="Divide" onclick="{
-      let myX = Number(document.getElementById('myIn01').value);
-      let myY = Number(document.getElementById('myIn02').value);
-      let myTotal = myX / myY;
-      document.getElementById('myDiv01').innerHTML = 'Your answer is ' + myTotal;
-    }">
-  </div>
-  <div id="myDiv01">...</div>
-</p>
-
+    <div class="center">
+      <input type="button" value="Add" onclick="{
+        let myX = Number(document.getElementById('myIn01').value);
+        let myY = Number(document.getElementById('myIn02').value);
+        let myTotal = myX + myY;
+        document.getElementById('myDiv01').innerHTML = 'Your answer is ' + myTotal;
+      }">
+      <br>
+      <input type="button" value="Subtract" onclick="{
+        let myX = Number(document.getElementById('myIn01').value);
+        let myY = Number(document.getElementById('myIn02').value);
+        let myTotal = myX - myY;
+        document.getElementById('myDiv01').innerHTML = 'Your answer is ' + myTotal;
+      }">
+      <br>
+      <input type="button" value="Multiply" onclick="{
+        let myX = Number(document.getElementById('myIn01').value);
+        let myY = Number(document.getElementById('myIn02').value);
+        let myTotal = myX * myY;
+        document.getElementById('myDiv01').innerHTML = 'Your answer is ' + myTotal;
+      }">
+      <br>
+      <input type="button" value="Divide" onclick="{
+        let myX = Number(document.getElementById('myIn01').value);
+        let myY = Number(document.getElementById('myIn02').value);
+        let myTotal = myX / myY;
+        document.getElementById('myDiv01').innerHTML = 'Your answer is ' + myTotal;
+      }">
+      <br>
+      <input type="button" value="Modulus" onclick="{
+        let myX = Number(document.getElementById('myIn01').value);
+        let myY = Number(document.getElementById('myIn02').value);
+        let myTotal = myX % myY;
+        document.getElementById('myDiv01').innerHTML = 'Your answer is ' + myTotal;
+      }">
+      <br>
+      <input type="button" value="Exponent" onclick="{
+        let myX = Number(document.getElementById('myIn01').value);
+        let myY = Number(document.getElementById('myIn02').value);
+        let myTotal = Math.pow(myX, myY);
+        document.getElementById('myDiv01').innerHTML = 'Your answer is ' + myTotal;
+      }">
+      <br>
+      <input type="button" value="Square Root" onclick="{
+        let myX = Number(document.getElementById('myIn01').value);
+        let myTotal = Math.sqrt(myX);
+        document.getElementById('myDiv01').innerHTML = 'Your answer is ' + myTotal;
+      }">
+    </div>
+    <div id="myDiv01">...</div>
+  </p>
+</body>
+</html>
