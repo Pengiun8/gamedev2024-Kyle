@@ -31,7 +31,7 @@
             dx: 0,
             dy: 0,
             gravity: 0.5,
-            jumpPower: -10,
+            jumpPower: -30, // 3x higher jump
             grounded: false,
             jumpCount: 0,
             maxJumps: 2
@@ -49,7 +49,7 @@
         ];
 
         function generateRandomPlatforms() {
-            for (let i = 0; i < 5; i++) {
+            for (let i = 0; i < 10; i++) { // More platforms
                 let width = Math.random() * 200 + 50;
                 let height = 25;
                 let x = Math.random() * (canvas.width - width);
@@ -102,10 +102,26 @@
                     player.x + player.width > platform.x &&
                     player.y < platform.y + platform.height &&
                     player.y + player.height > platform.y) {
-                    player.grounded = true;
-                    player.dy = 0;
-                    player.y = platform.y - player.height;
-                    player.jumpCount = 0;
+                    
+                    // Check collision from top
+                    if (player.dy > 0 && player.y + player.height - player.dy <= platform.y) {
+                        player.grounded = true;
+                        player.dy = 0;
+                        player.y = platform.y - player.height;
+                        player.jumpCount = 0;
+                    } else if (player.dy < 0 && player.y - player.dy >= platform.y + platform.height) {
+                        // Collision from bottom
+                        player.dy = 0;
+                        player.y = platform.y + platform.height;
+                    } else {
+                        // Collision from sides
+                        if (player.dx > 0) {
+                            player.x = platform.x - player.width;
+                        } else if (player.dx < 0) {
+                            player.x = platform.x + platform.width;
+                        }
+                        player.dx = 0;
+                    }
                 }
             });
         }
@@ -138,4 +154,3 @@
     </script>
 </body>
 </html>
-
