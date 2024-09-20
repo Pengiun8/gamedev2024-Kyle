@@ -4,10 +4,13 @@
 <input type="number" id="myNum1" value="14">
 <div id="myDiv01">...</div>
 
-<input type="button" value="Check Name" onclick="{
+<input type="button" value="Check Name and Number" onclick="{
   let myIn1 = document.getElementById('myText1').value;
+  let myNum1 = document.getElementById('myNum1').value;
   document.getElementById('myDiv01').innerHTML = '<br>';
-  if (myIn1 == 'Kyle') {
+  if (myIn1 == 'Kyle' && myNum1 == '16') {
+    document.getElementById('myDiv01').innerHTML = 'Hi Kyle, you are 16';
+  } else if (myIn1 == 'Kyle') {
     document.getElementById('myDiv01').innerHTML = 'Hi Kyle';
   } else {
     document.getElementById('myDiv01').innerHTML = 'Not Kyle';
