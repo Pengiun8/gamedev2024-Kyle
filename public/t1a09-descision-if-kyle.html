@@ -1,27 +1,23 @@
-<h1 aign=center>t1a09-descisions-kyle</h1>
+<h1 align="center">t1a09-decisions-kyle</h1>
 
-
-input:<input type=text id=:'myText1' value="Kyle">
-input:<input type=number id=:'myNum1' value="14">
+<input type="text" id="myText1" value="Kyle">
+<input type="number" id="myNum1" value="14">
 <div id="myDiv01">...</div>
 
-
-
-<input type=button value="Is Kyle" onclick="{
-  let myIn1 = document.getElementById('myText1').value
-  document.getElementById('myDiv01').innerHTML = '<br>'
- if (myIn1 == 'Kyle'){
-  document.getElementById('myDiv01').innerHTML = 'Hi Kyle'
+<input type="button" value="Is Kyle" onclick="{
+  let myIn1 = document.getElementById('myText1').value;
+  document.getElementById('myDiv01').innerHTML = '<br>';
+  if (myIn1 == 'Kyle') {
+    document.getElementById('myDiv01').innerHTML = 'Hi Kyle';
   }
 }"><br>
 
-<input type=button value="Is not Kyle" onclick="{
-let myIn1 = document.getElementById('myText1').value
-document.getElementById('myDiv01').innerHTML = '<br>'
-   if (myIn1 == 'Kyle'){
-  document.getElementById('myDiv01').innerHTML = 'Hi Kyle'
+<input type="button" value="Is not Kyle" onclick="{
+  let myIn1 = document.getElementById('myText1').value;
+  document.getElementById('myDiv01').innerHTML = '<br>';
+  if (myIn1 == 'Kyle') {
+    document.getElementById('myDiv01').innerHTML = 'Hi Kyle';
+  } else {
+    document.getElementById('myDiv01').innerHTML = 'Not Kyle';
   }
-else{
-   document.getElementById('myDiv01').innerHTML = 'Not Kyle
-}
-  }"><br>
+}"><br>
