@@ -21,10 +21,13 @@
     document.getElementById('myDiv01').innerHTML = '<br>';
     if (myIn1 == 'Kyle' && myNum1 == '16') {
       document.getElementById('myDiv01').innerHTML = 'Hi Kyle, you are 16';
-    } else if (myIn1 == 'Kyle') {
-      document.getElementById('myDiv01').innerHTML = 'Hi Kyle';
-    } else {
-      document.getElementById('myDiv01').innerHTML = 'Not Kyle';
+    } else if (myIn1 == 'Kyle' && !myNum == '16') {
+      document.getElementById('myDiv01').innerHTML = 'Hi Kyle, not 16';
+    } 
+    else if (!myIn1 == 'Kyle' && myNum1 == '16'){
+      document.getElementById('myDiv01').innerHTML = 'Not Kyle, but 16';
+    else {
+      document.getElementById('myDiv01').innerHTML = 'Not Kyle, not 16';
     }
   }"><br>
 </div>
