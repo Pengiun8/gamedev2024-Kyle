@@ -6,19 +6,30 @@
 
 Max loops: <input id="myNum01" type="number" value="4"><br>
 
-<input type="button" value="Basic for loop with decisions" onclick="{
+<input type="button" value="Basic for loop with decisions" onclick="runLoop()">
+
+<div id="myDiv01">...</div>
+
+<script>
+function runLoop() {
+  // Clear the content of the div
   document.getElementById('myDiv01').innerHTML = '';
   let myTemp = '';
 
+  // Get the maximum number of loops from the input field
   let myMax = parseInt(document.getElementById('myNum01').value);
 
+  // Loop from 0 to myMax - 1
   for (let myLoop = 0; myLoop < myMax; myLoop++) {
+    // If the loop index multiplied by 2 is greater than myMax, append 'cool'
     if (myLoop * 2 > myMax) {
       myTemp += 'cool ';
     }
+    // Append the current loop number
     myTemp += 'Loop number: ' + myLoop + ' <br> ';
   }
-  document.getElementById('myDiv01').innerHTML = myTemp;
-}">
 
-<div id="myDiv01">...</div>
+  // Update the div with the result
+  document.getElementById('myDiv01').innerHTML = myTemp;
+}
+</script>
