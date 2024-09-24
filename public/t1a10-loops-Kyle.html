@@ -1,2 +1,25 @@
 <h1 align=center> t1a10-loops-Kyle.html</h1>
-for(i=o; i<<0; i++)
+
+<a href="">Reference for javascript loops</a><br>
+
+<h4 align=center>Example working code</h4>
+
+Max loops: <input id="myNum01" type=number value="4"><br>
+
+<input type=button value="Basic for loop with decisions" onclick="{
+  document.getElementById('myDiv01').innerHTML= ''
+  let myTemp= ''
+
+  let myMax= parseInt(document.getElementById('myNum01').value)
+
+  for (let myLoop = 0; myLoop<myMax; myLoop++){
+  if (myLoop * 2 > myMax){
+  myTemp += 'cool'
+  }
+  myTemp =+ 'Loop number: ' + myLoop + ' <br> '
+  }
+  document.getElementById('myDiv01').innerHTML = myTemp
+  }">
+
+
+  <div id="myDiv01">...</div>
