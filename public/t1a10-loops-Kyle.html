@@ -2,13 +2,13 @@
 
 <a align="center" href="https://www.programiz.com/javascript/for-loop">Reference for JavaScript loops</a><br>
 
+<div style="text-align: center;">
+  Max loops: <input id="myNum01" type="number" value="4"><br>
 
+  <input type="button" value="Basic for loop with decisions" onclick="runLoop()">
 
-Max loops: <input id="myNum01" type="number" value="4"><br>
-
-<input type="button" value="Basic for loop with decisions" onclick="runLoop()">
-
-<div id="myDiv01">...</div>
+  <div id="myDiv01">...</div>
+</div>
 
 <script>
 function runLoop() {
@@ -29,7 +29,11 @@ function runLoop() {
     myTemp += 'Loop number: ' + myLoop + ' <br> ';
   }
 
+  // Clean up the 'cool' output
+  myTemp = myTemp.replace(/cool /g, 'cool<br>');
+
   // Update the div with the result
   document.getElementById('myDiv01').innerHTML = myTemp;
 }
 </script>
+
