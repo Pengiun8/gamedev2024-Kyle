@@ -25,7 +25,7 @@ function runLoop() {
     if (myLoop * 2 > myMax) {
       myTemp += 'This iteration times 2 is > the loop number: ';
     }
-    myTemp += 'Loop number: ' + myLoop + ' <br> ';
+    myTemp += '# ' + myLoop + ' <br> ';
   }
   myTemp = myTemp.replace(/cool /g, 'cool<br>');
   document.getElementById('myDiv01').innerHTML = myTemp;
