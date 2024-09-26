@@ -10,13 +10,14 @@ Input:<input type="text" id="myFirstName" value="Kyle">
   myArray[0] = 'Kyle';
   myArray[1] = 'Brandon';
   myArray[2] = 'Andy';
+  myArray[3] = document.getElementById('myFirstName').value;
 
   document.getElementById('myDiv01').innerHTML = 'You set Array';
 }">
 
 <input type="button" value="Show Array" onclick="{
   document.getElementById('myDiv01').innerHTML = ''; // Clear previous content
-  for (let myLoop = 0; myLoop < 3; myLoop++) {
+  for (let myLoop = 0; myLoop < 4; myLoop++) {
     document.getElementById('myDiv01').innerHTML += 'myArray[' + myLoop + '] = ' + myArray[myLoop] + '<br>';
   }
 }"> <br>
