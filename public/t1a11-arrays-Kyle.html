@@ -2,9 +2,17 @@
 <script>
   let myMax = 6;
   let myArray = new Array(myMax);
+
   function createNewArray() {
     let input = document.getElementById('myNewArray').value;
     let newArray = input.split(',');
+
+    // Append newArray values to myArray starting from index 4
+    for (let i = 0; i < newArray.length; i++) {
+      myArray[4 + i] = newArray[i];
+    }
+
+    // Display the new array values
     document.getElementById('myDiv01').innerHTML = 'New Array: <br>';
     for (let i = 0; i < newArray.length; i++) {
       document.getElementById('myDiv01').innerHTML += 'newArray[' + i + '] = ' + newArray[i] + '<br>';
@@ -26,8 +34,10 @@ Make new Array:<input type="text" id="myNewArray" value="Split #s by ,">
 
 <input type="button" value="Show Array" onclick="{
   document.getElementById('myDiv01').innerHTML = ''; // Clear previous content
-  for (let myLoop = 0; myLoop < 4; myLoop++) {
-    document.getElementById('myDiv01').innerHTML += 'myArray[' + myLoop + '] = ' + myArray[myLoop] + '<br>';
+  for (let myLoop = 0; myLoop < myArray.length; myLoop++) {
+    if (myArray[myLoop] !== undefined) {
+      document.getElementById('myDiv01').innerHTML += 'myArray[' + myLoop + '] = ' + myArray[myLoop] + '<br>';
+    }
   }
 }"> 
 
@@ -36,11 +46,6 @@ Make new Array:<input type="text" id="myNewArray" value="Split #s by ,">
   document.getElementById('myDiv01').innerHTML = 'Array has been cleared';
 }"> 
 
-<input type="button" value="New Array" onclick="createNewArray()">
+<input type="button" value="New Array" onclick="createNewArray()"> <br>
 
-
-  
-  
-  
-  
-  <div id="myDiv01">...</div>
+<div id="myDiv01">...</div>
