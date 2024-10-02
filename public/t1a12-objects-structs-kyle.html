@@ -11,16 +11,17 @@ Objects are stored name variables
   "eyeColor": "green"
   }
 </pre>
+
 <style>
   .even-textbox {
     width: 200px; /* Set the desired width */
   }
 </style>
 
-Change first name: <input type=text id="myText01" value="first name"><br>
-Change last name: <input type=text id="myText02" value="last name"><br>
-Change age: <input type=text id="myText03" value="age"><br>
-Change eye color: <input type=text id="myText04" value="eye color"><br>
+Change first name: <input type=text id="myText01" class="even-textbox" value="first name"><br>
+Change last name: <input type=text id="myText02" class="even-textbox" value="last name"><br>
+Change age: <input type=text id="myText03" class="even-textbox" value="age"><br>
+Change eye color: <input type=text id="myText04" class="even-textbox" value="eye color"><br>
 
 <input type=button value="Example Object Set and Show" onClick="{
 let myPerson = {
@@ -37,3 +38,4 @@ document.getElementById('myDiv01').innerHTML += 'Age: ' + myPerson.age +  '<br>'
 document.getElementById('myDiv01').innerHTML += 'Eye color: ' + myPerson.eyeColor +  '<br>'
 }">
 <div id="myDiv01">...</div>
+
