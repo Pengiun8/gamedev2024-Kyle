@@ -12,16 +12,18 @@ Objects are stored name variables
   }
 </pre>
 
-Nothing: <input type=text od="myText01" value="Useless at the moment"><br>
+Nothing: <input type=text id="myText01" value="Useless at the moment"><br>
 
-<input type=button value-"Example Object Set and Show" onClick="{
+<input type=button value="Example Object Set and Show" onClick="{
 let myPerson = {
 'firstName' : 'Kyle',
 'lastName'  : 'Wiersma',
-'age'       : '16',
+'age'       :  16,
 'eyeColor'  : 'green'
 }
 
 document.getElementById('myDiv01').innerHTML = '<br>myPerson Object has Properties: <br>'
 document.getElementById('myDiv01').innerHTML += 'firstName: ' + myPerson.firstName + '<br>'
 document.getElementById('myDiv01').innerHTML += 'You do the others   <br> '
+}">
+<div id="myDiv01">...</div>
