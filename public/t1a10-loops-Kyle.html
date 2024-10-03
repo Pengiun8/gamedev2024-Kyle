@@ -1,16 +1,15 @@
-<h1 align="center">t1a10-loops-Kyle.html</h1>
-<style>
-  p{
-    text-align: center
-  }
-</style>
-<p><a href="https://www.programiz.com/javascript/for-loop">Reference for JavaScript loops</a></p><br>
-
 <div style="text-align: center;">
   Max loops: <input id="myNum01" type="number" value="4"><br>
 
   <input type="button" value="Basic for loop with decisions" onclick="runLoop()">
-<input type="button" value="Even-Odd Check" onclick="evenOddCheck()">
+  <input type="button" value="Even-Odd Check" onclick="evenOddCheck()">
+  <input type="button" value="Sum of Numbers" onclick="sumNumbers()">
+  <input type="button" value="Factorial" onclick="calculateFactorial()">
+  <input type="button" value="Prime Check" onclick="primeCheck()">
+  <input type="button" value="Multiplication Table" onclick="multiplicationTable()">
+  <input type="button" value="Fibonacci Sequence" onclick="fibonacciSequence()">
+  <input type="button" value="Reverse Loop" onclick="reverseLoop()">
+  <input type="button" value="Square Numbers" onclick="squareNumbers()">
   <div id="myDiv01">...</div>
 </div>
 
@@ -30,7 +29,8 @@ function runLoop() {
   myTemp = myTemp.replace(/cool /g, 'cool<br>');
   document.getElementById('myDiv01').innerHTML = myTemp;
 }
-  function evenOddCheck() {
+
+function evenOddCheck() {
   document.getElementById('myDiv01').innerHTML = '';
   let myTemp = '';
 
@@ -38,6 +38,101 @@ function runLoop() {
 
   for (let myLoop = 0; myLoop < myMax; myLoop++) {
     myTemp += (myLoop % 2 === 0 ? 'Even: ' : 'Odd: ') + '# ' + myLoop + ' <br> ';
+  }
+  document.getElementById('myDiv01').innerHTML = myTemp;
+}
+
+function sumNumbers() {
+  document.getElementById('myDiv01').innerHTML = '';
+  let myTemp = 0;
+
+  let myMax = parseInt(document.getElementById('myNum01').value);
+
+  for (let myLoop = 0; myLoop <= myMax; myLoop++) {
+    myTemp += myLoop;
+  }
+  document.getElementById('myDiv01').innerHTML = 'Sum: ' + myTemp;
+}
+
+function calculateFactorial() {
+  document.getElementById('myDiv01').innerHTML = '';
+  let myTemp = 1;
+
+  let myMax = parseInt(document.getElementById('myNum01').value);
+
+  for (let myLoop = 1; myLoop <= myMax; myLoop++) {
+    myTemp *= myLoop;
+  }
+  document.getElementById('myDiv01').innerHTML = 'Factorial: ' + myTemp;
+}
+
+function primeCheck() {
+  document.getElementById('myDiv01').innerHTML = '';
+  let myTemp = '';
+
+  let myMax = parseInt(document.getElementById('myNum01').value);
+
+  for (let myLoop = 2; myLoop <= myMax; myLoop++) {
+    let isPrime = true;
+    for (let i = 2; i <= Math.sqrt(myLoop); i++) {
+      if (myLoop % i === 0) {
+        isPrime = false;
+        break;
+      }
+    }
+    myTemp += (isPrime ? 'Prime: ' : 'Not Prime: ') + '# ' + myLoop + ' <br> ';
+  }
+  document.getElementById('myDiv01').innerHTML = myTemp;
+}
+
+function multiplicationTable() {
+  document.getElementById('myDiv01').innerHTML = '';
+  let myTemp = '';
+
+  let myMax = parseInt(document.getElementById('myNum01').value);
+
+  for (let myLoop = 1; myLoop <= 10; myLoop++) {
+    myTemp += myMax + ' x ' + myLoop + ' = ' + (myMax * myLoop) + '<br>';
+  }
+  document.getElementById('myDiv01').innerHTML = myTemp;
+}
+
+function fibonacciSequence() {
+  document.getElementById('myDiv01').innerHTML = '';
+  let myTemp = '';
+  let a = 0, b = 1, nextTerm;
+
+  let myMax = parseInt(document.getElementById('myNum01').value);
+
+  for (let myLoop = 1; myLoop <= myMax; myLoop++) {
+    myTemp += a + ' ';
+    nextTerm = a + b;
+    a = b;
+    b = nextTerm;
+  }
+  document.getElementById('myDiv01').innerHTML = myTemp;
+}
+
+function reverseLoop() {
+  document.getElementById('myDiv01').innerHTML = '';
+  let myTemp = '';
+
+  let myMax = parseInt(document.getElementById('myNum01').value);
+
+  for (let myLoop = myMax; myLoop >= 0; myLoop--) {
+    myTemp += '# ' + myLoop + ' <br> ';
+  }
+  document.getElementById('myDiv01').innerHTML = myTemp;
+}
+
+function squareNumbers() {
+  document.getElementById('myDiv01').innerHTML = '';
+  let myTemp = '';
+
+  let myMax = parseInt(document.getElementById('myNum01').value);
+
+  for (let myLoop = 0; myLoop <= myMax; myLoop++) {
+    myTemp += 'Square of ' + myLoop + ' is ' + (myLoop * myLoop) + '<br>';
   }
   document.getElementById('myDiv01').innerHTML = myTemp;
 }
