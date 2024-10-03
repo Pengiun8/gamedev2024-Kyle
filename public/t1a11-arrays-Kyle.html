@@ -1,69 +1,117 @@
-<div style="text-align: center;">
-  Name Array 3:<input type="text" id="myFirstName" value="Kyle"> <br>
-  Make new Array:<input type="text" id="myNewArray" value="Split things by ,'s">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Array Manipulation</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+    input[type="text"], input[type="number"] {
+      margin: 10px;
+    }
+    input[type="button"] {
+      margin: 5px;
+    }
+    #myDiv01 {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Array Manipulation</h1>
+  <div>
+    Name Array 3: <input type="text" id="myFirstName" value="Kyle"><br>
+    Make new Array: <input type="text" id="myNewArray" value="Split things by ,'s"><br>
+    Max loops: <input id="myNum01" type="number" value="4"><br>
 
-  <input type="button" value="Set Array" onclick="{
-    myArray = 'Kyle';
-    myArray = 'Brandon';
-    myArray = 'Andy';
-    myArray = document.getElementById('myFirstName').value;
+    <input type="button" value="Set Array" onclick="setArray()">
+    <input type="button" value="Show Array" onclick="showArray()">
+    <input type="button" value="Clear Array" onclick="clearArray()">
+    <input type="button" value="New Array" onclick="createNewArray()">
+    <input type="button" value="Reverse Array" onclick="reverseArray()">
+    <input type="button" value="Sort Array" onclick="sortArray()">
+    <input type="button" value="Find Max Value" onclick="findMaxValue()">
+    <input type="button" value="Find Min Value" onclick="findMinValue()">
+  </div>
+  <div id="myDiv01">...</div>
 
-    document.getElementById('myDiv01').innerHTML = 'You set Array';
-  }">
+  <script>
+    let myMax = 6;
+    let myArray = new Array(myMax);
 
-  <input type="button" value="Show Array" onclick="{
-    document.getElementById('myDiv01').innerHTML = ''; // Clear previous content
-    for (let myLoop = 0; myLoop < myArray.length; myLoop++) {
-      if (myArray[myLoop] !== undefined) {
-        document.getElementById('myDiv01').innerHTML += 'myArray[' + myLoop + '] = ' + myArray[myLoop] + '<br>';
+    function setArray() {
+      myArray = 'Kyle';
+      myArray = 'Brandon';
+      myArray = 'Andy';
+      myArray = document.getElementById('myFirstName').value;
+      document.getElementById('myDiv01').innerHTML = 'You set Array';
+    }
+
+    function showArray() {
+      document.getElementById('myDiv01').innerHTML = ''; // Clear previous content
+      for (let myLoop = 0; myLoop < myArray.length; myLoop++) {
+        if (myArray[myLoop] !== undefined) {
+          document.getElementById('myDiv01').innerHTML += 'myArray[' + myLoop + '] = ' + myArray[myLoop] + '<br>';
+        }
       }
     }
-  }"> 
 
-  <input type="button" value="Clear Array" onclick="{
-    myArray.length = 0;
-    document.getElementById('myDiv01').innerHTML = 'Array has been cleared';
-  }"> 
-
-  <input type="button" value="New Array" onclick="createNewArray()"> <br>
-
-  <input type="button" value="Reverse Array" onclick="reverseArray()">
-  <input type="button" value="Sort Array" onclick="sortArray()">
-  <input type="button" value="Find Max Value" onclick="findMaxValue()">
-  <input type="button" value="Find Min Value" onclick="findMinValue()">
-  <div id="myDiv01">...</div>
-</div>
-
-<script>
-function reverseArray() {
-  document.getElementById('myDiv01').innerHTML = '';
-  myArray.reverse();
-  for (let myLoop = 0; myLoop < myArray.length; myLoop++) {
-    if (myArray[myLoop] !== undefined) {
-      document.getElementById('myDiv01').innerHTML += 'myArray[' + myLoop + '] = ' + myArray[myLoop] + '<br>';
+    function clearArray() {
+      myArray.length = 0;
+      document.getElementById('myDiv01').innerHTML = 'Array has been cleared';
     }
-  }
-}
 
-function sortArray() {
-  document.getElementById('myDiv01').innerHTML = '';
-  myArray.sort();
-  for (let myLoop = 0; myLoop < myArray.length; myLoop++) {
-    if (myArray[myLoop] !== undefined) {
-      document.getElementById('myDiv01').innerHTML += 'myArray[' + myLoop + '] = ' + myArray[myLoop] + '<br>';
+    function createNewArray() {
+      let input = document.getElementById('myNewArray').value;
+      let newArray = input.split(',');
+
+      // Append newArray values to myArray starting from index 4
+      for (let i = 0; i < newArray.length; i++) {
+        myArray[4 + i] = newArray[i];
+      }
+
+      // Display the new array values
+      document.getElementById('myDiv01').innerHTML = 'New Array: <br>';
+      for (let i = 0; i < newArray.length; i++) {
+        document.getElementById('myDiv01').innerHTML += 'newArray[' + i + '] = ' + newArray[i] + '<br>';
+      }
     }
-  }
-}
 
-function findMaxValue() {
-  document.getElementById('myDiv01').innerHTML = '';
-  let maxValue = Math.max(...myArray.filter(item => !isNaN(item)));
-  document.getElementById('myDiv01').innerHTML = 'Max Value: ' + maxValue;
-}
+    function reverseArray() {
+      document.getElementById('myDiv01').innerHTML = '';
+      myArray.reverse();
+      for (let myLoop = 0; myLoop < myArray.length; myLoop++) {
+        if (myArray[myLoop] !== undefined) {
+          document.getElementById('myDiv01').innerHTML += 'myArray[' + myLoop + '] = ' + myArray[myLoop] + '<br>';
+        }
+      }
+    }
 
-function findMinValue() {
-  document.getElementById('myDiv01').innerHTML = '';
-  let minValue = Math.min(...myArray.filter(item => !isNaN(item)));
-  document.getElementById('myDiv01').innerHTML = 'Min Value: ' + minValue;
-}
-</script>
+    function sortArray() {
+      document.getElementById('myDiv01').innerHTML = '';
+      myArray.sort();
+      for (let myLoop = 0; myLoop < myArray.length; myLoop++) {
+        if (myArray[myLoop] !== undefined) {
+          document.getElementById('myDiv01').innerHTML += 'myArray[' + myLoop + '] = ' + myArray[myLoop] + '<br>';
+        }
+      }
+    }
+
+    function findMaxValue() {
+      document.getElementById('myDiv01').innerHTML = '';
+      let maxValue = Math.max(...myArray.filter(item => !isNaN(item)));
+      document.getElementById('myDiv01').innerHTML = 'Max Value: ' + maxValue;
+    }
+
+    function findMinValue() {
+      document.getElementById('myDiv01').innerHTML = '';
+      let minValue = Math.min(...myArray.filter(item => !isNaN(item)));
+      document.getElementById('myDiv01').innerHTML = 'Min Value: ' + minValue;
+    }
+  </script>
+</body>
+</html>
+
