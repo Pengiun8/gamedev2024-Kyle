@@ -26,7 +26,9 @@
     <h1>t1a06-in-out-kyle.html</h1>
     <p>
         Input: <input type="text" id="myFirstName" value="kyle" oninput="updateCharCount()">
-        <input type="button" value="Show on Page" onclick="showName()">
+        <input type="button" value="Show as Is" onclick="showName('normal')">
+        <input type="button" value="Show in Uppercase" onclick="showName('uppercase')">
+        <input type="button" value="Show in Lowercase" onclick="showName('lowercase')">
         <input type="button" value="Clear Input" onclick="clearInput()">
         <input type="button" value="Toggle Visibility" onclick="toggleVisibility()">
         <input type="button" value="Reset" onclick="resetForm()">
@@ -39,10 +41,16 @@
     <div id="myDiv01">Your name is kyle</div>
 
     <script>
-        function showName() {
+        function showName(format) {
             const input = document.getElementById('myFirstName').value.trim();
             if (input) {
-                document.getElementById('myDiv01').innerHTML = 'Your name is ' + input.toUpperCase();
+                let displayText = input;
+                if (format === 'uppercase') {
+                    displayText = input.toUpperCase();
+                } else if (format === 'lowercase') {
+                    displayText = input.toLowerCase();
+                }
+                document.getElementById('myDiv01').innerHTML = 'Your name is ' + displayText;
             } else {
                 alert('Please enter a name.');
             }
