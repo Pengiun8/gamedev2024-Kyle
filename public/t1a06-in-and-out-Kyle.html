@@ -1,21 +1,84 @@
-<h1>t1a06-in-out-kyle.html</h1>
-<style>
-  h1{
-    text-align: center;
-  }
-  p{
-    text-align: center;}
-    #myDiv01 {
-    text-align: center; 
-  }
-</style>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Input-Output Example</title>
+    <style>
+        h1, p {
+            text-align: center;
+        }
+        #myDiv01 {
+            text-align: center;
+            margin-top: 20px;
+        }
+        #controls {
+            text-align: center;
+            margin-top: 20px;
+        }
+        #charCount {
+            margin-top: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>t1a06-in-out-kyle.html</h1>
+    <p>
+        Input: <input type="text" id="myFirstName" value="kyle" oninput="updateCharCount()">
+        <input type="button" value="Show on Page" onclick="showName()">
+        <input type="button" value="Clear Input" onclick="clearInput()">
+        <input type="button" value="Toggle Visibility" onclick="toggleVisibility()">
+        <input type="button" value="Reset" onclick="resetForm()">
+    </p>
+    <div id="charCount">Character Count: 4</div>
+    <div id="controls">
+        <label for="textColor">Text Color:</label>
+        <input type="color" id="textColor" onchange="changeTextColor()">
+    </div>
+    <div id="myDiv01">Your name is kyle</div>
 
-<p>Input:<input type=text id="myFirstName" value="kyle">
-<input type=button value="show on page" onclick="{
-//comments example
-  document.getElementById('myDiv01').innerHTML = 'Your name is ' + document.getElementById('myFirstName').value
+    <script>
+        function showName() {
+            const input = document.getElementById('myFirstName').value.trim();
+            if (input) {
+                document.getElementById('myDiv01').innerHTML = 'Your name is ' + input.toUpperCase();
+            } else {
+                alert('Please enter a name.');
+            }
+        }
 
+        function clearInput() {
+            document.getElementById('myFirstName').value = '';
+            updateCharCount();
+        }
 
-}">
-<div id="myDiv01">...</div>
-</p>
+        function updateCharCount() {
+            const charCount = document.getElementById('myFirstName').value.length;
+            document.getElementById('charCount').innerText = 'Character Count: ' + charCount;
+        }
+
+        function changeTextColor() {
+            const color = document.getElementById('textColor').value;
+            document.getElementById('myDiv01').style.color = color;
+        }
+
+        function toggleVisibility() {
+            const myDiv = document.getElementById('myDiv01');
+            if (myDiv.style.display === 'none') {
+                myDiv.style.display = 'block';
+            } else {
+                myDiv.style.display = 'none';
+            }
+        }
+
+        function resetForm() {
+            document.getElementById('myFirstName').value = 'kyle';
+            document.getElementById('myDiv01').innerHTML = 'Your name is kyle';
+            document.getElementById('myDiv01').style.color = 'black';
+            document.getElementById('myDiv01').style.display = 'block';
+            updateCharCount();
+        }
+    </script>
+</body>
+</html>
