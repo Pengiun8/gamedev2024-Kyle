@@ -1,51 +1,69 @@
-<h1 align=center>t1a11-arrays-Kyle.html</h1>
+<div style="text-align: center;">
+  Name Array 3:<input type="text" id="myFirstName" value="Kyle"> <br>
+  Make new Array:<input type="text" id="myNewArray" value="Split things by ,'s">
+
+  <input type="button" value="Set Array" onclick="{
+    myArray = 'Kyle';
+    myArray = 'Brandon';
+    myArray = 'Andy';
+    myArray = document.getElementById('myFirstName').value;
+
+    document.getElementById('myDiv01').innerHTML = 'You set Array';
+  }">
+
+  <input type="button" value="Show Array" onclick="{
+    document.getElementById('myDiv01').innerHTML = ''; // Clear previous content
+    for (let myLoop = 0; myLoop < myArray.length; myLoop++) {
+      if (myArray[myLoop] !== undefined) {
+        document.getElementById('myDiv01').innerHTML += 'myArray[' + myLoop + '] = ' + myArray[myLoop] + '<br>';
+      }
+    }
+  }"> 
+
+  <input type="button" value="Clear Array" onclick="{
+    myArray.length = 0;
+    document.getElementById('myDiv01').innerHTML = 'Array has been cleared';
+  }"> 
+
+  <input type="button" value="New Array" onclick="createNewArray()"> <br>
+
+  <input type="button" value="Reverse Array" onclick="reverseArray()">
+  <input type="button" value="Sort Array" onclick="sortArray()">
+  <input type="button" value="Find Max Value" onclick="findMaxValue()">
+  <input type="button" value="Find Min Value" onclick="findMinValue()">
+  <div id="myDiv01">...</div>
+</div>
+
 <script>
-  let myMax = 6;
-  let myArray = new Array(myMax);
-
-  function createNewArray() {
-    let input = document.getElementById('myNewArray').value;
-    let newArray = input.split(',');
-
-    // Append newArray values to myArray starting from index 4
-    for (let i = 0; i < newArray.length; i++) {
-      myArray[4 + i] = newArray[i];
-    }
-
-    // Display the new array values
-    document.getElementById('myDiv01').innerHTML = 'New Array: <br>';
-    for (let i = 0; i < newArray.length; i++) {
-      document.getElementById('myDiv01').innerHTML += 'newArray[' + i + '] = ' + newArray[i] + '<br>';
-    }
-  }
-</script>
-
-Name Array 3:<input type="text" id="myFirstName" value="Kyle"> <br>
-Make new Array:<input type="text" id="myNewArray" value="Split things by ,'s">
-
-<input type="button" value="Set Array" onclick="{
-  myArray[0] = 'Kyle';
-  myArray[1] = 'Brandon';
-  myArray[2] = 'Andy';
-  myArray[3] = document.getElementById('myFirstName').value;
-
-  document.getElementById('myDiv01').innerHTML = 'You set Array';
-}">
-
-<input type="button" value="Show Array" onclick="{
-  document.getElementById('myDiv01').innerHTML = ''; // Clear previous content
+function reverseArray() {
+  document.getElementById('myDiv01').innerHTML = '';
+  myArray.reverse();
   for (let myLoop = 0; myLoop < myArray.length; myLoop++) {
     if (myArray[myLoop] !== undefined) {
       document.getElementById('myDiv01').innerHTML += 'myArray[' + myLoop + '] = ' + myArray[myLoop] + '<br>';
     }
   }
-}"> 
+}
 
-<input type="button" value="Clear Array" onclick="{
-  myArray.length = 0;
-  document.getElementById('myDiv01').innerHTML = 'Array has been cleared';
-}"> 
+function sortArray() {
+  document.getElementById('myDiv01').innerHTML = '';
+  myArray.sort();
+  for (let myLoop = 0; myLoop < myArray.length; myLoop++) {
+    if (myArray[myLoop] !== undefined) {
+      document.getElementById('myDiv01').innerHTML += 'myArray[' + myLoop + '] = ' + myArray[myLoop] + '<br>';
+    }
+  }
+}
 
-<input type="button" value="New Array" onclick="createNewArray()"> <br>
+function findMaxValue() {
+  document.getElementById('myDiv01').innerHTML = '';
+  let maxValue = Math.max(...myArray.filter(item => !isNaN(item)));
+  document.getElementById('myDiv01').innerHTML = 'Max Value: ' + maxValue;
+}
 
-<div id="myDiv01">...</div>
+function findMinValue() {
+  document.getElementById('myDiv01').innerHTML = '';
+  let minValue = Math.min(...myArray.filter(item => !isNaN(item)));
+  document.getElementById('myDiv01').innerHTML = 'Min Value: ' + minValue;
+}
+</script>
