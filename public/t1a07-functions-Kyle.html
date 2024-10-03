@@ -1,42 +1,105 @@
-<h1>t1a07-functions-kyle.html</h1>
-<script>
-  function myVar(myIn){
-     return document.getElementById(myIn)}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>t1a07-functions-kyle.html</title>
+    <style>
+        h1, p {
+            text-align: center;
+        }
+        #myDiv01, #myDiv02 {
+            text-align: center;
+            margin-top: 20px;
+        }
+        #controls {
+            text-align: center;
+            margin-top: 20px;
+        }
+        #charCount {
+            margin-top: 10px;
+            text-align: center;
+        }
+    </style>
+    <script>
+        function myVar(myIn) {
+            return document.getElementById(myIn);
+        }
 
-  function showName(){
-     myVar('myDiv01').innerHTML = 'Your name is ' + myVar('myFirstName').value
-  }
-    function showDate() {
-    const currentDate = new Date().toLocaleDateString();
-    myVar('myDiv02').innerHTML = 'Today\'s date is ' + currentDate;
-  }
-  function clearText() {
-    myVar('myDiv01').innerHTML = '';
-    myVar('myDiv02').innerHTML = '';
-    myVar('myFirstName').value = '';
-  }
-</script>
-<style>
-  h1{
-    text-align: center;
-  }
-  p{
-    text-align: center;}
-    #myDiv01 {
-    text-align: center; 
-  }
-  #myDiv02{
-    text-align: center;
-  }
-</style>
+        function showName(format) {
+            const input = myVar('myFirstName').value.trim();
+            if (input) {
+                let displayText = input;
+                if (format === 'uppercase') {
+                    displayText = input.toUpperCase();
+                } else if (format === 'lowercase') {
+                    displayText = input.toLowerCase();
+                }
+                myVar('myDiv01').innerHTML = 'Your name is ' + displayText;
+            } else {
+                alert('Please enter a name.');
+            }
+        }
 
-<p>Input:<input type=text id="myFirstName" value="kyle">
-<input type=button value="Show my name" onclick="{showName()}">
-<input type="button" value="Show Date" onclick="showDate()">
-<input type="button" value="Clear Text" onclick="clearText()">
+        function showDate() {
+            const currentDate = new Date().toLocaleDateString();
+            myVar('myDiv02').innerHTML = 'Today\'s date is ' + currentDate;
+        }
 
- 
+        function clearText() {
+            myVar('myDiv01').innerHTML = '';
+            myVar('myDiv02').innerHTML = '';
+            myVar('myFirstName').value = '';
+            updateCharCount();
+        }
 
-<div id="myDiv01"></div>
-<div id="myDiv02"></div>
-</p>
+        function updateCharCount() {
+            const charCount = myVar('myFirstName').value.length;
+            myVar('charCount').innerText = 'Character Count: ' + charCount;
+        }
+
+        function changeTextColor() {
+            const color = myVar('textColor').value;
+            myVar('myDiv01').style.color = color;
+        }
+
+        function toggleVisibility() {
+            const myDiv = myVar('myDiv01');
+            if (myDiv.style.display === 'none') {
+                myDiv.style.display = 'block';
+            } else {
+                myDiv.style.display = 'none';
+            }
+        }
+
+        function resetForm() {
+            myVar('myFirstName').value = 'kyle';
+            myVar('myDiv01').innerHTML = '';
+            myVar('myDiv02').innerHTML = '';
+            myVar('myDiv01').style.color = 'black';
+            myVar('myDiv01').style.display = 'block';
+            updateCharCount();
+        }
+    </script>
+</head>
+<body>
+    <h1>t1a07-functions-kyle.html</h1>
+    <p>
+        Input: <input type="text" id="myFirstName" value="kyle" oninput="updateCharCount()">
+        <input type="button" value="Show as Is" onclick="showName('normal')">
+        <input type="button" value="Show in Uppercase" onclick="showName('uppercase')">
+        <input type="button" value="Show in Lowercase" onclick="showName('lowercase')">
+        <input type="button" value="Show Date" onclick="showDate()">
+        <input type="button" value="Clear Text" onclick="clearText()">
+        <input type="button" value="Toggle Visibility" onclick="toggleVisibility()">
+        <input type="button" value="Reset" onclick="resetForm()">
+    </p>
+    <div id="charCount">Character Count: 4</div>
+    <div id="controls">
+        <label for="textColor">Text Color:</label>
+        <input type="color" id="textColor" onchange="changeTextColor()">
+    </div>
+    <div id="myDiv01"></div>
+    <div id="myDiv02"></div>
+</body>
+</html>
