@@ -1,117 +1,51 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Array Manipulation</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-    }
-    input[type="text"], input[type="number"] {
-      margin: 10px;
-    }
-    input[type="button"] {
-      margin: 5px;
-    }
-    #myDiv01 {
-      margin-top: 20px;
-    }
-  </style>
-</head>
-<body>
-  <h1>t1a11-arrays-Kyle.html</h1>
-  <div>
-    Name Array 3: <input type="text" id="myFirstName" value="Kyle"><br>
-    Make new Array: <input type="text" id="myNewArray" value="Split things by ,'s"><br>
-    Max loops: <input id="myNum01" type="number" value="4"><br>
+<h1 align=center>t1a11-arrays-Kyle.html</h1>
+<script>
+  let myMax = 6;
+  let myArray = new Array(myMax);
 
-    <input type="button" value="Set Array" onclick="setArray()">
-    <input type="button" value="Show Array" onclick="showArray()">
-    <input type="button" value="Clear Array" onclick="clearArray()">
-    <input type="button" value="New Array" onclick="createNewArray()">
-    <input type="button" value="Reverse Array" onclick="reverseArray()">
-    <input type="button" value="Sort Array" onclick="sortArray()">
-    <input type="button" value="Find Max Value" onclick="findMaxValue()">
-    <input type="button" value="Find Min Value" onclick="findMinValue()">
-  </div>
-  <div id="myDiv01">...</div>
+  function createNewArray() {
+    let input = document.getElementById('myNewArray').value;
+    let newArray = input.split(',');
 
-  <script>
-    let myMax = 6;
-    let myArray = new Array(myMax);
-
-    function setArray() {
-      myArray = 'Kyle';
-      myArray = 'Brandon';
-      myArray = 'Andy';
-      myArray = document.getElementById('myFirstName').value;
-      document.getElementById('myDiv01').innerHTML = 'You set Array';
+    // Append newArray values to myArray starting from index 4
+    for (let i = 0; i < newArray.length; i++) {
+      myArray[4 + i] = newArray[i];
     }
 
-    function showArray() {
-      document.getElementById('myDiv01').innerHTML = ''; // Clear previous content
-      for (let myLoop = 0; myLoop < myArray.length; myLoop++) {
-        if (myArray[myLoop] !== undefined) {
-          document.getElementById('myDiv01').innerHTML += 'myArray[' + myLoop + '] = ' + myArray[myLoop] + '<br>';
-        }
-      }
+    // Display the new array values
+    document.getElementById('myDiv01').innerHTML = 'New Array: <br>';
+    for (let i = 0; i < newArray.length; i++) {
+      document.getElementById('myDiv01').innerHTML += 'newArray[' + i + '] = ' + newArray[i] + '<br>';
     }
+  }
+</script>
 
-    function clearArray() {
-      myArray.length = 0;
-      document.getElementById('myDiv01').innerHTML = 'Array has been cleared';
+Name Array 3:<input type="text" id="myFirstName" value="Kyle"> <br>
+Make new Array:<input type="text" id="myNewArray" value="Split things by ,'s">
+
+<input type="button" value="Set Array" onclick="{
+  myArray[0] = 'Kyle';
+  myArray[1] = 'Brandon';
+  myArray[2] = 'Andy';
+  myArray[3] = document.getElementById('myFirstName').value;
+
+  document.getElementById('myDiv01').innerHTML = 'You set Array';
+}">
+
+<input type="button" value="Show Array" onclick="{
+  document.getElementById('myDiv01').innerHTML = ''; // Clear previous content
+  for (let myLoop = 0; myLoop < myArray.length; myLoop++) {
+    if (myArray[myLoop] !== undefined) {
+      document.getElementById('myDiv01').innerHTML += 'myArray[' + myLoop + '] = ' + myArray[myLoop] + '<br>';
     }
+  }
+}"> 
 
-    function createNewArray() {
-      let input = document.getElementById('myNewArray').value;
-      let newArray = input.split(',');
+<input type="button" value="Clear Array" onclick="{
+  myArray.length = 0;
+  document.getElementById('myDiv01').innerHTML = 'Array has been cleared';
+}"> 
 
-      // Append newArray values to myArray starting from index 4
-      for (let i = 0; i < newArray.length; i++) {
-        myArray[4 + i] = newArray[i];
-      }
+<input type="button" value="New Array" onclick="createNewArray()"> <br>
 
-      // Display the new array values
-      document.getElementById('myDiv01').innerHTML = 'New Array: <br>';
-      for (let i = 0; i < newArray.length; i++) {
-        document.getElementById('myDiv01').innerHTML += 'newArray[' + i + '] = ' + newArray[i] + '<br>';
-      }
-    }
-
-    function reverseArray() {
-      document.getElementById('myDiv01').innerHTML = '';
-      myArray.reverse();
-      for (let myLoop = 0; myLoop < myArray.length; myLoop++) {
-        if (myArray[myLoop] !== undefined) {
-          document.getElementById('myDiv01').innerHTML += 'myArray[' + myLoop + '] = ' + myArray[myLoop] + '<br>';
-        }
-      }
-    }
-
-    function sortArray() {
-      document.getElementById('myDiv01').innerHTML = '';
-      myArray.sort();
-      for (let myLoop = 0; myLoop < myArray.length; myLoop++) {
-        if (myArray[myLoop] !== undefined) {
-          document.getElementById('myDiv01').innerHTML += 'myArray[' + myLoop + '] = ' + myArray[myLoop] + '<br>';
-        }
-      }
-    }
-
-    function findMaxValue() {
-      document.getElementById('myDiv01').innerHTML = '';
-      let maxValue = Math.max(...myArray.filter(item => !isNaN(item)));
-      document.getElementById('myDiv01').innerHTML = 'Max Value: ' + maxValue;
-    }
-
-    function findMinValue() {
-      document.getElementById('myDiv01').innerHTML = '';
-      let minValue = Math.min(...myArray.filter(item => !isNaN(item)));
-      document.getElementById('myDiv01').innerHTML = 'Min Value: ' + minValue;
-    }
-  </script>
-</body>
-</html>
-
+<div id="myDiv01">...</div>
