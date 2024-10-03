@@ -1,69 +1,30 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Game SPA</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin-top: 50px;
-            background-color: green;
-        }
-        #game {
-            display: none;
-        }
-        #score, #highScore {
-            font-size: 2em;
-            margin-top: 20px;
-        }
-    </style>
-</head>
-<body>
-    <div id="home">
-        <h1>Welcome to the Simple Game</h1>
-        <button onclick="startGame()">Start Game</button>
-    </div>
-    <div id="game">
-        <h1>Click the Button!</h1>
-        <button onclick="increaseScore()">Click me!</button>
-        <div id="score">Score: 0</div>
-        <div id="highScore">High Score: 0</div>
-        <button onclick="endGame()">End Game</button>
-    </div>
-    <script>
-        let score = 0;
-        let highScore = 0;
+<script>
+    let score = 0;
+    let highScore = 0;
 
-        function startGame() {
-            document.getElementById('home').style.display = 'none';
-            document.getElementById('game').style.display = 'block';
-        }
+    function startGame() {
+        document.getElementById('home').style.display = 'none';
+        document.getElementById('game').style.display = 'block';
+    }
 
-        function increaseScore() {
-            if (Math.random() < 0.2) {
-                score = 0;
-                alert('Oh no! Your score has been reset!');
-            } else {
-                score++;
-            }
-            document.getElementById('score').innerText = 'Score: ' + score;
-        }
-
-        function endGame() {
-            if (score > highScore) {
-                highScore = score;
-                document.getElementById('highScore').innerText = 'High Score: ' + highScore;
-            }
-            alert('Game Over! Your score is ' + score);
+    function increaseScore() {
+        if (Math.random() < 0.2) {
             score = 0;
-            document.getElementById('score').innerText = 'Score: ' + score;
-            document.getElementById('game').style.display = 'none';
-            document.getElementById('home').style.display = 'block';
+        } else {
+            score++;
         }
-    </script>
-</body>
-</html>
+        document.getElementById('score').innerText = 'Score: ' + score;
+    }
 
+    function endGame() {
+        if (score > highScore) {
+            highScore = score;
+            document.getElementById('highScore').innerText = 'High Score: ' + highScore;
+        }
+        score = 0;
+        document.getElementById('score').innerText = 'Score: ' + score;
+        document.getElementById('game').style.display = 'none';
+        document.getElementById('home').style.display = 'block';
+    }
+</script>
 
