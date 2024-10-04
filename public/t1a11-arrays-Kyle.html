@@ -75,16 +75,6 @@ Make new Array:<input type="text" id="myNewArray" value="Split things by ,'s">
   }
 }">
 
-<input type="button" value="Double Array Values" onclick="{
-  for (let i = 0; i < myArray.length; i++) {
-    if (!isNaN(myArray[i]) && myArray[i] !== undefined && myArray[i] !== null) {
-      myArray[i] = Number(myArray[i]) * 2;
-    }
-  }
-  document.getElementById('myDiv01').innerHTML = 'Array values have been doubled: <br>';
-  for (let i = 0; i < myArray.length; i++) {
-    document.getElementById('myDiv01').innerHTML += 'myArray[' + i + '] = ' + myArray[i] + '<br>';
-  }
-}">
+
 
 <div id="myDiv01">...</div>
