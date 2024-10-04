@@ -74,6 +74,21 @@ Make new Array:<input type="text" id="myNewArray" value="Split things by ,'s">
     document.getElementById('myDiv01').innerHTML += 'myArray[' + i + '] = ' + myArray[i] + '<br>';
   }
 }">
+<input type="button" value="Remove First Element" onclick="{
+  myArray.shift();
+  document.getElementById('myDiv01').innerHTML = 'First element removed: <br>';
+  for (let i = 0; i < myArray.length; i++) {
+    document.getElementById('myDiv01').innerHTML += 'myArray[' + i + '] = ' + myArray[i] + '<br>';
+  }
+}">
+
+<input type="button" value="Reset Array" onclick="{
+  myArray = new Array(myMax);
+  document.getElementById('myDiv01').innerHTML = 'Array has been reset: <br>';
+  for (let i = 0; i < myArray.length; i++) {
+    document.getElementById('myDiv01').innerHTML += 'myArray[' + i + '] = ' + myArray[i] + '<br>';
+  }
+}">
 
 
 
