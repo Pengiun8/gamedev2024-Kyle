@@ -48,4 +48,43 @@ Make new Array:<input type="text" id="myNewArray" value="Split things by ,'s">
 
 <input type="button" value="New Array" onclick="createNewArray()"> <br>
 
+<input type="button" value="Reverse Array" onclick="{
+  myArray.reverse();
+  document.getElementById('myDiv01').innerHTML = 'Array has been reversed: <br>';
+  for (let i = 0; i < myArray.length; i++) {
+    document.getElementById('myDiv01').innerHTML += 'myArray[' + i + '] = ' + myArray[i] + '<br>';
+  }
+}">
+
+<input type="button" value="Sort Array" onclick="{
+  myArray.sort();
+  document.getElementById('myDiv01').innerHTML = 'Array has been sorted: <br>';
+  for (let i = 0; i < myArray.length; i++) {
+    document.getElementById('myDiv01').innerHTML += 'myArray[' + i + '] = ' + myArray[i] + '<br>';
+  }
+}">
+
+<input type="button" value="Shuffle Array" onclick="{
+  for (let i = myArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [myArray[i], myArray[j]] = [myArray[j], myArray[i]];
+  }
+  document.getElementById('myDiv01').innerHTML = 'Array has been shuffled: <br>';
+  for (let i = 0; i < myArray.length; i++) {
+    document.getElementById('myDiv01').innerHTML += 'myArray[' + i + '] = ' + myArray[i] + '<br>';
+  }
+}">
+
+<input type="button" value="Double Array Values" onclick="{
+  for (let i = 0; i < myArray.length; i++) {
+    if (!isNaN(myArray[i])) {
+      myArray[i] = myArray[i] * 2;
+    }
+  }
+  document.getElementById('myDiv01').innerHTML = 'Array values have been doubled: <br>';
+  for (let i = 0; i < myArray.length; i++) {
+    document.getElementById('myDiv01').innerHTML += 'myArray[' + i + '] = ' + myArray[i] + '<br>';
+  }
+}">
+
 <div id="myDiv01">...</div>
