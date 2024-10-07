@@ -1,48 +1,27 @@
-<pre>
-  let myPerson = {
-  "firstName": "Kyle",
-  "lastName": "Wiersma",
-  "age": "16",
-  "eyeColor": "green"
-  }
-</pre>
+<h1 align=center>t1a14-objects-and-arrays-Kyle.html</h1>
 
-Change first name: <input type=text id="myText01" value="first name"><br>
-Change last name: <input type=text id="myText02" value="last name"><br>
-Change age: <input type=text id="myText03" value="age"><br>
-Change eye color: <input type=text id="myText04" value="eye color"><br>
+Show your research about objects and arrays in the text area: <br>
+<textarea rows=4 cols= 70>
+  let myArray = [5, 2, 8, 2, 1,];
+  let myObject = {name: 'John', age: 30, profession: 'Developer'};
 
-<input type=button value="Example Object Set and Show" onClick="{
+  let myObject = {
+  name: 'Alice'
+  hobbies: ['reading', 'coding', 'hiking'],
+  age: 25
+  };
+
+  let myArray = [
+  {name: 'Bob', age: 28},
+  {name: 'Charlie', age: 32}
+  ];
+  
+</textarea><br><br>
+
+<input type=button value="Object with array inside" onClick"{
 let myPerson = {
-'firstName' : document.getElementById('myText01').value || 'Kyle',
-'lastName'  : document.getElementById('myText02').value || 'Wiersma',
-'age'       : document.getElementById('myText03').value || 16,
-'eyeColor'  : document.getElementById('myText04').value || 'Green'
+'firstName' : 'Kyle',
+'lastName'  : 'Wiersma',
+'age'       : 16,
+'hobbies'  : ['video games', 'gym', 'snowboarding']
 }
-
-document.getElementById('myDiv01').innerHTML = '<br>myPerson Object has Properties: <br>'
-document.getElementById('myDiv01').innerHTML += 'First Name: ' + myPerson.firstName + '<br>'
-document.getElementById('myDiv01').innerHTML += 'Last Name: ' + myPerson.lastName +  '<br>'
-document.getElementById('myDiv01').innerHTML += 'Age: ' + myPerson.age +  '<br>'
-document.getElementById('myDiv01').innerHTML += 'Eye color: ' + myPerson.eyeColor +  '<br>'
-}">
-<div id="myDiv01">...</div>
-
-
-<input type="button" value="Set Array" onclick="{
-  myArray[0] = 'Kyle';
-  myArray[1] = 'Brandon';
-  myArray[2] = 'Andy';
- 
-
-  document.getElementById('myDiv02').innerHTML = 'You set Array';
-}">
-
-<input type="button" value="Show Array" onclick="{
-  document.getElementById('myDiv01').innerHTML = ''; // Clear previous content
-  for (let myLoop = 0; myLoop < myArray.length; myLoop++) {
-    if (myArray[myLoop] !== undefined) {
-      document.getElementById('myDiv01').innerHTML += 'myArray[' + myLoop + '] = ' + myArray[myLoop] + '<br>';
-    }
-  }
-}"> 
