@@ -37,3 +37,12 @@ document.getElementById('myDiv01').innerHTML += 'Eye color: ' + myPerson.eyeColo
 
   document.getElementById('myDiv02').innerHTML = 'You set Array';
 }">
+
+<input type="button" value="Show Array" onclick="{
+  document.getElementById('myDiv01').innerHTML = ''; // Clear previous content
+  for (let myLoop = 0; myLoop < myArray.length; myLoop++) {
+    if (myArray[myLoop] !== undefined) {
+      document.getElementById('myDiv01').innerHTML += 'myArray[' + myLoop + '] = ' + myArray[myLoop] + '<br>';
+    }
+  }
+}"> 
