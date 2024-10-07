@@ -27,3 +27,13 @@ document.getElementById('myDiv01').innerHTML += 'Age: ' + myPerson.age +  '<br>'
 document.getElementById('myDiv01').innerHTML += 'Eye color: ' + myPerson.eyeColor +  '<br>'
 }">
 <div id="myDiv01">...</div>
+
+
+<input type="button" value="Set Array" onclick="{
+  myArray[0] = 'Kyle';
+  myArray[1] = 'Brandon';
+  myArray[2] = 'Andy';
+ 
+
+  document.getElementById('myDiv02').innerHTML = 'You set Array';
+}">
