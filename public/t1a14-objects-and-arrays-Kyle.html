@@ -22,6 +22,10 @@ document.getElementById('myDiv01').innerHTML += 'hobbies: ' + myObjectArray.hobb
 document.getElementById('myDiv01').innerHTML += 'age: ' + myObjectArray.age +  '<br>';
 
     }
+    function displayArrayWithObject() {
+      document.getElementById('myDiv01').innerHTML = '';
+      
+    }
   </script>
 </head>
 <body>
@@ -44,6 +48,6 @@ document.getElementById('myDiv01').innerHTML += 'age: ' + myObjectArray.age +  '
     ];
   </textarea><br><br>
 
-  <input type="button" value="Object" onclick="displayObjectWithArray()">
-
+  <input type="button" value="Object With Array" onclick="displayObjectWithArray()">
+  <input type="button" value="Array With Object" onclick="displayArrayWithObject()">
   <div id="myDiv01">...</div>
