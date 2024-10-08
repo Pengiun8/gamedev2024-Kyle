@@ -22,14 +22,15 @@ document.getElementById('myDiv01').innerHTML += 'hobbies: ' + myObjectArray.hobb
 document.getElementById('myDiv01').innerHTML += 'age: ' + myObjectArray.age +  '<br>';
 
     }
-    function displayArrayWithObject() {
-      document.getElementById('myDiv01').innerHTML = '';
-      for (let myLoop = 0; myLoop < myArrayObject.length; myLoop++) {
-    if (myArrayObject[myLoop] !== undefined) {
-      document.getElementById('myDiv01').innerHTML += myArrayObject[' + myLoop + '] = ' + myArrayObject[myLoop] + '<br>';
-      
-      
+   function displayArrayWithObject() {
+    document.getElementById('myDiv01').innerHTML = '';
+    for (let myLoop = 0; myLoop < myArrayObject.length; myLoop++) {
+        if (myArrayObject[myLoop] !== undefined) {
+            document.getElementById('myDiv01').innerHTML += 'name: ' + myArrayObject[myLoop].name + '<br>';
+            document.getElementById('myDiv01').innerHTML += 'age: ' + myArrayObject[myLoop].age + '<br><br>';
+        }
     }
+}
   </script>
 </head>
 <body>
