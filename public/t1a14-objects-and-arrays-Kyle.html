@@ -24,7 +24,9 @@ document.getElementById('myDiv01').innerHTML += 'age: ' + myObjectArray.age +  '
     }
     function displayArrayWithObject() {
       document.getElementById('myDiv01').innerHTML = '';
-      
+      for (let myLoop = 0; myLoop < myArrayObject.length; myLoop++) {
+    if (myArrayObject[myLoop] !== undefined) {
+      document.getElementById('myDiv01').innerHTML += myArrayObject[' + myLoop + '] = ' + myArrayObject[myLoop] + '<br>';
       
       
     }
