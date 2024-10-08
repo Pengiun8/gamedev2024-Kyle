@@ -9,7 +9,6 @@
 
   <script>
     async function fetchData(url){
-      const url = document.getElementById('myText1')
       const response = await fetch(url);
       const data = await response.json();
       console.log(data);
@@ -30,8 +29,9 @@
       }
     }
 
-    function myShowJSON(value){
-      fetchData(value);
+    function myShowJSON() {
+      const url = document.getElementById('mySelect').value;
+      fetchData(url);
     }
   </script>
 
@@ -43,14 +43,7 @@
   Enter a JSON returning URL: <input type="text" id="myText1" value="https://randomfox.ca/floof/">
   <input type="button" value="Show JSON" onclick="fetchData(document.getElementById('myText1').value)"><br><br>
 
-  <select size="1" onchange="myShowJSON(this.value)">
-    <option value="https://randomfox.ca/floof/">randomfox</option>
-    <option value="https://dog.ceo/api/breeds/image/random">dog.ceo</option>
-  </select><br><br>
-
-  You make the JSON show up on the DIV<br><br>
-
-  <div id="myDiv1">...</div>
+  <select id="mySelect" size="1" onchange="myShowJSON()">
 
 </body>
 </html>
