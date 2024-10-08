@@ -1,85 +1,52 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>t1a14-objects-and-arrays-Kyle.html</title>
+  <title>t1a13-json-Kyle.html</title>
 </head>
 <body>
 
-  <h1 align="center">t1a14-objects-and-arrays-Kyle.html</h1>
+  <h1 align="center">t1a13-json-Kyle.html</h1>
 
   <script>
-    let myArraySimple = [5, 2, 8, 2, 1];
-    let myObjectSimple = {name: 'John', age: 30, profession: 'Developer'};
+    async function fetchData(url){
+      const response = await fetch(url);
+      const data = await response.json();
+      console.log(data);
+      console.log(`data.status: ${data.status}`);
+      const myJson = JSON.stringify(data, null, 2);
+      document.getElementById('myDiv1').innerHTML = `<pre>${myJson}</pre>`;
 
-    let myObjectArray = {
-      name: 'Alice',
-      hobbies: [' reading', ' coding', ' hiking'],
-      age: 25
-    };
+      // Display the image if the URL is present in the JSON data
+      let imageUrl = '';
+      if (data.image) {
+        imageUrl = data.image; // For randomfox API
+      } else if (data.message) {
+        imageUrl = data.message; // For dog.ceo API
+      }
 
-    let myArrayObject = [
-      {name: 'Bob', age: 28},
-      {name: 'Charlie', age: 32},
-      {name: 'Chief Sosa', age: 500}
-    ];
-
-    function displayObjectWithArray() {
-       document.getElementById('myDiv01').innerHTML = '';
-       document.getElementById('myDiv01').innerHTML += 'name: ' + myObjectArray.name + '<br>';
-       document.getElementById('myDiv01').innerHTML += 'hobbies: ' + myObjectArray.hobbies +  '<br>';
-       document.getElementById('myDiv01').innerHTML += 'age: ' + myObjectArray.age +  '<br>';
-    }
-
-    function displayArrayWithObject() {
-      document.getElementById('myDiv01').innerHTML = '';
-      for (let myLoop = 0; myLoop < myArrayObject.length; myLoop++) {
-        if (myArrayObject[myLoop] !== undefined) {
-          document.getElementById('myDiv01').innerHTML += 'name: ' + myArrayObject[myLoop].name + '<br>';
-          document.getElementById('myDiv01').innerHTML += 'age: ' + myArrayObject[myLoop].age + '<br><br>';
-        }
+      if (imageUrl) {
+        document.getElementById('myDiv1').innerHTML += `<img src="${imageUrl}" alt="Random Image" style="max-width: 100%; height: auto;">`;
       }
     }
 
-    function displayObjectSimple() {
-      document.getElementById('myDiv01').innerHTML = '';
-      document.getElementById('myDiv01').innerHTML += 'name: ' + myObjectSimple.name + '<br>';
-      document.getElementById('myDiv01').innerHTML += 'job: ' + myObjectSimple.profession +  '<br>';
-      document.getElementById('myDiv01').innerHTML += 'age: ' + myObjectSimple.age +  '<br>';
-    }
-
-    function displayArraySimple() {
-      document.getElementById('myDiv01').innerHTML = '';
-      for (let myLoop = 0; myLoop < myArraySimple.length; myLoop++) {
-        if (myArraySimple[myLoop] !== undefined) {
-          document.getElementById('myDiv01').innerHTML += 'value: ' + myArraySimple[myLoop] + '<br>';
-        }
-      }
+    function myShowJSON(value){
+      fetchData(value);
     }
   </script>
 
-  Show your research about objects and arrays in the text area: <br>
-  <textarea rows="4" cols="70">
-    let myArray = [5, 2, 8, 2, 1];
-    let myObject = {name: 'John', age: 30, profession: 'Developer'};
+  Explanation of JSON compared to Javascript objects formatted for text area<br>
 
-    let myObject = {
-      name: 'Alice',
-      hobbies: ['reading', 'coding', 'hiking'],
-      age: 25
-    };
+  <textarea cols="70" rows="5"></textarea>
+  <br>
 
-    let myArray = [
-      {name: 'Bob', age: 28},
-      {name: 'Charlie', age: 32}
-    ];
-  </textarea><br><br>
+  Enter a JSON returning URL: <input type="text" id="myText1" value="https://randomfox.ca/floof/">
+  <input type="button" value="Show JSON" onclick="fetchData(document.getElementById('myText1').value)"><br><br>
 
-  <input type="button" value="Object With Array" onclick="displayObjectWithArray()">
-  <input type="button" value="Array With Object" onclick="displayArrayWithObject()">
-  <input type="button" value="Object Simple" onclick="displayObjectSimple()">
-  <input type="button" value="Array Simple" onclick="displayArraySimple()">
-  <div id="myDiv01">...</div>
+  <select size="1" onchange="myShowJSON(this.value)">
+    <option value="https://randomfox.ca/floof/">randomfox</option>
+    <option value="https://dog.ceo/api/breeds/image/random">dog.ceo</option>
+  </select><br><br>
 
-</body>
-</html>
+  You make the JSON show up on the DIV<br><br>
 
+  <div id="myDiv1">...</div>
