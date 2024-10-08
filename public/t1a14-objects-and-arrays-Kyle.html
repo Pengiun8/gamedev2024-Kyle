@@ -32,6 +32,21 @@ document.getElementById('myDiv01').innerHTML += 'age: ' + myObjectArray.age +  '
         }
     }
 }
+    function displayObjectSimple() {
+      document.getElementById('myDiv01').innerHTML = '';
+document.getElementById('myDiv01').innerHTML += 'name: ' + myObjectSimple.name + '<br>'
+document.getElementById('myDiv01').innerHTML += 'job: ' + myObjectSimple.profession +  '<br>'
+document.getElementById('myDiv01').innerHTML += 'age: ' + myObjectSimple.age +  '<br>';
+    }
+    function displayArraySimple() {
+      document.getElementById('myDiv01').innerHTML = '';
+       for (let myLoop = 0; myLoop < myArraySimple.length; myLoop++) {
+        if (myArraySimple[myLoop] !== undefined) {
+            document.getElementById('myDiv01').innerHTML += 'name: ' + myArraySimple[myLoop].name + '<br>';
+            document.getElementById('myDiv01').innerHTML += 'age: ' + myArraySimple[myLoop].age + '<br><br>';
+        }
+       }
+    }
   </script>
 </head>
 <body>
@@ -56,4 +71,6 @@ document.getElementById('myDiv01').innerHTML += 'age: ' + myObjectArray.age +  '
 
   <input type="button" value="Object With Array" onclick="displayObjectWithArray()">
   <input type="button" value="Array With Object" onclick="displayArrayWithObject()">
+  <input type="button" value="Array With Object" onclick="displayObjectSimple()">
+  <input type="button" value="Array With Object" onclick="displayArraySimple()">
   <div id="myDiv01">...</div>
