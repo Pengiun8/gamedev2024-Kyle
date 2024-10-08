@@ -29,9 +29,8 @@
       }
     }
 
-    function myShowJSON() {
-      const url = document.getElementById('mySelect').value;
-      fetchData(url);
+    function myShowJSON(value){
+      fetchData(value);
     }
   </script>
 
@@ -43,8 +42,11 @@
   Enter a JSON returning URL: <input type="text" id="myText1" value="https://randomfox.ca/floof/">
   <input type="button" value="Show JSON" onclick="fetchData(document.getElementById('myText1').value)"><br><br>
 
-  <select id="mySelect" size="1" onchange="myShowJSON()">
+  <select size="1" onchange="myShowJSON(this.value)">
+    <option value="https://randomfox.ca/floof/">randomfox</option>
+    <option value="https://dog.ceo/api/breeds/image/random">dog.ceo</option>
+  </select><br><br>
 
-</body>
-</html>
+  You make the JSON show up on the DIV<br><br>
 
+  <div id="myDiv1">...</div>
