@@ -27,6 +27,13 @@
       if (imageUrl) {
         document.getElementById('myDiv1').innerHTML += `<img src="${imageUrl}" alt="Random Image" style="max-width: 100%; height: auto;">`;
       }
+
+      // Format and display the joke if present in the JSON data
+      if (data.joke) {
+        document.getElementById('myDiv1').innerHTML = `<p><strong>Joke:</strong> ${data.joke}</p>`;
+      } else if (data.setup && data.delivery) {
+        document.getElementById('myDiv1').innerHTML = `<p><strong>Setup:</strong> ${data.setup}</p><p><strong>Delivery:</strong> ${data.delivery}</p>`;
+      }
     }
 
     function myShowJSON(value){
