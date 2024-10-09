@@ -32,6 +32,13 @@
     function myShowJSON(value){
       fetchData(value);
     }
+
+    // Function to set the input field value to the selected option value
+    function updateInput() {
+      const selectBox = document.getElementById('mySelect');
+      const inputField = document.getElementById('myText1');
+      inputField.value = selectBox.value;
+    }
   </script>
 
   Explanation of JSON compared to Javascript objects formatted for text area<br>
@@ -42,7 +49,7 @@
   Enter a JSON returning URL: <input type="text" id="myText1" value="https://randomfox.ca/floof/">
   <input type="button" value="Show JSON" onclick="fetchData(document.getElementById('myText1').value)"><br><br>
 
-  <select size="1" onchange="myShowJSON(this.value)">
+  <select id="mySelect" size="1" onchange="updateInput()">
     <option value="https://randomfox.ca/floof/">randomfox</option>
     <option value="https://dog.ceo/api/breeds/image/random">dog.ceo</option>
   </select><br><br>
@@ -50,3 +57,6 @@
   You make the JSON show up on the DIV<br><br>
 
   <div id="myDiv1">...</div>
+
+</body>
+</html>
