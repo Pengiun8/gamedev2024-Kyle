@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-
+    <title>t1a15-events-Kyle</title>
     <style>
         .event-message {
             color: blue;
@@ -20,7 +20,7 @@
 
 <b onTouchEvent="showMessage('onTouchEvent')">Input:</b>
 
-<input type="text" id="myFirstName" value="Kyle" onBlur="showMessage('onBlur')"><br><br>
+<input type="text" id="myFirstName" value="Kyle" onBlur="showMessage('onBlur')" onFocus="showMessage('onFocus')" onChange="showMessage('onChange')" onSelect="showMessage('onSelect')"><br><br>
 
 <input type="button" value="Show on page" onclick="document.getElementById('myDiv01').innerHTML = 'Hey'"><br><br>
 
