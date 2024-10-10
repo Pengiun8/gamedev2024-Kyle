@@ -37,8 +37,9 @@
 <div id="myDiv08" onKeyPress="showMessage('onKeyPress')">Press a key here</div><br><br>
 
 <div id="myDiv09" onMouseMove="{
-    document.getElementById('myDiv09').innerHTML = 'x:${event.clientX}, y:${event.clinetY}'
-    }>Move Mouse</div>
+    document.getElementById('myDiv09').innerHTML = 'x:' + event.clientX + ', y:' + event.clientY
+}">Move Mouse</div>
+
 
 <div id="eventMessage" class="event-message"></div>
 
