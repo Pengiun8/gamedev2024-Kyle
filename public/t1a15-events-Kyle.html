@@ -20,7 +20,8 @@
 <body onMouseMove="document.getElementById('mouseCoordinates').innerHTML = 'x:' + event.clientX + ', y:' + event.clientY">
 <b onTouchEvent="showMessage('onTouchEvent')">Input:</b>
 
-<input type="text" id="myFirstName" value="Kyle" onBlur="showMessage('onBlur')" onFocus="showMessage('onFocus')" onSelect="showMessage('onSelect')"><br><br>
+<input type="text" id="myFirstName" value="Kyle" onBlur="showMessage('onBlur')" onFocus="showMessage('onFocus')" onSelect="showMessage('onSelect')"
+    onKeyPress="document.getElementById('eventMessage').innerText = 'onKeyPress';"><br><br>
 
 <div id="myDiv02" onClick="showMessage('onClick')">Click me</div><br><br>
 
@@ -30,7 +31,7 @@
 
 <div id="myDiv07" onMouseOut="showMessage('onMouseOut')">Mouse out here</div><br><br>
 
-<input type="text" id="myInput" onKeyPress="document.getElementById('eventMessage').innerText = 'onKeyPress';" placeholder="Press a key here"><br><br>
+
 
 <div id="mouseCoordinates">Move your mouse around the page to see the coordinates.</div>
 
