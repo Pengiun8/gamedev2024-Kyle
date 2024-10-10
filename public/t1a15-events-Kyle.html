@@ -30,15 +30,14 @@
 
 <div id="myDiv03" onDblClick="showMessage('onDblClick')">Double-click me</div><br><br>
 
-<div id="myDiv04" onMouseDown="showMessage('onMouseDown')">Mouse down here</div><br><br>
-
-<div id="myDiv05" onMouseUp="showMessage('onMouseUp')">Mouse up here</div><br><br>
-
 <div id="myDiv06" onMouseMove="showMessage('onMouseMove')">Move mouse here</div><br><br>
 
 <div id="myDiv07" onMouseOut="showMessage('onMouseOut')">Mouse out here</div><br><br>
 
 <div id="myDiv08" onKeyPress="showMessage('onKeyPress')">Press a key here</div><br><br>
+
+<div id="myDiv09" onMouseMove="{
+    document.getElementById('myDiv09').innerHTML = 'x:${event.clientX}, y:${event.clinetY}'
 
 <div id="eventMessage" class="event-message"></div>
 
