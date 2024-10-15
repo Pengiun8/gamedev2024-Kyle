@@ -1,34 +1,73 @@
-<h1 align=center>t1a12-objects-structs-Kyle.html</h1>
-<a href= " ">Good reference for Javascript Objects</a><br>
-Objects are stored name variables
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>t1a12-objects-structs-Kyle.html</title>
+    <style>
+        h1 {
+            text-align: center;
+        }
 
-<h4>example objects code</h4>
-<pre>
-  let myPerson = {
-  "firstName": "Kyle",
-  "lastName": "Wiersma",
-  "age": "16",
-  "eyeColor": "green"
-  }
-</pre>
+        p {
+            text-align: center;
+        }
 
-Change first name: <input type=text id="myText01" value="first name"><br>
-Change last name: <input type=text id="myText02" value="last name"><br>
-Change age: <input type=text id="myText03" value="age"><br>
-Change eye color: <input type=text id="myText04" value="eye color"><br>
+        .center {
+            text-align: center;
+        }
 
-<input type=button value="Example Object Set and Show" onClick="{
-let myPerson = {
-'firstName' : document.getElementById('myText01').value || 'Kyle',
-'lastName'  : document.getElementById('myText02').value || 'Wiersma',
-'age'       : document.getElementById('myText03').value || 16,
-'eyeColor'  : document.getElementById('myText04').value || 'Green'
-}
-
-document.getElementById('myDiv01').innerHTML = '<br>myPerson Object has Properties: <br>'
-document.getElementById('myDiv01').innerHTML += 'First Name: ' + myPerson.firstName + '<br>'
-document.getElementById('myDiv01').innerHTML += 'Last Name: ' + myPerson.lastName +  '<br>'
-document.getElementById('myDiv01').innerHTML += 'Age: ' + myPerson.age +  '<br>'
-document.getElementById('myDiv01').innerHTML += 'Eye color: ' + myPerson.eyeColor +  '<br>'
-}">
-<div id="myDiv01">...</div>
+        .result {
+            text-align: center;
+            padding: 10px;
+            border: 2px solid black;
+            border-radius: 10px;
+            background-color: #f0f0f0;
+            margin-top: 10px;
+            transition: all 0.3s ease-in-out;
+        }
+    </style>
+    <script>
+        function setObjectProperties() {
+            let myPerson = {
+                firstName: document.getElementById('myText01').value || 'Kyle',
+                lastName: document.getElementById('myText02').value || 'Wiersma',
+                age: document.getElementById('myText03').value || 16,
+                eyeColor: document.getElementById('myText04').value || 'green'
+            };
+            
+            let output = `<br>myPerson Object has Properties: <br>
+                          First Name: ${myPerson.firstName}<br>
+                          Last Name: ${myPerson.lastName}<br>
+                          Age: ${myPerson.age}<br>
+                          Eye Color: ${myPerson.eyeColor}<br>`;
+            
+            document.getElementById('myDiv01').innerHTML = output;
+        }
+    </script>
+</head>
+<body>
+    <h1 align="center">t1a12-objects-structs-Kyle.html</h1>
+    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Working_with_Objects" target="_blank">Good reference for JavaScript Objects</a>
+    <p>Objects are stored name variables</p>
+    <h4>example objects code</h4>
+    <pre>
+        let myPerson = {
+            "firstName": "Kyle",
+            "lastName": "Wiersma",
+            "age": "16",
+            "eyeColor": "green"
+        }
+    </pre>
+    <p>
+        Change first name: <input type="text" id="myText01" value="first name"><br>
+        Change last name: <input type="text" id="myText02" value="last name"><br>
+        Change age: <input type="text" id="myText03" value="age"><br>
+        Change eye color: <input type="text" id="myText04" value="eye color"><br>
+    </p>
+    <div class="center">
+        <input type="button" value="Example Object Set and Show" onclick="setObjectProperties()">
+    </div>
+    <div id="myDiv01" class="result">...</div>
+</body>
+</html>
