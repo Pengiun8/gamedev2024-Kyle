@@ -1,50 +1,59 @@
-<h1 align="center">t1a09-decisions-kyle</h1>
-<style>
-  p {
-    text-align: center;
-  }
-  .center {
-    text-align: center;
-  }
-</style>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>t1a09-decisions-kyle</title>
+    <style>
+        p {
+            text-align: center;
+        }
+        .center {
+            text-align: center;
+        }
+    </style>
+    <script>
+        function checkNameAndNumber(expectedName, expectedAge) {
+            let myIn1 = document.getElementById('myText1').value;
+            let myNum1 = document.getElementById('myNum1').value;
+            document.getElementById('myDiv01').innerHTML = '<br>';
 
-<p>
-  <input type="text" id="myText1" value="Kyle">
-  <input type="number" id="myNum1" value="16">
-</p>
-
-<div class="center">
-  <div id="myDiv01">...</div>
-  <input type="button" value="Check Kyle" onclick="checkNameAndNumber('Kyle', 16)">
-  <input type="button" value="Check Brandon" onclick="checkNameAndNumber('Brandon', 20)">
-  <input type="button" value="Check Andy" onclick="checkNameAndNumber('Andy', 25)">
-  <input type="button" value="Check Connor" onclick="checkNameAndNumber('Connor', 30)">
-  <input type="button" value="Check Dave" onclick="checkNameAndNumber('Dave', 35)">
-  <input type="button" value="Check Josh" onclick="checkNameAndNumber('Josh', 40)">
-  <input type="button" value="Check Frank" onclick="checkNameAndNumber('Frank', 45)">
-  <input type="button" value="Check Deefer" onclick="checkNameAndNumber('Deefer', 50)"><br>
-</div>
-
-<script>
-function checkNameAndNumber(expectedName, expectedAge) {
-  let myIn1 = document.getElementById('myText1').value;
-  let myNum1 = document.getElementById('myNum1').value;
-  document.getElementById('myDiv01').innerHTML = '<br>';
-  
-  if (myIn1 == expectedName && myNum1 == expectedAge) {
-    document.getElementById('myDiv01').innerHTML = `Hi ${expectedName}, you are ${expectedAge}`;
-  } else if (myIn1 == expectedName && myNum1 > expectedAge) {
-    document.getElementById('myDiv01').innerHTML = `Hi ${expectedName}, you are over ${expectedAge}`;
-  } else if (myIn1 == expectedName && myNum1 < expectedAge) {
-    document.getElementById('myDiv01').innerHTML = `Hi ${expectedName}, you are under ${expectedAge}`;
-  } else if (myIn1 != expectedName && myNum1 == expectedAge) {
-    document.getElementById('myDiv01').innerHTML = `Not ${expectedName}, but you are ${expectedAge}`;
-  } else if (myIn1 != expectedName && myNum1 > expectedAge) {
-    document.getElementById('myDiv01').innerHTML = `Not ${expectedName}, and you are over ${expectedAge}`;
-  } else if (myIn1 != expectedName && myNum1 < expectedAge) {
-    document.getElementById('myDiv01').innerHTML = `Not ${expectedName}, and you are under ${expectedAge}`;
-  } else {
-    document.getElementById('myDiv01').innerHTML = `Not ${expectedName}, not ${expectedAge}`;
-  }
-}
-</script>
+            if (myIn1 == '' || myNum1 == '') {
+                document.getElementById('myDiv01').innerHTML = `Please fill out both fields.`;
+            } else if (myIn1 == expectedName && myNum1 == expectedAge) {
+                document.getElementById('myDiv01').innerHTML = `Hi ${expectedName}, you are ${expectedAge}`;
+            } else if (myIn1 == expectedName && myNum1 > expectedAge) {
+                document.getElementById('myDiv01').innerHTML = `Hi ${expectedName}, you are over ${expectedAge}`;
+            } else if (myIn1 == expectedName && myNum1 < expectedAge) {
+                document.getElementById('myDiv01').innerHTML = `Hi ${expectedName}, you are under ${expectedAge}`;
+            } else if (myIn1 != expectedName && myNum1 == expectedAge) {
+                document.getElementById('myDiv01').innerHTML = `Not ${expectedName}, but you are ${expectedAge}`;
+            } else if (myIn1 != expectedName && myNum1 > expectedAge) {
+                document.getElementById('myDiv01').innerHTML = `Not ${expectedName}, and you are over ${expectedAge}`;
+            } else if (myIn1 != expectedName && myNum1 < expectedAge) {
+                document.getElementById('myDiv01').innerHTML = `Not ${expectedName}, and you are under ${expectedAge}`;
+            } else {
+                document.getElementById('myDiv01').innerHTML = `Not ${expectedName}, not ${expectedAge}`;
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1 align="center">t1a09-decisions-kyle</h1>
+    <p>
+        <input type="text" id="myText1" value="Kyle">
+        <input type="number" id="myNum1" value="16">
+    </p>
+    <div class="center">
+        <div id="myDiv01">...</div>
+        <input type="button" value="Check Kyle" onclick="checkNameAndNumber('Kyle', 16)">
+        <input type="button" value="Check Brandon" onclick="checkNameAndNumber('Brandon', 20)">
+        <input type="button" value="Check Andy" onclick="checkNameAndNumber('Andy', 25)">
+        <input type="button" value="Check Connor" onclick="checkNameAndNumber('Connor', 30)">
+        <input type="button" value="Check Dave" onclick="checkNameAndNumber('Dave', 35)">
+        <input type="button" value="Check Josh" onclick="checkNameAndNumber('Josh', 40)">
+        <input type="button" value="Check Frank" onclick="checkNameAndNumber('Frank', 45)">
+        <input type="button" value="Check Deefer" onclick="checkNameAndNumber('Deefer', 50)"><br>
+    </div>
+</body>
+</html>
