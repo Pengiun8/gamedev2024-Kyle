@@ -9,8 +9,9 @@
             text-align: center;
         }
 
-        p {
+        a, p {
             text-align: center;
+            display: block;
         }
 
         .center {
@@ -27,29 +28,11 @@
             transition: all 0.3s ease-in-out;
         }
     </style>
-    <script>
-        function setObjectProperties() {
-            let myPerson = {
-                firstName: document.getElementById('myText01').value || 'Kyle',
-                lastName: document.getElementById('myText02').value || 'Wiersma',
-                age: document.getElementById('myText03').value || 16,
-                eyeColor: document.getElementById('myText04').value || 'green'
-            };
-            
-            let output = `<br>myPerson Object has Properties: <br>
-                          First Name: ${myPerson.firstName}<br>
-                          Last Name: ${myPerson.lastName}<br>
-                          Age: ${myPerson.age}<br>
-                          Eye Color: ${myPerson.eyeColor}<br>`;
-            
-            document.getElementById('myDiv01').innerHTML = output;
-        }
-    </script>
 </head>
 <body>
     <h1 align="center">t1a12-objects-structs-Kyle.html</h1>
-    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Working_with_Objects" target="_blank">Good reference for JavaScript Objects</a>
-    <p>Objects are stored name variables</p>
+    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Working_with_Objects" target="_blank">Good reference for JavaScript Objects</a><br>
+    Objects are stored name variables
     <h4>example objects code</h4>
     <pre>
         let myPerson = {
@@ -59,14 +42,31 @@
             "eyeColor": "green"
         }
     </pre>
-    <p>
-        Change first name: <input type="text" id="myText01" value="first name"><br>
-        Change last name: <input type="text" id="myText02" value="last name"><br>
-        Change age: <input type="text" id="myText03" value="age"><br>
-        Change eye color: <input type="text" id="myText04" value="eye color"><br>
-    </p>
+    Change first name: <input type="text" id="myText01" value="first name"><br>
+    Change last name: <input type="text" id="myText02" value="last name"><br>
+    Change age: <input type="text" id="myText03" value="age"><br>
+    Change eye color: <input type="text" id="myText04" value="eye color"><br>
     <div class="center">
-        <input type="button" value="Example Object Set and Show" onclick="setObjectProperties()">
+        <input type="button" value="Example Object Set and Show" onclick="{
+            let myPerson = {
+                'firstName': document.getElementById('myText01').value || 'Kyle',
+                'lastName': document.getElementById('myText02').value || 'Wiersma',
+                'age': document.getElementById('myText03').value || 16,
+                'eyeColor': document.getElementById('myText04').value || 'green'
+            };
+            document.getElementById('myDiv01').innerHTML = '<br>myPerson Object has Properties: <br>';
+            document.getElementById('myDiv01').innerHTML += 'First Name: ' + myPerson.firstName + '<br>';
+            document.getElementById('myDiv01').innerHTML += 'Last Name: ' + myPerson.lastName + '<br>';
+            document.getElementById('myDiv01').innerHTML += 'Age: ' + myPerson.age + '<br>';
+            document.getElementById('myDiv01').innerHTML += 'Eye color: ' + myPerson.eyeColor + '<br>';
+        }">
+        <input type="button" value="Clear Text and Div" onclick="{
+            document.getElementById('myText01').value = '';
+            document.getElementById('myText02').value = '';
+            document.getElementById('myText03').value = '';
+            document.getElementById('myText04').value = '';
+            document.getElementById('myDiv01').innerHTML = '...';
+        }">
     </div>
     <div id="myDiv01" class="result">...</div>
 </body>
