@@ -25,7 +25,6 @@
         function myVar(myIn) {
             return document.getElementById(myIn);
         }
-
         function showName(format) {
             const input = myVar('myFirstName').value.trim();
             if (input) {
@@ -40,29 +39,24 @@
                 alert('Please enter a name.');
             }
         }
-
         function showDate() {
             const currentDate = new Date().toLocaleDateString();
             myVar('myDiv02').innerHTML = 'Today\'s date is ' + currentDate;
         }
-
         function clearText() {
             myVar('myDiv01').innerHTML = '';
             myVar('myDiv02').innerHTML = '';
             myVar('myFirstName').value = '';
             updateCharCount();
         }
-
         function updateCharCount() {
             const charCount = myVar('myFirstName').value.length;
             myVar('charCount').innerText = 'Character Count: ' + charCount;
         }
-
         function changeTextColor() {
             const color = myVar('textColor').value;
             myVar('myDiv01').style.color = color;
         }
-
         function toggleVisibility() {
             const myDiv = myVar('myDiv01');
             if (myDiv.style.display === 'none') {
@@ -71,7 +65,6 @@
                 myDiv.style.display = 'none';
             }
         }
-
         function resetForm() {
             myVar('myFirstName').value = 'kyle';
             myVar('myDiv01').innerHTML = '';
@@ -79,6 +72,10 @@
             myVar('myDiv01').style.color = 'black';
             myVar('myDiv01').style.display = 'block';
             updateCharCount();
+        }
+        function changeBackgroundColor() {
+            const bgColor = myVar('bgColor').value;
+            myVar('myDiv01').style.backgroundColor = bgColor;
         }
     </script>
 </head>
@@ -98,6 +95,9 @@
     <div id="controls">
         <label for="textColor">Text Color:</label>
         <input type="color" id="textColor" onchange="changeTextColor()">
+        <br>
+        <label for="bgColor">Background Color:</label>
+        <input type="color" id="bgColor" onchange="changeBackgroundColor()">
     </div>
     <div id="myDiv01"></div>
     <div id="myDiv02"></div>
