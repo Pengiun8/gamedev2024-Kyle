@@ -15,22 +15,16 @@
     </script>
 </head>
 <body onMouseMove="document.getElementById('mouseCoordinates').innerText = 'x:' + event.clientX + ', y:' + event.clientY">
-
-<h1 align="center">t1a15-events-Kyle.html</h1>
-
-<b onTouchEvent="showMessage('onTouchEvent')">Input:</b>
-
-<input type="text" id="myFirstName" value="Kyle" onBlur="showMessage('onBlur')" onFocus="showMessage('onFocus')" onSelect="showMessage('onSelect')" onKeyPress="document.getElementById('eventMessage').innerText = 'onKeyPress';"><br><br>
-
-<div id="myDiv02" onClick="showMessage('onClick')">Click me</div><br><br>
-
-<div id="myDiv03" onDblClick="showMessage('onDblClick')">Double-click me</div><br><br>
-
-<div id="myDiv07" onMouseOut="showMessage('onMouseOut')">Mouse out here</div><br><br>
-
-<div id="mouseCoordinates" class="event-message">Move your mouse around the page to see the coordinates.</div><br><br>
-
-<div id="eventMessage" class="event-message"></div>
-
+    <h1 align="center">t1a15-events-Kyle.html</h1>
+    <b onmousedown="showMessage('onMouseDown')">Input:</b>
+    <input type="text" id="myFirstName" value="Kyle" onblur="showMessage('onBlur')" onfocus="showMessage('onFocus')" onselect="showMessage('onSelect')" onkeypress="document.getElementById('eventMessage').innerText = 'onKeyPress';"><br><br>
+    <div id="myDiv02" onclick="showMessage('onClick')">Click me</div><br><br>
+    <div id="myDiv03" ondblclick="showMessage('onDblClick')">Double-click me</div><br><br>
+    <div id="myDiv04" onmouseover="showMessage('onMouseOver')">Mouse over me</div><br><br>
+    <div id="myDiv05" onmouseup="showMessage('onMouseUp')">Mouse up here</div><br><br>
+    <div id="myDiv06" onkeydown="showMessage('onKeyDown')" tabindex="0">Key down here (focus and press any key)</div><br><br>
+    <div id="myDiv07" onmouseout="showMessage('onMouseOut')">Mouse out here</div><br><br>
+    <div id="mouseCoordinates" class="event-message">Move your mouse around the page to see the coordinates.</div><br><br>
+    <div id="eventMessage" class="event-message"></div>
 </body>
 </html>
