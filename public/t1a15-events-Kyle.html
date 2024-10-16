@@ -16,9 +16,11 @@
 </head>
 <body onMouseMove="document.getElementById('mouseCoordinates').innerText = 'x:' + event.clientX + ', y:' + event.clientY">
     <h1 align="center">t1a15-events-Kyle.html</h1>
+    theres 9 here<br>
     <b onmousedown="showMessage('onMouseDown')">Input:</b>
-    theres 9
+
     <input type="text" id="myFirstName" value="Kyle" onblur="showMessage('onBlur')" onfocus="showMessage('onFocus')" onselect="showMessage('onSelect')" onkeypress="document.getElementById('eventMessage').innerText = 'onKeyPress';"><br><br>
+   
     <div id="myDiv02" onclick="showMessage('onClick')">Click me</div><br><br>
     <div id="myDiv03" ondblclick="showMessage('onDblClick')">Double-click me</div><br><br>
     <div id="myDiv04" onmouseover="showMessage('onMouseOver')">Mouse over me</div><br><br>
