@@ -4,25 +4,54 @@
     <title>t1a17-move-Kyle</title>
     <script>
         let myClock02;
+
+        function moveImage(direction) {
+            let img = document.getElementById('myImage01');
+            let step = 10;
+            let left = parseInt(img.style.left, 10) || 0;
+            let top = parseInt(img.style.top, 10) || 0;
+
+            switch (direction) {
+                case 'right':
+                    img.style.left = (left + step) + 'px';
+                    break;
+                case 'left':
+                    img.style.left = (left - step) + 'px';
+                    break;
+                case 'up':
+                    img.style.top = (top - step) + 'px';
+                    break;
+                case 'down':
+                    img.style.top = (top + step) + 'px';
+                    break;
+            }
+        }
+
+        function autoMove(direction) {
+            clearInterval(myClock02);
+            myClock02 = setInterval(function() {
+                moveImage(direction);
+            }, 30);
+        }
+
+        function stopMove() {
+            clearInterval(myClock02);
+        }
     </script>
 </head>
 <body>
     <h1 align="center">t1a17-move-Kyle</h1>
-    <input type="button" id="myButton02" value="Image right" onclick="{
-        let img = document.getElementById('myImage01');
-        img.style.left = (parseInt(img.style.left, 10) + 10) + 'px';
-    }"><br><br>
-    
-    <input type="button" value="Auto Move Right" onclick="{
-        let img = document.getElementById('myImage01');
-        img.style.left = '0px';
-        clearInterval(myClock02);
-        myClock02 = setInterval(function() {
-            document.getElementById('myButton02').click();
-        }, 30);
-    }"><br><br>
-    
-   
+    <input type="button" value="Move Right" onclick="moveImage('right')">
+    <input type="button" value="Move Left" onclick="moveImage('left')">
+    <input type="button" value="Move Up" onclick="moveImage('up')">
+    <input type="button" value="Move Down" onclick="moveImage('down')">
+    <br><br>
+    <input type="button" value="Auto Move Right" onclick="autoMove('right')">
+    <input type="button" value="Auto Move Left" onclick="autoMove('left')">
+    <input type="button" value="Auto Move Up" onclick="autoMove('up')">
+    <input type="button" value="Auto Move Down" onclick="autoMove('down')">
+    <input type="button" value="Stop" onclick="stopMove()">
+    <br><br>
     <img id="myImage01" style="position: relative; width: 100px; height: 80px; top: 0px; left: 0px;" src="https://purepng.com/public/uploads/large/purepng.com-men-in-suitmanpeoplepersonsmalesuit-11215251213127n6q1.png">
 </body>
 </html>
