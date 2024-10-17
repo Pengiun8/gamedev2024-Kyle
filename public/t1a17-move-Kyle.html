@@ -12,6 +12,34 @@
         let img = document.getElementById('myImage01');
         img.style.left = (parseInt(img.style.left, 10) + 10) + 'px';
     }"><br><br>
+    
+    <input type="button" value="Auto Move Right" onclick="{
+        let img = document.getElementById('myImage01');
+        img.style.left = '0px';
+        clearInterval(myClock02);
+        myClock02 = setInterval(function() {
+            document.getElementById('myButton02').click();
+        }, 30);
+    }"><br><br>
+    
+    <input type="button" value="Auto Move left" onclick="{
+        let img = document.getElementById('myImage01');
+        img.style.right = '0px';
+        clearInterval(myClock02);
+        myClock02 = setInterval(function() {
+            document.getElementById('myButton02').click();
+        }, 30);
+    }"><br><br>
+    
+    <input type="button" value="Auto Move Right" onclick="{
+        let img = document.getElementById('myImage01');
+        img.style.left = '0px';
+        clearInterval(myClock02);
+        myClock02 = setInterval(function() {
+            document.getElementById('myButton02').click();
+        }, 30);
+    }"><br><br>
+    
     <input type="button" value="Auto Move Right" onclick="{
         let img = document.getElementById('myImage01');
         img.style.left = '0px';
