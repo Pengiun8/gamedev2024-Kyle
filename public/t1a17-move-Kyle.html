@@ -41,15 +41,27 @@
 </head>
 <body>
     <h1 align="center">t1a17-move-Kyle</h1>
-    <input type="button" value="Move Right" onclick="moveImage('right')">
-    <input type="button" value="Move Left" onclick="moveImage('left')">
-    <input type="button" value="Move Up" onclick="moveImage('up')">
-    <input type="button" value="Move Down" onclick="moveImage('down')">
+    <table align="center">
+        <tr>
+            <th>Manual Move</th>
+            <th>Auto Move</th>
+        </tr>
+        <tr>
+            <td>
+                <input type="button" value="Move Right" onclick="moveImage('right')">
+                <input type="button" value="Move Left" onclick="moveImage('left')">
+                <input type="button" value="Move Up" onclick="moveImage('up')">
+                <input type="button" value="Move Down" onclick="moveImage('down')">
+            </td>
+            <td>
+                <input type="button" value="Auto Move Right" onclick="autoMove('right')">
+                <input type="button" value="Auto Move Left" onclick="autoMove('left')">
+                <input type="button" value="Auto Move Up" onclick="autoMove('up')">
+                <input type="button" value="Auto Move Down" onclick="autoMove('down')">
+            </td>
+        </tr>
+    </table>
     <br><br>
-    <input type="button" value="Auto Move Right" onclick="autoMove('right')">
-    <input type="button" value="Auto Move Left" onclick="autoMove('left')">
-    <input type="button" value="Auto Move Up" onclick="autoMove('up')">
-    <input type="button" value="Auto Move Down" onclick="autoMove('down')">
     <input type="button" value="Stop" onclick="stopMove()">
     <br><br>
     <img id="myImage01" style="position: relative; width: 100px; height: 80px; top: 0px; left: 0px;" src="https://purepng.com/public/uploads/large/purepng.com-men-in-suitmanpeoplepersonsmalesuit-11215251213127n6q1.png">
