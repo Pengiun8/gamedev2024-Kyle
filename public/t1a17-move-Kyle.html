@@ -1,21 +1,25 @@
-<h1 align=center>t1a17-move-Kyle</h1>
-
-<script>
-
-  let myClock02
-</script>
-<input type=button id="myButton02" value="Image right" onclick="{
-  document.getElementById('myImage01').style.left = 
-  parseInt(document.getElementById('myImage01').style.left) + 10 + 'px'
-  }"><br><br>
-
-  <input type=button value="Auto Move Right" onclick="{
-     document.getElementById('myImage01').style.left = 0
-    clearInterval(myClock02)
-    myClock02 = setInterval(function(){
-     document.getElementById('myButton02').click()
-    }, 30)
-
+<!DOCTYPE html>
+<html>
+<head>
+    <title>t1a17-move-Kyle</title>
+    <script>
+        let myClock02;
+    </script>
+</head>
+<body>
+    <h1 align="center">t1a17-move-Kyle</h1>
+    <input type="button" id="myButton02" value="Image right" onclick="{
+        let img = document.getElementById('myImage01');
+        img.style.left = (parseInt(img.style.left, 10) + 10) + 'px';
     }"><br><br>
-
-    <img id="myImage01" style="position:relavtive; width:100px; height:80px; top:0px; left:0px;" src="https://purepng.com/public/uploads/large/purepng.com-men-in-suitmanpeoplepersonsmalesuit-11215251213127n6q1.png">
+    <input type="button" value="Auto Move Right" onclick="{
+        let img = document.getElementById('myImage01');
+        img.style.left = '0px';
+        clearInterval(myClock02);
+        myClock02 = setInterval(function() {
+            document.getElementById('myButton02').click();
+        }, 30);
+    }"><br><br>
+    <img id="myImage01" style="position: relative; width: 100px; height: 80px; top: 0px; left: 0px;" src="https://purepng.com/public/uploads/large/purepng.com-men-in-suitmanpeoplepersonsmalesuit-11215251213127n6q1.png">
+</body>
+</html>
