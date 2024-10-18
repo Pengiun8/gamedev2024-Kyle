@@ -64,7 +64,7 @@
     <br><br>
     <input type="button" value="Stop" onclick="stopMove()">
     <br>
-    <h1>3x3 Table</h1>
+    <h1>Manual</h1>
     <table border="1">
         <tr>
             <td>Cell 1</td>
@@ -79,6 +79,26 @@
         <tr>
             <td>Cell 7</td>
             <td><input type="button" value="Move Down" onclick="moveImage('down')"></td>
+            <td>Cell 9</td>
+        </tr>
+    
+    <br><br>
+
+        <h1>Auto</h1>
+    <table border="1">
+        <tr>
+            <td>Cell 1</td>
+            <td><input type="button" value="Auto Move Up" onclick="autoMove('up')"></td>
+            <td>Cell 3</td>
+        </tr>
+        <tr>
+            <td><input type="button" value="Auto Move Left" onclick="autoMove('left')"></td>
+            <td<input type="button" value="Stop" onclick="stopMove()"></td>
+            <td><input type="button" value="Auto Move Right" onclick="autoMove('right')"></td>
+        </tr>
+        <tr>
+            <td>Cell 7</td>
+            <td><input type="button" value="Auto Move Down" onclick="autoMove('down')"></td>
             <td>Cell 9</td>
         </tr>
     
