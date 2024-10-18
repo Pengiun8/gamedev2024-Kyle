@@ -1,38 +1,43 @@
-<h1 align=center>t1a16-multi-d-array-Kyle.html</h1>
+<h1 align="center">t1a16-multi-d-array-Kyle.html</h1>
 
 <script>
-let myMax = 3
-  let myArrayManual = new Array(myMax)
-  let myArrayAuto = new Array(myMax)
+let myMax = 3;
+let myArrayManual = new Array(myMax);
+let myArrayAuto = new Array(myMax).fill().map(() => new Array(myMax));
 </script>
 
-Input:<input type=text id="myFirstName" value="Kyle"><br>
-<input type=button value="Set Manual Array" onclick="{
-  myArrayManual = [ [3,4,2], [1,2,3], [5,6,7] ]
-  document.getElementById('myDiv01').innerHTML = 'You set the array'
+Input: <input type="text" id="myFirstName" value="Kyle"><br>
+
+<input type="button" value="Set Manual Array" onclick="{
+  myArrayManual = [[3, 4, 2], [1, 2, 3], [5, 6, 7]];
+  document.getElementById('myDiv01').innerHTML = 'You set the array';
 }">
 
-<input type=button value="Show Manual Array" onclick="{
-   document.getElementById('myDiv01').innerHTML = ''
-  console.log(myArrayManual)
+<input type="button" value="Show Manual Array" onclick="{
+   document.getElementById('myDiv01').innerHTML = '';
+   console.log(myArrayManual);
 
-  for(myLoop0=0; myLoop0 < myMax; myLoop++){
+   for(let myLoop0 = 0; myLoop0 < myMax; myLoop0++){
+     for(let myLoop1 = 0; myLoop1 < myMax; myLoop1++){
+       document.getElementById('myDiv01').innerHTML += 
+         `myArrayManual[${myLoop0}, ${myLoop1}] = ${myArrayManual[myLoop0][myLoop1]}<br>`;
+     }
+   }
+}">
 
-  for(myloop1=0; myLoop1 < myMax; myLoop1++){
-document.getElementById('myDiv01').innerHTML += 
-  'myArrayManual[${myLoop0},${myLoop1}] = 
-  ${myArrayManual[myLoop0][myLoop1]}<br>'
+<input type="button" value="Set Auto Array" onclick="{
+  myArrayAuto[0][0] = Math.floor(Math.random() * 100);
+  document.getElementById('myDiv01').innerHTML = 'Set auto array value: ' + myArrayAuto[0][0];
+}">
+
+<input type="button" value="Show Auto Array" onclick="{
+  document.getElementById('myDiv01').innerHTML += 'You print it out: <br>';
+  for(let i = 0; i < myMax; i++) {
+    for(let j = 0; j < myMax; j++) {
+      document.getElementById('myDiv01').innerHTML += 
+        `myArrayAuto[${i}][${j}] = ${myArrayAuto[i][j] || 'not set'}<br>`;
+    }
   }
-  }
-}">
-<input type=button value="Set auto array" onclick="{
-  myArrayAuto[0,0] = Math.floor(Math.random() * 100)
-  document.getElementById('myDiv01').innerHTML = myArrayAuto[0,0]
-}">
-
-<input type=button value="Show auto array" onclick="{
-  document.getElementById('myDiv01').innerHTML += 'You print it out'
 }"><br>
 
-<div id='myDiv01">...</div>
-  
+<div id="myDiv01">...</div>
