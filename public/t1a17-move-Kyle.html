@@ -4,7 +4,7 @@
     <title>t1a17-move-Kyle</title>
     <script>
         let myClock02;
-
+        
         function moveImage(direction) {
             let img = document.getElementById('myImage01');
             let step = 10;
@@ -41,47 +41,49 @@
 </head>
 <body>
     <h1 align="center">t1a17-move-Kyle</h1>
-
     <input type="button" value="Stop" onclick="stopMove()">
     <br>
+
     <h1>Manual</h1>
     <table border="1">
         <tr>
-            <td>Cell 1</td>
+            <td></td>
             <td><input type="button" value="Up" onclick="moveImage('up')"></td>
-            <td>Cell 3</td>
+            <td></td>
         </tr>
         <tr>
             <td><input type="button" value="Left" onclick="moveImage('left')"></td>
-            <td>Cell 5</td>
+            <td></td>
             <td><input type="button" value="Right" onclick="moveImage('right')"></td>
         </tr>
         <tr>
-            <td>Cell 7</td>
+            <td></td>
             <td><input type="button" value="Down" onclick="moveImage('down')"></td>
-            <td>Cell 9</td>
+            <td></td>
         </tr>
-    
-    <br><br>
+    </table>
 
-        <h1>Auto</h1>
+    <h1>Auto</h1>
     <table border="1">
         <tr>
-            <td>Cell 1</td>
+            <td></td>
             <td><input type="button" value="Up" onclick="autoMove('up')"></td>
-            <td>Cell 3</td>
+            <td></td>
         </tr>
         <tr>
             <td><input type="button" value="Left" onclick="autoMove('left')"></td>
-            <td<input type="button" value="Stop" onclick="stopMove()"></td>
+            <td><input type="button" value="Stop" onclick="stopMove()"></td>
             <td><input type="button" value="Right" onclick="autoMove('right')"></td>
         </tr>
         <tr>
-            <td>Cell 7</td>
+            <td></td>
             <td><input type="button" value="Down" onclick="autoMove('down')"></td>
-            <td>Cell 9</td>
+            <td></td>
         </tr>
-    
+    </table>
+
     <br><br>
     <img id="myImage01" style="position: relative; width: 100px; height: 80px; top: 0px; left: 0px;" src="https://purepng.com/public/uploads/large/purepng.com-men-in-suitmanpeoplepersonsmalesuit-11215251213127n6q1.png">
 </body>
+</html>
+
