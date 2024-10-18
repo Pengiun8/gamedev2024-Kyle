@@ -4,7 +4,7 @@
     <title>t1a17-move-Kyle</title>
     <script>
         let myClock02;
-        
+
         function moveImage(direction) {
             let img = document.getElementById('myImage01');
             let step = 10;
@@ -37,53 +37,80 @@
         function stopMove() {
             clearInterval(myClock02);
         }
+
+        document.addEventListener('keydown', function(event) {
+            switch (event.key) {
+                case 'w':
+                    moveImage('up');
+                    break;
+                case 'a':
+                    moveImage('left');
+                    break;
+                case 's':
+                    moveImage('down');
+                    break;
+                case 'd':
+                    moveImage('right');
+                    break;
+                case 'W':
+                    autoMove('up');
+                    break;
+                case 'A':
+                    autoMove('left');
+                    break;
+                case 'S':
+                    autoMove('down');
+                    break;
+                case 'D':
+                    autoMove('right');
+                    break;
+                case ' ':
+                    stopMove();
+                    break;
+            }
+        });
     </script>
 </head>
 <body>
     <h1 align="center">t1a17-move-Kyle</h1>
-    <input type="button" value="Stop" onclick="stopMove()">
-    <br>
-
-    <h1>Manual</h1>
-    <table border="1">
+    <br><br>
+    <table border="1" align="center">
         <tr>
             <td></td>
-            <td><input type="button" value="Up" onclick="moveImage('up')"></td>
+            <td><input type="button" value="Up (W)" onclick="moveImage('up')"></td>
             <td></td>
         </tr>
         <tr>
-            <td><input type="button" value="Left" onclick="moveImage('left')"></td>
+            <td><input type="button" value="Left (A)" onclick="moveImage('left')"></td>
             <td></td>
-            <td><input type="button" value="Right" onclick="moveImage('right')"></td>
+            <td><input type="button" value="Right (D)" onclick="moveImage('right')"></td>
         </tr>
         <tr>
             <td></td>
-            <td><input type="button" value="Down" onclick="moveImage('down')"></td>
+            <td><input type="button" value="Down (S)" onclick="moveImage('down')"></td>
             <td></td>
         </tr>
     </table>
 
-    <h1>Auto</h1>
-    <table border="1">
+    <h1 align="center">Auto Move</h1>
+    <table border="1" align="center">
         <tr>
             <td></td>
-            <td><input type="button" value="Up" onclick="autoMove('up')"></td>
+            <td><input type="button" value="Auto Up (Shift + W)" onclick="autoMove('up')"></td>
             <td></td>
         </tr>
         <tr>
-            <td><input type="button" value="Left" onclick="autoMove('left')"></td>
-            <td><input type="button" value="Stop" onclick="stopMove()"></td>
-            <td><input type="button" value="Right" onclick="autoMove('right')"></td>
+            <td><input type="button" value="Auto Left (Shift + A)" onclick="autoMove('left')"></td>
+            <td><input type="button" value="Stop (Space)" onclick="stopMove()"></td>
+            <td><input type="button" value="Auto Right (Shift + D)" onclick="autoMove('right')"></td>
         </tr>
         <tr>
             <td></td>
-            <td><input type="button" value="Down" onclick="autoMove('down')"></td>
+            <td><input type="button" value="Auto Down (Shift + S)" onclick="autoMove('down')"></td>
             <td></td>
         </tr>
     </table>
-
     <br><br>
     <img id="myImage01" style="position: relative; width: 100px; height: 80px; top: 0px; left: 0px;" src="https://purepng.com/public/uploads/large/purepng.com-men-in-suitmanpeoplepersonsmalesuit-11215251213127n6q1.png">
 </body>
 </html>
-
