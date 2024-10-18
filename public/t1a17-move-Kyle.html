@@ -38,6 +38,16 @@
             clearInterval(myClock02);
         }
 
+        function resizeImage(event) {
+            let img = document.getElementById('myImage01');
+            let width = parseInt(img.style.width, 10) || 100;
+            let height = parseInt(img.style.height, 10) || 80;
+            let delta = event.deltaY > 0 ? -10 : 10;
+
+            img.style.width = (width + delta) + 'px';
+            img.style.height = (height + delta) + 'px';
+        }
+
         document.addEventListener('keydown', function(event) {
             switch (event.key) {
                 case 'w':
@@ -69,6 +79,8 @@
                     break;
             }
         });
+
+        document.addEventListener('wheel', resizeImage);
     </script>
 </head>
 <body>
@@ -91,7 +103,6 @@
             <td></td>
         </tr>
     </table>
-
     <h1 align="center">Auto Move</h1>
     <table border="1" align="center">
         <tr>
