@@ -7,29 +7,27 @@
       this.age = passAge;
     }
     myShow(){
-      document.getElementById('myDiv01').innerHTML = 'Hello'+ this.myName+'<br>
+      document.getElementById('myDiv01').innerHTML = 'Hello ' + this.Name + '<br>'; // Fixed this line
     }
   }
 
+  class myCat extends myAnimal {
+    myShow(){
+      document.getElementById('myDiv01').innerHTML = 'Hello ' + this.Name + ' is a great cat<br>'; // Fixed this line
+    }
+  }
+</script>
 
-class myCat extends myAnimal{
-myShow(){
- document.getElementById('myDiv01').innerHTML = 'Hello'+ this.myName + ' is a great cat<br>'
- }
- }
-  </script>
+<input type=button value="Example class Set and Show Class Animal" onClick="{
+  myDog = new myAnimal('Snickers', 5);
+  myDog.myShow();
+}"><br><br>
 
-  <input type=button value="Example class Set and Show Class Animal" onClick="{
-    myDog = new myAnimal('Snickers', 5)
-    myDog.myShow()
-    }"><br><br>
+<input type=text id="myText01" value="may be useful later"><br>
 
-    <input type=text id="myText01" value="may be useful later"><br>
+<input type=button value="Example Extend Class Animal as Cat" onClick="{
+  myPet = new myCat('Fluffy', 14);
+  myPet.myShow();
+}"><br><br>
 
-    <input type=button value="Example Extend Class Animal as Cat" onClick="{
-
-      myPet = new myCat('Fluffy', 14)
-      myPet.myShow()
-      }"><br><br>
-
-      <div id="myDiv01">...</div>
+<div id="myDiv01">...</div>
