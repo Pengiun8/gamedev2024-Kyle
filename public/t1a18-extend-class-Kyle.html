@@ -1,33 +1,43 @@
-<h2 align=center>t1a18-extend-class-kyle.html</h2>
+<h2 align=center>Animal Class Example</h2>
 
 <script>
-  class myAnimal {
-    constructor(passName, passAge) {
-      this.Name = passName;
-      this.age = passAge;
-    }
-    myShow(){
-      document.getElementById('myDiv01').innerHTML = 'Hello ' + this.Name + '<br>'; // Fixed this line
-    }
+class myAnimal {
+  constructor(passName, passAge, passSpecies) {
+    this.Name = passName;
+    this.age = passAge;
+    this.species = passSpecies;
   }
+  myShow(){
+    document.getElementById('myDiv01').innerHTML = 'Hello ' + this.Name + '<br>';
+  }
+  showDetails() {
+    document.getElementById('myDiv01').innerHTML += 
+      `Name: ${this.Name}, Age: ${this.age}, Species: ${this.species}<br>`;
+  }
+}
 
-  class myCat extends myAnimal {
-    myShow(){
-      document.getElementById('myDiv01').innerHTML = 'Hello ' + this.Name + ' is a great cat<br>'; // Fixed this line
-    }
+class myCat extends myAnimal {
+  myShow(){
+    document.getElementById('myDiv01').innerHTML = 'Hello ' + this.Name + ' is a great cat<br>';
   }
+  speak() {
+    return 'Meow!';
+  }
+}
+
+// Example usage with user input
+function createAnimal() {
+  let name = document.getElementById('animalName').value;
+  let age = document.getElementById('animalAge').value;
+  let species = "Cat"; // For simplicity, you can enhance this
+  let myPet = new myCat(name, age, species);
+  myPet.myShow();
+  myPet.showDetails();
+}
 </script>
 
-<input type=button value="Example class Set and Show Class Animal" onClick="{
-  myDog = new myAnimal('Snickers', 5);
-  myDog.myShow();
-}"><br><br>
-
-<input type=text id="myText01" value="may be useful later"><br>
-
-<input type=button value="Example Extend Class Animal as Cat" onClick="{
-  myPet = new myCat('Fluffy', 14);
-  myPet.myShow();
-}"><br><br>
+<input type="text" id="animalName" placeholder="Enter animal name">
+<input type="number" id="animalAge" placeholder="Enter animal age">
+<input type="button" value="Create Cat" onClick="createAnimal()"><br><br>
 
 <div id="myDiv01">...</div>
