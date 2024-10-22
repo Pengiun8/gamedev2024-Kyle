@@ -30,14 +30,14 @@
             this.age = passAge;
         }
         myShow() {
-            document.getElementById('myDiv01').innerHTML = 'Hello ' + this.Name + '<br>'; // Fixed this line
+            document.getElementById('myDiv01').innerHTML = 'Hello, ' + this.Name + '<br>'; // Fixed this line
         }
     }
 
     class myCat extends myAnimal {
         myShow() {
             document.getElementById('myDiv01').innerHTML = 
-                'Hello ' + this.Name + ' is a great cat and is ' + this.age + ' years old<br>'; // Include age
+                'Hello, ' + this.Name + ' is a great cat and is ' + this.age + ' years old<br>'; // Include age
         }
     }
 </script>
