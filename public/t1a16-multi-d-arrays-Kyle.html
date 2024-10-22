@@ -1,3 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Dimensional Array Example</title>
+</head>
+<body>
+
+<h1 align="center">t1a16-multi-d-array-Kyle.html</h1>
+
+<script>
+let myMax = 3;
+let myArrayManual = new Array(myMax);
+let myArrayAuto = new Array(myMax).fill().map(() => new Array(myMax));
+</script>
+
+Input: <input type="text" id="myFirstName" value="Kyle"><br>
+
 <input type="button" value="Set Manual Array" onclick="{
   myArrayManual = [[3, 4, 2], [1, 2, 3], [5, 6, 7]];
   let name = document.getElementById('myFirstName').value;
@@ -37,4 +56,9 @@
         `${name}, myArrayAuto[${i}][${j}] = ${myArrayAuto[i][j] || 'not set'}<br>`;
     }
   }
-}">
+}"><br>
+
+<div id="myDiv01">...</div>
+
+</body>
+</html>
