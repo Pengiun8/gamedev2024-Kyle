@@ -30,8 +30,8 @@
     let ballRadius = 10;
     let x = canvas.width / 2;
     let y = canvas.height - 30;
-    let dx = 8; // Increased speed
-    let dy = -8; // Increased speed
+    let dx = 8; // Initial horizontal speed
+    let dy = -8; // Initial vertical speed
 
     let rightPressed = false;
     let leftPressed = false;
@@ -82,27 +82,34 @@
       drawPaddle();
       drawScore();
 
+      // Bounce off the left and right walls with a random angle
       if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
-        dx = -dx;
+        dx = (Math.random() * 6) - 3; // Randomize horizontal speed between -3 and 3
+        dy = -dy; // Reverse the vertical direction
       }
+
+      // Bounce off the top wall
       if (y + dy < ballRadius) {
         dy = -dy;
       } else if (y + dy > canvas.height - ballRadius) {
+        // Check paddle collision
         if (x > paddleX && x < paddleX + paddleWidth) {
           dy = -dy;
-          dx += (Math.random() - 0.5) * 2; // Randomize horizontal direction
+          dx = (Math.random() * 6) - 3; // Randomize horizontal speed on paddle hit
           score++; // Increase score when the ball hits the paddle
         } else {
-          document.location.reload();
+          document.location.reload(); // Restart the game if the ball misses the paddle
         }
       }
 
+      // Paddle movement
       if (rightPressed && paddleX < canvas.width - paddleWidth) {
-        paddleX += 10; // Increased speed
+        paddleX += 10;
       } else if (leftPressed && paddleX > 0) {
-        paddleX -= 10; // Increased speed
+        paddleX -= 10;
       }
 
+      // Move the ball
       x += dx;
       y += dy;
       requestAnimationFrame(draw);
