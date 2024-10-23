@@ -76,26 +76,30 @@
       document.getElementById('score').textContent = score;
     }
 
+    function randomDirection() {
+      return (Math.random() * 6) - 3; // Random value between -3 and 3
+    }
+
     function draw() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       drawBall();
       drawPaddle();
       drawScore();
 
-      // Bounce off the left and right walls with a random angle
+      // Bounce off the left and right walls
       if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
-        dx = (Math.random() * 6) - 3; // Randomize horizontal speed between -3 and 3
-        dy = -dy; // Reverse the vertical direction
+        dx = randomDirection(); // Randomize horizontal speed
+        dy = randomDirection(); // Randomize vertical speed
       }
 
       // Bounce off the top wall
       if (y + dy < ballRadius) {
-        dy = -dy;
+        dy = randomDirection(); // Randomize vertical speed
       } else if (y + dy > canvas.height - ballRadius) {
         // Check paddle collision
         if (x > paddleX && x < paddleX + paddleWidth) {
-          dy = -dy;
-          dx = (Math.random() * 6) - 3; // Randomize horizontal speed on paddle hit
+          dy = -dy; // Reverse vertical direction
+          dx = randomDirection(); // Randomize horizontal speed
           score++; // Increase score when the ball hits the paddle
         } else {
           document.location.reload(); // Restart the game if the ball misses the paddle
