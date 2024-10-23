@@ -40,6 +40,24 @@
                 'Hello, ' + this.Name + ' is a great cat and is ' + this.age + ' years old<br>'; // Include age
         }
     }
+
+    class myDog extends myAnimal {
+        myShow() {
+            document.getElementById('myDiv01').innerHTML = 
+                'Hello, ' + this.Name + ' is a wonderful dog and is ' + this.age + ' years old<br>'; // Include age
+        }
+    }
+
+    class myCustomAnimal extends myAnimal {
+        constructor(passName, passAge, passType) {
+            super(passName, passAge);
+            this.type = passType;
+        }
+        myShow() {
+            document.getElementById('myDiv01').innerHTML = 
+                'Hello, ' + this.Name + ' is a ' + this.type + ' and is ' + this.age + ' years old<br>'; // Include type and age
+        }
+    }
 </script>
 
 <div>
@@ -55,12 +73,21 @@
 
     <input type="text" id="animalName" placeholder="Enter animal name">
     <input type="number" id="animalAge" placeholder="Enter animal age"><br>
+    <input type="text" id="animalType" placeholder="Enter animal type (e.g., cat, dog)"><br>
     
     <input type="button" value="Create Custom Cat" onClick="{
         let name = document.getElementById('animalName').value;
         let age = document.getElementById('animalAge').value;
         let myCustomCat = new myCat(name, age);
         myCustomCat.myShow();
+    }"><br><br>
+
+    <input type="button" value="Create Custom Animal" onClick="{
+        let name = document.getElementById('animalName').value;
+        let age = document.getElementById('animalAge').value;
+        let type = document.getElementById('animalType').value;
+        let myCustomAnimal = new myCustomAnimal(name, age, type);
+        myCustomAnimal.myShow();
     }"><br><br>
 </div>
 
