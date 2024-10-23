@@ -30,21 +30,21 @@
             this.age = passAge;
         }
         myShow() {
-            document.getElementById('myDiv01').innerHTML = 'Hello, ' + this.Name + '<br>'; // Fixed this line
+            document.getElementById('myDiv01').innerHTML = 'Hello, ' + this.Name + '<br>';
         }
     }
 
     class myCat extends myAnimal {
         myShow() {
             document.getElementById('myDiv01').innerHTML = 
-                'Hello, ' + this.Name + ' is a great cat and is ' + this.age + ' years old<br>'; // Include age
+                'Hello, ' + this.Name + ' is a great cat and is ' + this.age + ' years old<br>';
         }
     }
 
     class myDog extends myAnimal {
         myShow() {
             document.getElementById('myDiv01').innerHTML = 
-                'Hello, ' + this.Name + ' is a wonderful dog and is ' + this.age + ' years old<br>'; // Include age
+                'Hello, ' + this.Name + ' is a wonderful dog and is ' + this.age + ' years old<br>';
         }
     }
 
@@ -55,7 +55,7 @@
         }
         myShow() {
             document.getElementById('myDiv01').innerHTML = 
-                'Hello, ' + this.Name + ' is a ' + this.type + ' and is ' + this.age + ' years old<br>'; // Include type and age
+                'Hello, ' + this.Name + ' is a ' + this.type + ' and is ' + this.age + ' years old<br>';
         }
     }
 </script>
@@ -86,8 +86,12 @@
         let name = document.getElementById('animalName').value;
         let age = document.getElementById('animalAge').value;
         let type = document.getElementById('animalType').value;
-        let myCustomAnimal = new myCustomAnimal(name, age, type);
-        myCustomAnimal.myShow();
+        if (name && age && type) {
+            let myCustomAnimal = new myCustomAnimal(name, age, type);
+            myCustomAnimal.myShow();
+        } else {
+            document.getElementById('myDiv01').innerHTML = 'Please fill in all fields.<br>';
+        }
     }"><br><br>
 </div>
 
