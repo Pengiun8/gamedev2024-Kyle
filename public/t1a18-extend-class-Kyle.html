@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Animal Class Example</title>
+    <title>t1a18-extend-class-kyle.html</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -21,7 +21,7 @@
 </head>
 <body>
 
-<h2>Animal Class Example</h2>
+<h2 align=center>t1a18-extend-class-kyle.html</h2>
 
 <script>
     class myAnimal {
@@ -30,72 +30,37 @@
             this.age = passAge;
         }
         myShow() {
-            document.getElementById('myDiv01').innerHTML = 'Hello, ' + this.Name + '<br>';
+            document.getElementById('myDiv01').innerHTML = 'Hello, ' + this.Name + '<br>'; // Fixed this line
         }
     }
 
     class myCat extends myAnimal {
         myShow() {
             document.getElementById('myDiv01').innerHTML = 
-                'Hello, ' + this.Name + ' is a great cat and is ' + this.age + ' years old<br>';
-        }
-    }
-
-    class myDog extends myAnimal {
-        myShow() {
-            document.getElementById('myDiv01').innerHTML = 
-                'Hello, ' + this.Name + ' is a wonderful dog and is ' + this.age + ' years old<br>';
-        }
-    }
-
-    class myCustomAnimal extends myAnimal {
-        constructor(passName, passAge, passType) {
-            super(passName, passAge);
-            this.type = passType;
-        }
-        myShow() {
-            document.getElementById('myDiv01').innerHTML = 
-                'Hello, ' + this.Name + ' is a ' + this.type + ' and is ' + this.age + ' years old<br>';
+                'Hello, ' + this.Name + ' is a great cat and is ' + this.age + ' years old<br>'; // Include age
         }
     }
 </script>
 
 <div>
     <input type="button" value="Example class Set and Show Class Animal" onClick="{
-        let myDog = new myAnimal('Sniggers', 5);
+        myDog = new myAnimal('Sniggers', 5);
         myDog.myShow();
     }"><br><br>
 
     <input type="button" value="Example Extend Class Animal as Cat" onClick="{
-        let myPet = new myCat('Fluffy', 14);
+        myPet = new myCat('Fluffy', 14);
         myPet.myShow();
     }"><br><br>
 
     <input type="text" id="animalName" placeholder="Enter animal name">
     <input type="number" id="animalAge" placeholder="Enter animal age"><br>
-    <input type="text" id="animalType" placeholder="Enter animal type (e.g., cat, dog)"><br>
     
     <input type="button" value="Create Custom Cat" onClick="{
         let name = document.getElementById('animalName').value;
         let age = document.getElementById('animalAge').value;
-        if (name && age) {
-            let myCustomCat = new myCat(name, parseInt(age));
-            myCustomCat.myShow();
-        } else {
-            document.getElementById('myDiv01').innerHTML = 'Please fill in all fields for cat.<br>';
-        }
-    }"><br><br>
-
-    <input type="button" value="Create Custom Animal" onClick="{
-        let name = document.getElementById('animalName').value;
-        let age = document.getElementById('animalAge').value;
-        let type = document.getElementById('animalType').value;
-        if (name && age && type) {
-            let myCustomAnimal = new myCustomAnimal(name, parseInt(age), type);
-            myCustomAnimal.myShow();
-        } else {
-            document.getElementById('myDiv01').innerHTML = 'Please fill in all fields.<br>';
-        }
+        let myCustomCat = new myCat(name, age);
+        myCustomCat.myShow();
     }"><br><br>
 </div>
 
