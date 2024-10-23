@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>t1a18-extend-class-kyle.html</title>
+    <title>Animal Class Example</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -21,7 +21,7 @@
 </head>
 <body>
 
-<h2 align=center>t1a18-extend-class-kyle.html</h2>
+<h2>Animal Class Example</h2>
 
 <script>
     class myAnimal {
@@ -62,12 +62,12 @@
 
 <div>
     <input type="button" value="Example class Set and Show Class Animal" onClick="{
-        myDog = new myAnimal('Sniggers', 5);
+        let myDog = new myAnimal('Sniggers', 5);
         myDog.myShow();
     }"><br><br>
 
     <input type="button" value="Example Extend Class Animal as Cat" onClick="{
-        myPet = new myCat('Fluffy', 14);
+        let myPet = new myCat('Fluffy', 14);
         myPet.myShow();
     }"><br><br>
 
@@ -78,8 +78,12 @@
     <input type="button" value="Create Custom Cat" onClick="{
         let name = document.getElementById('animalName').value;
         let age = document.getElementById('animalAge').value;
-        let myCustomCat = new myCat(name, age);
-        myCustomCat.myShow();
+        if (name && age) {
+            let myCustomCat = new myCat(name, parseInt(age));
+            myCustomCat.myShow();
+        } else {
+            document.getElementById('myDiv01').innerHTML = 'Please fill in all fields for cat.<br>';
+        }
     }"><br><br>
 
     <input type="button" value="Create Custom Animal" onClick="{
@@ -87,7 +91,7 @@
         let age = document.getElementById('animalAge').value;
         let type = document.getElementById('animalType').value;
         if (name && age && type) {
-            let myCustomAnimal = new myCustomAnimal(name, age, type);
+            let myCustomAnimal = new myCustomAnimal(name, parseInt(age), type);
             myCustomAnimal.myShow();
         } else {
             document.getElementById('myDiv01').innerHTML = 'Please fill in all fields.<br>';
