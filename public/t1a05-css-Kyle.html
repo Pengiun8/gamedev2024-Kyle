@@ -1,33 +1,39 @@
-<h1> <b>t1a05-css-Kyle.html</b></h1>
 <!DOCTYPE html>
 <html>
 <head>
-   
+    <title>CSS Examples</title>
     <style>
         p {
-           font: sans serif;
+            text-align: center;
         }
 
         o {
             color: red;
-          
+            display: block;
+            margin: 10px 0;
         }
 
         i {
             background-color: blue;
-            color: white;
+            display: block;
+            margin: 10px 0;
         }
 
-      h1{
-         text-size: 12px
-         text-align: center
-      }
+        h1 {
+            font-size: 50px;
+            margin: 10px 0;
+        }
+
         div {
             border: 2px solid black;
+            display: block;
+            margin: 10px 0;
         }
 
         .padded {
             padding: 20px;
+            display: block;
+            margin: 10px 0;
         }
 
         .spaced {
@@ -36,15 +42,37 @@
 
         .shadow {
             text-shadow: 2px 2px 5px gray;
+            margin: 10px 0;
+        }
+
+        .rounded {
+            border-radius: 15px;
+        }
+
+        .uppercase {
+            text-transform: uppercase;
+        }
+
+        .center-vertical {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 200px;
+        }
+
+        .fade-hover:hover {
+            opacity: 0.5;
+            transition: opacity 0.5s ease-in-out;
         }
     </style>
 </head>
 <body>
-    <h1 class="shadow">Hello World!</h1><br>
-    <p class="spaced">This is a paragraph with margin space around it.</p><br>
-    <o>This is red text.</o><br>
-    <i>This text has a blue background.</i><br>
-    <div class="padded">This is a div with padding and border.</div><br>
+    <h1 class="shadow uppercase">Shadow and Uppercase Text Example</h1>
+    <p class="spaced rounded">This is a paragraph with margin space and rounded corners.</p>
+    <o>This is red text using the "o" element.</o>
+    <i>This text has a blue background using the "i" element.</i>
+    <div>This is a div with a border.</div>
+    <div class="padded">This is a div with padding.</div>
+    <div class="center-vertical fade-hover">This is a div with centered content and fades on hover.</div>
 </body>
 </html>
-
