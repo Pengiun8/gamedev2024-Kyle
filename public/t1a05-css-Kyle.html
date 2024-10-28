@@ -1,33 +1,41 @@
 <h1> <b>Kyle css demo</b></h1>
-<style>
-  body {
-    text-align: center;
-    background-color: lightgray;
-    background: linear-gradient(to right, lightblue, purple, black);
-  }
-  h1 {
-    color: yellow;
-    font-size: 40px;
-    border: 6px solid white;
-    background-color: gray;
-    border-radius: 30px;
-    display: inline-block;
-    padding: 10px;
-    
-  }
-  p {
-    font-family: Hubot Sans;
-    font-size: 20px;
-    color: white;
+<!DOCTYPE html>
+<html>
+<head>
+   
+    <style>
+        p {
+            text-align: center;
+        }
+        o {
+            color: red;
+        }
+        i {
+            background-color: blue;
+        }
+        h1 {
+            font-size: 50px;
+        }
+        div {
+            border: 2px solid black;
+        }
+        .padded {
+            padding: 20px;
+        }
+        .spaced {
+            margin: 30px;
+        }
+        .shadow {
+            text-shadow: 2px 2px 5px gray;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="shadow">Hello World!</h1>
+    <p class="spaced">This is a paragraph with margin space around it.</p>
+    <o>This is red text.</o>
+    <i>This text has a blue background.</i>
+    <div class="padded">This is a div with padding.</div>
+</body>
+</html>
 
-  }
-
-  p:hover {
-  background-color: black;
-  cursor: pointer;
-
-  }
-</style>
-<p>List of things changed:<br>
-font size, font color, background color, background gradient, font style, border, border radius, border color, text alignment, hover color, border width, border positioning.<br>
-thats more than 9 if you ask me</p>
