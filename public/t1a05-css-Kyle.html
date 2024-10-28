@@ -2,7 +2,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>CSS Examples</title>
     <style>
         p {
             text-align: center;
@@ -16,32 +15,67 @@
             background-color: blue;
         }
 
-        h1 {
-            font-size: 50px;
+        @keyframes moveUpDown {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
         }
 
-        div {
-            border: 2px solid black;
+        @keyframes moveLeftRight {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(20px); }
         }
 
-        .padded {
-            padding: 20px;
+        @keyframes glowing {
+            0% { text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #ff00ff, 0 0 20px #ff00ff, 0 0 25px #ff00ff, 0 0 30px #ff00ff, 0 0 35px #ff00ff; }
+            50% { text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #ff00ff, 0 0 40px #ff00ff, 0 0 50px #ff00ff, 0 0 60px #ff00ff, 0 0 70px #ff00ff; }
+            100% { text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #ff00ff, 0 0 20px #ff00ff, 0 0 25px #ff00ff, 0 0 30px #ff00ff, 0 0 35px #ff00ff; }
         }
 
-        .spaced {
-            margin: 30px 0;
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
         }
 
-        .shadow {
-            text-shadow: 2px 2px 5px gray;
+        @keyframes blink-caret {
+            from, to { border-color: transparent; }
+            50% { border-color: black; }
+        }
+
+        .move-up-down {
+            animation: moveUpDown 2s infinite;
+        }
+
+        .move-left-right {
+            animation: moveLeftRight 2s infinite;
+        }
+
+        .glowing {
+            animation: glowing 1.5s infinite;
+        }
+
+        .backwards {
+            direction: rtl;
+            unicode-bidi: bidi-override;
+        }
+
+        .typing {
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: .15em solid black;
+            animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite;
         }
     </style>
 </head>
 <body>
-    <h1 class="shadow">Hello World!</h1><br>
-    <p class="spaced">This is a paragraph with margin space around it.</p><br>
-    <o>This is red text.</o><br>
-    <i>This text has a blue background.</i><br>
-    <div class="padded">This is a div with padding.</div><br>
+    <h1 class="move-up-down">Up and Down Text</h1><br>
+    <h1 class="move-left-right">Left and Right Text</h1><br>
+    <h1 class="glowing">Glowing Text</h1><br>
+    <h1 class="backwards">Backwards Text</h1><br>
+    <h1 class="typing">Typing Text Effect</h1>
 </body>
 </html>
+
+   
+</head>
+
+
