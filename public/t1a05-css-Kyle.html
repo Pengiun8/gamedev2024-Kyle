@@ -3,16 +3,23 @@
 <head>
     <title>CSS Examples</title>
     <style>
+        body {
+            text-align: left;
+            padding-left: 20px;
+        }
+
         p {
-            text-align: center;
+            text-align: left;
         }
 
         o {
             color: red;
+            display: block;
         }
 
         i {
             background-color: blue;
+            display: block;
         }
 
         @keyframes moveUpDown {
@@ -64,16 +71,20 @@
             border-right: .15em solid black;
             animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite;
         }
+
+        .centered {
+            text-align: center;
+        }
     </style>
 </head>
 <body>
-    <h2 align="center">t1a05-css-Kyle.html</h2>
+    <h2 class="centered">t1a05-css-Kyle.html</h2>
     <p class="move-up-down">Up and Down Text</p><br>
     <p class="move-left-right">Left and Right Text</p><br>
     <p class="glowing">Glowing Text</p><br>
     <p class="backwards">Backwards Text</p><br>
     <p class="typing">Typing Text Effect</p><br>
-    <p>Centered Paragraph</p><br>
+    <p class="centered">Centered Paragraph</p><br>
     <o>Red Text</o><br>
     <i>Blue Background</i><br>
 </body>
