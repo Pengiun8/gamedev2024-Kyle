@@ -6,59 +6,70 @@
     <title>Multi-Dimensional Array Example</title>
 </head>
 <body>
+    <h1 align="center">t1a16-multi-d-array-Kyle.html</h1>
+    <script>
+        let myMax = 3;
+        let myArrayManual = new Array(myMax).fill().map(() => new Array(myMax));
+        let myArrayAuto = new Array(myMax).fill().map(() => new Array(myMax));
 
-<h1 align="center">t1a16-multi-d-array-Kyle.html</h1>
+        function clearArrays() {
+            myArrayManual = new Array(myMax).fill().map(() => new Array(myMax));
+            myArrayAuto = new Array(myMax).fill().map(() => new Array(myMax));
+            document.getElementById('myDiv01').innerHTML = 'Arrays cleared.';
+        }
 
-<script>
-let myMax = 3;
-let myArrayManual = new Array(myMax);
-let myArrayAuto = new Array(myMax).fill().map(() => new Array(myMax));
-</script>
-
-Input Name: <input type="text" id="myFirstName" value="Kyle"><br>
-
-<input type="button" value="Set Manual Array" onclick="{
-  myArrayManual = [[3, 4, 2], [1, 2, 3], [5, 6, 7]];
-  let name = document.getElementById('myFirstName').value;
-  document.getElementById('myDiv01').innerHTML = name + ', you set the manual array';
-}">
-
-<input type="button" value="Show Manual Array" onclick="{
-   document.getElementById('myDiv01').innerHTML = '';
-   console.log(myArrayManual);
-   let name = document.getElementById('myFirstName').value;
-
-   for(let myLoop0 = 0; myLoop0 < myMax; myLoop0++){
-     for(let myLoop1 = 0; myLoop1 < myMax; myLoop1++){
-       document.getElementById('myDiv01').innerHTML += 
-         `${name}, myArrayManual[${myLoop0}, ${myLoop1}] = ${myArrayManual[myLoop0][myLoop1]}<br>`;
-     }
-   }
-}">
-
-<input type="button" value="Set Auto Array" onclick="{
-        for (let i = 0; i < myMax; i++) {
-            for (let j = 0; j < myMax; j++) {
-                myArrayAuto[i][j] = Math.floor(Math.random() * 100);
+        function addElement() {
+            const value = prompt("Enter value to add:");
+            const row = parseInt(prompt("Enter row index (0 to " + (myMax - 1) + "):"));
+            const col = parseInt(prompt("Enter column index (0 to " + (myMax - 1) + "):"));
+            if (row >= 0 && row < myMax && col >= 0 && col < myMax) {
+                myArrayManual[row][col] = value;
+                document.getElementById('myDiv01').innerHTML = `Added ${value} at myArrayManual[${row}][${col}]`;
+            } else {
+                alert("Invalid index!");
             }
         }
-        let name = document.getElementById('myFirstName').value;
-        document.getElementById('myDiv01').innerHTML = name + ', auto array values set';
-    }">
 
-<input type="button" value="Show Auto Array" onclick="{
-  document.getElementById('myDiv01').innerHTML += '<br>';
-  let name = document.getElementById('myFirstName').value;
+        function removeElement() {
+            const row = parseInt(prompt("Enter row index (0 to " + (myMax - 1) + "):"));
+            const col = parseInt(prompt("Enter column index (0 to " + (myMax - 1) + "):"));
+            if (row >= 0 && row < myMax && col >= 0 && col < myMax) {
+                myArrayManual[row][col] = undefined;
+                document.getElementById('myDiv01').innerHTML = `Removed value at myArrayManual[${row}][${col}]`;
+            } else {
+                alert("Invalid index!");
+            }
+        }
 
-  for(let i = 0; i < myMax; i++) {
-    for(let j = 0; j < myMax; j++) {
-      document.getElementById('myDiv01').innerHTML += 
-        `${name}, myArrayAuto[${i}][${j}] = ${myArrayAuto[i][j] || 'not set'}<br>`;
-    }
-  }
-}"><br>
-
-<div id="myDiv01">...</div>
-
+        function searchArray() {
+            const value = prompt("Enter value to search for:");
+            let found = false;
+            for (let i = 0; i < myMax; i++) {
+                for (let j = 0; j < myMax; j++) {
+                    if (myArrayManual[i][j] == value) {
+                        found = true;
+                        document.getElementById('myDiv01').innerHTML = `Value ${value} found at myArrayManual[${i}][${j}]`;
+                        return;
+                    }
+                }
+            }
+            if (!found) {
+                document.getElementById('myDiv01').innerHTML = `Value ${value} not found.`;
+            }
+        }
+    </script>
+    
+    Input Name: <input type="text" id="myFirstName" value="Kyle"><br>
+    <input type="button" value="Set Manual Array" onclick="myArrayManual = [[3, 4, 2], [1, 2, 3], [5, 6, 7]]; document.getElementById('myDiv01').innerHTML = document.getElementById('myFirstName').value + ', you set the manual array';">
+    <input type="button" value="Show Manual Array" onclick="document.getElementById('myDiv01').innerHTML = ''; console.log(myArrayManual); let name = document.getElementById('myFirstName').value; for(let myLoop0 = 0; myLoop0 < myMax; myLoop0++){ for(let myLoop1 = 0; myLoop1 < myMax; myLoop1++){ document.getElementById('myDiv01').innerHTML += `${name}, myArrayManual[${myLoop0}][${myLoop1}] = ${myArrayManual[myLoop0][myLoop1]}<br>`; } }">
+    <input type="button" value="Set Auto Array" onclick="for (let i = 0; i < myMax; i++) { for (let j = 0; j < myMax; j++) { myArrayAuto[i][j] = Math.floor(Math.random() * 100); } } document.getElementById('myDiv01').innerHTML = document.getElementById('myFirstName').value + ', auto array values set';">
+    <input type="button" value="Show Auto Array" onclick="document.getElementById('myDiv01').innerHTML += '<br>'; let name = document.getElementById('myFirstName').value; for(let i = 0; i < myMax; i++) { for(let j = 0; j < myMax; j++) { document.getElementById('myDiv01').innerHTML += `${name}, myArrayAuto[${i}][${j}] = ${myArrayAuto[i][j] || 'not set'}<br>`; } }"><br>
+    
+    <input type="button" value="Clear Arrays" onclick="clearArrays()">
+    <input type="button" value="Add Element" onclick="addElement()">
+    <input type="button" value="Remove Element" onclick="removeElement()">
+    <input type="button" value="Search Array" onclick="searchArray()"><br>
+    
+    <div id="myDiv01">...</div>
 </body>
 </html>
