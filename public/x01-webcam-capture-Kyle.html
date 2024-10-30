@@ -49,14 +49,6 @@
         #capture:hover {
             background-color: #0056b3;
         }
-        #videoPreview {
-            width: 100%;
-            max-width: 600px;
-            margin-top: 20px;
-            border: 2px solid #333;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
     </style>
 </head>
 <body>
@@ -65,14 +57,6 @@
     <video id="video" autoplay playsinline></video>
     <button id="capture">Capture Photo</button>
     <canvas id="canvas"></canvas>
-    
-    <!-- Video feature -->
-    <h2>Sample Video</h2>
-    <video id="videoPreview" controls>
-        <source src="path/to/your/sample-video.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-    </video>
-
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const video = document.getElementById('video');
@@ -100,7 +84,7 @@
                 // Create a link to download the image
                 const link = document.createElement('a');
                 link.href = canvas.toDataURL('image/jpeg');
-                link.download = `${filename}.jpg`;
+                link.download = ${filename}.jpg;
                 link.click();
             });
         });
