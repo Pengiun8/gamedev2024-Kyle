@@ -23,17 +23,17 @@
             } else if (myIn1 == expectedName && myNum1 == expectedAge) {
                 document.getElementById('myDiv01').innerHTML = `Hi ${expectedName}, you are ${expectedAge}`;
             } else if (myIn1 == expectedName && myNum1 > expectedAge) {
-                document.getElementById('myDiv01').innerHTML = `Hi ${expectedName}, you are over ${expectedAge}`;
+                document.getElementById('myDiv01').innerHTML = `Hi ${expectedName}, you are over the expected age of ${expectedAge}.`;
             } else if (myIn1 == expectedName && myNum1 < expectedAge) {
-                document.getElementById('myDiv01').innerHTML = `Hi ${expectedName}, you are under ${expectedAge}`;
+                document.getElementById('myDiv01').innerHTML = `Hi ${expectedName}, you are under the expected age of ${expectedAge}.`;
             } else if (myIn1 != expectedName && myNum1 == expectedAge) {
-                document.getElementById('myDiv01').innerHTML = `Not ${expectedName}, but you are ${expectedAge}`;
+                document.getElementById('myDiv01').innerHTML = `Not ${expectedName}, but you are the expected age of ${expectedAge}.`;
             } else if (myIn1 != expectedName && myNum1 > expectedAge) {
-                document.getElementById('myDiv01').innerHTML = `Not ${expectedName}, and you are over ${expectedAge}`;
+                document.getElementById('myDiv01').innerHTML = `Not ${expectedName}, and you are over the expected age of ${expectedAge}.`;
             } else if (myIn1 != expectedName && myNum1 < expectedAge) {
-                document.getElementById('myDiv01').innerHTML = `Not ${expectedName}, and you are under ${expectedAge}`;
+                document.getElementById('myDiv01').innerHTML = `Not ${expectedName}, and you are under the expected age of ${expectedAge}.`;
             } else {
-                document.getElementById('myDiv01').innerHTML = `Not ${expectedName}, not ${expectedAge}`;
+                document.getElementById('myDiv01').innerHTML = `Not ${expectedName}, not the expected age of ${expectedAge}.`;
             }
 
             // New conditions to check for minor, adult, or senior
