@@ -35,6 +35,15 @@
             } else {
                 document.getElementById('myDiv01').innerHTML = `Not ${expectedName}, not ${expectedAge}`;
             }
+
+            // New conditions to check for minor, adult, or senior
+            if (myNum1 < 18) {
+                document.getElementById('myDiv01').innerHTML += `<br>You are a minor.`;
+            } else if (myNum1 >= 18 && myNum1 < 65) {
+                document.getElementById('myDiv01').innerHTML += `<br>You are an adult.`;
+            } else if (myNum1 >= 65) {
+                document.getElementById('myDiv01').innerHTML += `<br>You are a senior citizen.`;
+            }
         }
     </script>
 </head>
@@ -43,7 +52,7 @@
     <p>
         <input type="text" id="myText1" value="Kyle">
         <input type="number" id="myNum1" value="16">
-        Clearing both field does something too
+        Clearing both fields does something too
     </p>
     <div class="center">
         <div id="myDiv01">...</div>
