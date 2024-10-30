@@ -19,21 +19,21 @@
             document.getElementById('myDiv01').innerHTML = '<br>';
 
             if (myIn1 == '' || myNum1 == '') {
-                document.getElementById('myDiv01').innerHTML = Please fill out both fields.;
+                document.getElementById('myDiv01').innerHTML = `Please fill out both fields.`;
             } else if (myIn1 == expectedName && myNum1 == expectedAge) {
-                document.getElementById('myDiv01').innerHTML = Hi ${expectedName}, you are ${expectedAge};
+                document.getElementById('myDiv01').innerHTML = `Hi ${expectedName}, you are ${expectedAge}`;
             } else if (myIn1 == expectedName && myNum1 > expectedAge) {
-                document.getElementById('myDiv01').innerHTML = Hi ${expectedName}, you are over ${expectedAge};
+                document.getElementById('myDiv01').innerHTML = `Hi ${expectedName}, you are over ${expectedAge}`;
             } else if (myIn1 == expectedName && myNum1 < expectedAge) {
-                document.getElementById('myDiv01').innerHTML = Hi ${expectedName}, you are under ${expectedAge};
+                document.getElementById('myDiv01').innerHTML = `Hi ${expectedName}, you are under ${expectedAge}`;
             } else if (myIn1 != expectedName && myNum1 == expectedAge) {
-                document.getElementById('myDiv01').innerHTML = Not ${expectedName}, but you are ${expectedAge};
+                document.getElementById('myDiv01').innerHTML = `Not ${expectedName}, but you are ${expectedAge}`;
             } else if (myIn1 != expectedName && myNum1 > expectedAge) {
-                document.getElementById('myDiv01').innerHTML = Not ${expectedName}, and you are over ${expectedAge};
+                document.getElementById('myDiv01').innerHTML = `Not ${expectedName}, and you are over ${expectedAge}`;
             } else if (myIn1 != expectedName && myNum1 < expectedAge) {
-                document.getElementById('myDiv01').innerHTML = Not ${expectedName}, and you are under ${expectedAge};
+                document.getElementById('myDiv01').innerHTML = `Not ${expectedName}, and you are under ${expectedAge}`;
             } else {
-                document.getElementById('myDiv01').innerHTML = Not ${expectedName}, not ${expectedAge};
+                document.getElementById('myDiv01').innerHTML = `Not ${expectedName}, not ${expectedAge}`;
             }
         }
     </script>
