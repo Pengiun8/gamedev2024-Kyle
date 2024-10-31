@@ -1,29 +1,22 @@
-<h2 align="center">t1a01-basic-Kyle</h2>
-<body>
-<p>
-<a href="https://www.google.ca">Google</a>
-</p>
-<br>
- 
-<img width="1000" src="https://wallpapercave.com/wp/J5p6HhL.jpg" style="border: 6px solid brown;">
-  
-<br>
-<p>
-<a href="https://pengiun8.github.io/gamedev2024-Kyle/public/index.html">Return</a>
-  </p>
- </body>
-
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>t1a01-basic-Kyle</title>
     <style>
         body {
             background: linear-gradient(to right, lightblue, lightgreen);
             text-align: center;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
         }
         h2 {
             font-size: 80px;
             color: white;
-            font-family: 'sans';
             letter-spacing: 2px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
         }
         p {
             font-size: 30px;
@@ -31,16 +24,51 @@
             display: inline-block;
             box-shadow: 2px 2px 10px gray;
             border-radius: 10px;
+            padding: 10px 20px;
+            margin: 10px;
+        }
+        a {
+            text-decoration: none;
+            color: brown;
         }
         a:hover {
             color: red;
+            text-decoration: underline;
         }
         img {
             border: 6px solid brown;
-            width: 1000px;
+            width: 300px;
             border-radius: 15px;
+            margin: 15px;
+            transition: opacity 0.3s, transform 0.3s;
         }
         img:hover {
             opacity: 0.8;
+            transform: scale(1.05);
+        }
+        .image-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
         }
     </style>
+</head>
+<body>
+    <h2>t1a01-basic-Kyle</h2>
+    
+    <p>
+        <a href="https://www.google.ca">Google</a>
+    </p>
+
+    <div class="image-container">
+        <img src="https://wallpapercave.com/wp/J5p6HhL.jpg" alt="Image 1">
+        <img src="https://wallpapercave.com/wp/wp3268570.jpg" alt="Image 2">
+        <img src="https://wallpapercave.com/wp/wp1922832.jpg" alt="Image 3">
+        <img src="https://wallpapercave.com/wp/wp1820620.jpg" alt="Image 4">
+    </div>
+
+    <p>
+        <a href="https://pengiun8.github.io/gamedev2024-Kyle/public/index.html">Return</a>
+    </p>
+</body>
+</html>
