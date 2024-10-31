@@ -13,24 +13,24 @@
         }
     </style>
     <script>
-        function checkNameAndNumber(expectedName, expectedAge, favoriteColor) {
+        function checkNameAndNumber(expectedName, expectedAge) {
             let myIn1 = document.getElementById('myText1').value;
             let myNum1 = document.getElementById('myNum1').value;
             let myColor = document.getElementById('myColor').value;
             document.getElementById('myDiv01').innerHTML = '<br>';
 
-            if (myIn1 == '' || myNum1 == '' || myColor == '') {
+            if (myIn1 === '' || myNum1 === '' || myColor === '') {
                 document.getElementById('myDiv01').innerHTML = `Please fill out all fields.`;
                 return;
             }
 
-            if (myIn1 == expectedName && myNum1 == expectedAge) {
+            if (myIn1 === expectedName && myNum1 == expectedAge) {
                 document.getElementById('myDiv01').innerHTML = `Hi ${expectedName}, you are ${expectedAge}. Your favorite color is ${myColor}.`;
-            } else if (myIn1 == expectedName && myNum1 > expectedAge) {
+            } else if (myIn1 === expectedName && myNum1 > expectedAge) {
                 document.getElementById('myDiv01').innerHTML = `Hi ${expectedName}, you are over the expected age of ${expectedAge}. Your favorite color is ${myColor}.`;
-            } else if (myIn1 == expectedName && myNum1 < expectedAge) {
+            } else if (myIn1 === expectedName && myNum1 < expectedAge) {
                 document.getElementById('myDiv01').innerHTML = `Hi ${expectedName}, you are under the expected age of ${expectedAge}. Your favorite color is ${myColor}.`;
-            } else if (myIn1 != expectedName && myNum1 == expectedAge) {
+            } else if (myIn1 !== expectedName && myNum1 == expectedAge) {
                 document.getElementById('myDiv01').innerHTML = `Not ${expectedName}, but you are the expected age of ${expectedAge}. Your favorite color is ${myColor}.`;
             } else {
                 document.getElementById('myDiv01').innerHTML = `Not ${expectedName}, not the expected age of ${expectedAge}. Your favorite color is ${myColor}.`;
@@ -45,17 +45,24 @@
                 document.getElementById('myDiv01').innerHTML += `<br>You are considered a senior citizen at this age.`;
             }
 
-            // Favorite color checks
-            if (myIn1 === "Kyle" && myColor.toLowerCase() === "blue") {
-                document.getElementById('myDiv01').innerHTML += `<br>That's great! Blue is a calming color.`;
-            } else if (myIn1 === "Brandon" && myColor.toLowerCase() === "red") {
-                document.getElementById('myDiv01').innerHTML += `<br>Red is a bold choice!`;
-            } else if (myIn1 === "Andy" && myColor.toLowerCase() === "green") {
-                document.getElementById('myDiv01').innerHTML += `<br>Green is the color of nature!`;
-            } else if (myIn1 === "Connor" && myColor.toLowerCase() === "yellow") {
-                document.getElementById('myDiv01').innerHTML += `<br>Yellow is so bright and cheerful!`;
-            } else if (myIn1 === "Dave" && myColor.toLowerCase() === "purple") {
-                document.getElementById('myDiv01').innerHTML += `<br>Purple is such a royal color!`;
+            // Favorite color checks for each person
+            const favoriteColors = {
+                'Kyle': 'blue',
+                'Brandon': 'red',
+                'Andy': 'green',
+                'Connor': 'yellow',
+                'Dave': 'purple',
+                'Josh': 'orange',
+                'Frank': 'black',
+                'Deefer': 'white'
+            };
+
+            if (myIn1 in favoriteColors) {
+                if (myColor === favoriteColors[myIn1]) {
+                    document.getElementById('myDiv01').innerHTML += `<br>Great choice! ${favoriteColors[myIn1]} is your favorite color.`;
+                } else {
+                    document.getElementById('myDiv01').innerHTML += `<br>That's interesting! ${favoriteColors[myIn1]} is actually the favorite color for ${myIn1}.`;
+                }
             } else {
                 document.getElementById('myDiv01').innerHTML += `<br>That's an interesting color choice!`;
             }
@@ -67,19 +74,29 @@
     <p>
         <input type="text" id="myText1" value="Kyle">
         <input type="number" id="myNum1" value="16">
-        <input type="text" id="myColor" placeholder="Favorite Color">
+        <select id="myColor">
+            <option value="">Select Favorite Color</option>
+            <option value="blue">Blue</option>
+            <option value="red">Red</option>
+            <option value="green">Green</option>
+            <option value="yellow">Yellow</option>
+            <option value="purple">Purple</option>
+            <option value="orange">Orange</option>
+            <option value="black">Black</option>
+            <option value="white">White</option>
+        </select>
         Clearing all fields does something too
     </p>
     <div class="center">
         <div id="myDiv01">...</div>
-        <input type="button" value="Check Kyle" onclick="checkNameAndNumber('Kyle', 16, 'blue')">
-        <input type="button" value="Check Brandon" onclick="checkNameAndNumber('Brandon', 20, 'red')">
-        <input type="button" value="Check Andy" onclick="checkNameAndNumber('Andy', 25, 'green')">
-        <input type="button" value="Check Connor" onclick="checkNameAndNumber('Connor', 30, 'yellow')">
-        <input type="button" value="Check Dave" onclick="checkNameAndNumber('Dave', 35, 'purple')">
-        <input type="button" value="Check Josh" onclick="checkNameAndNumber('Josh', 40, 'orange')">
-        <input type="button" value="Check Frank" onclick="checkNameAndNumber('Frank', 45, 'black')">
-        <input type="button" value="Check Deefer" onclick="checkNameAndNumber('Deefer', 50, 'white')"><br>
+        <input type="button" value="Check Kyle" onclick="checkNameAndNumber('Kyle', 16)">
+        <input type="button" value="Check Brandon" onclick="checkNameAndNumber('Brandon', 20)">
+        <input type="button" value="Check Andy" onclick="checkNameAndNumber('Andy', 25)">
+        <input type="button" value="Check Connor" onclick="checkNameAndNumber('Connor', 30)">
+        <input type="button" value="Check Dave" onclick="checkNameAndNumber('Dave', 35)">
+        <input type="button" value="Check Josh" onclick="checkNameAndNumber('Josh', 40)">
+        <input type="button" value="Check Frank" onclick="checkNameAndNumber('Frank', 45)">
+        <input type="button" value="Check Deefer" onclick="checkNameAndNumber('Deefer', 50)"><br>
     </div>
 </body>
 </html>
