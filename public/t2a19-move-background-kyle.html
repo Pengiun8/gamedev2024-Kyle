@@ -1,57 +1,48 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Centered Character with Moving Background</title>
-    <style>
-        body {
-            margin: 0;
-            overflow: hidden; /* Prevent scrollbars */
-            background-image: url('https://th.bing.com/th/id/OIP.J22kyN4jO8XgEyavcwjdSgHaD6?rs=1&pid=ImgDetMain');
-            background-repeat: no-repeat;
-            background-size: cover;
-            position: relative; /* Needed for absolute positioning of the character */
-        }
-        #myCharacter {
-            position: absolute;
-            width: 100px; /* Adjust as needed */
-            height: auto; /* Keep aspect ratio */
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%); /* Center the character */
-        }
-    </style>
-</head>
-<body>
-    <img id="myCharacter" src="https://www.pngkey.com/png/full/443-4430054_terraria-guide-png-clipart-terraria-minecraft-non-player.png" alt="Character">
 
-    <script>
-        let myGlobalX = 0;
-        let myClock01;
-        let mySpeed01 = 400;
+<body id="myBody" style="background-image: url('https://wallpaperset.com/w/full/a/4/6/179798.jpg'); background-repeat: no-repeat; background-size: cover;">
+  <script>
+    let myGlobalX = 0;
+    let myClock01;
+    let myClock02;
+    let mySpeed01 = 400;
+  </script>
 
-        document.body.style.backgroundPosition = myGlobalX + 'px 0px';
+  <h1 align="center">t2a19-move-background-kyle.html</h1>
 
-        function moveBackground() {
-            myGlobalX -= 5; // Move background to the left
-            document.body.style.backgroundPosition = myGlobalX + 'px 0px';
-        }
+  <input id="myButton01" type="button" value="Background Move Left" onclick="{
+    myGlobalX -= 5;
+    document.getElementById('myBody').style.backgroundPosition = myGlobalX + 'px 0px';
+  }">
 
-        function autoBackgroundFaster() {
-            clearInterval(myClock01);
-            mySpeed01 = Math.max(10, mySpeed01 - 30);
-            myClock01 = setInterval(moveBackground, mySpeed01);
-        }
+  <input type="button" value="Auto Background Left Faster" onclick="{
+    clearInterval(myClock01);
+    mySpeed01 -= 30;
+    if (mySpeed01 < 10) { mySpeed01 = 10; }
+    myClock01 = setInterval(function() {
+      document.getElementById('myButton01').click();
+    }, mySpeed01);
+  }">
 
-        function autoBackgroundSlower() {
-            clearInterval(myClock01);
-            mySpeed01 = Math.min(1000, mySpeed01 + 30);
-            myClock01 = setInterval(moveBackground, mySpeed01);
-        }
+  <input type="button" value="Auto Background Left Slower" onclick="{
+    clearInterval(myClock01);
+    mySpeed01 += 30;
+    if (mySpeed01 > 1000) { mySpeed01 = 1000; }
+    myClock01 = setInterval(function() {
+      document.getElementById('myButton01').click();
+    }, mySpeed01);
+  }">
 
-        // Example buttons to control movement (create buttons as needed)
-        // You can use document.createElement or static HTML buttons.
-    </script>
+  <input type="button" id="myButton02" value="Image Right" onclick="{
+    const img = document.getElementById('myImage01');
+    img.style.left = (parseInt(img.style.left) || 0) + 10 + 'px';
+  }"><br><br>
+
+  <input type="button" value="Auto Move Left" onclick="{
+    clearInterval(myClock02);
+    myClock02 = setInterval(function() {
+      document.getElementById('myButton02').click();
+    }, 30);
+  }">
+
+  <img id="myImage01" style="position:relative; width:100px; height:80px; top:0px; left:0px;" src="https://www.pngkey.com/png/full/443-4430054_terraria-guide-png-clipart-terraria-minecraft-non-player.png">
 </body>
-</html>
