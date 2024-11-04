@@ -6,9 +6,10 @@
         let myGlobalX = 0; // Background X position
         let myGlobalY = 0; // Background Y position
         let myClock01;
-        let myClock02;
         let isMoving = false; // Track if any automatic movement is active
         const keysPressed = new Set(); // Track pressed keys
+        const imgWidth = 100; // Width of the image
+        const imgHeight = 80;  // Height of the image
 
         function moveImage(direction) {
             let img = document.getElementById('myImage01');
@@ -16,24 +17,41 @@
             let left = parseInt(img.style.left, 10) || 0;
             let top = parseInt(img.style.top, 10) || 0;
 
+            // Calculate new position based on direction
+            let newLeft = left;
+            let newTop = top;
+
             switch (direction) {
                 case 'right':
-                    img.style.left = (left + step) + 'px';
+                    newLeft = left + step;
                     myGlobalX -= step; // Move background left
                     break;
                 case 'left':
-                    img.style.left = (left - step) + 'px';
+                    newLeft = left - step;
                     myGlobalX += step; // Move background right
                     break;
                 case 'up':
-                    img.style.top = (top - step) + 'px';
+                    newTop = top - step;
                     myGlobalY += step; // Move background down
                     break;
                 case 'down':
-                    img.style.top = (top + step) + 'px';
+                    newTop = top + step;
                     myGlobalY -= step; // Move background up
                     break;
             }
+
+            // Get viewport dimensions
+            const viewportWidth = window.innerWidth;
+            const viewportHeight = window.innerHeight;
+
+            // Check boundaries
+            if (newLeft >= 0 && newLeft <= viewportWidth - imgWidth) {
+                img.style.left = newLeft + 'px';
+            }
+            if (newTop >= 0 && newTop <= viewportHeight - imgHeight) {
+                img.style.top = newTop + 'px';
+            }
+
             updateBackgroundPosition();
         }
 
@@ -78,6 +96,17 @@
                     break;
             }
         });
+
+        // Center the character on page load
+        window.onload = function() {
+            const img = document.getElementById('myImage01');
+            const viewportWidth = window.innerWidth;
+            const viewportHeight = window.innerHeight;
+            const initialLeft = (viewportWidth - imgWidth) / 2;
+            const initialTop = (viewportHeight - imgHeight) / 2;
+            img.style.left = initialLeft + 'px';
+            img.style.top = initialTop + 'px';
+        };
     </script>
 </head>
 <body id="myBody" style="background-image: url('https://wallpaperset.com/w/full/a/4/6/179798.jpg'); background-repeat: repeat; background-size: cover;">
