@@ -1,8 +1,9 @@
 <body id="myBody" style="background-image: url('https://wallpaperset.com/w/full/a/4/6/179798.jpg'); background-repeat: repeat; background-size: cover;">
   <script>
     let myGlobalX = 0;
-    let myGlobalY = 0; // Variable for vertical background position
+    let myGlobalY = 0;
     let myClock01;
+    let myClock02;
     let mySpeed01 = 400;
 
     function moveImage(direction) {
@@ -39,6 +40,50 @@
         }
         document.getElementById('myBody').style.backgroundPosition = myGlobalX + 'px ' + myGlobalY + 'px';
     }
+
+    function autoMove(direction) {
+        clearInterval(myClock01);
+        myClock01 = setInterval(function() {
+            moveBackground(direction);
+        }, 100);
+    }
+
+    function stopMove() {
+        clearInterval(myClock01);
+        clearInterval(myClock02);
+    }
+
+    document.addEventListener('keydown', function(event) {
+        switch (event.key) {
+            case 'w':
+                moveImage('up');
+                break;
+            case 'a':
+                moveImage('left');
+                break;
+            case 's':
+                moveImage('down');
+                break;
+            case 'd':
+                moveImage('right');
+                break;
+            case 'W':
+                autoMove('up');
+                break;
+            case 'A':
+                autoMove('left');
+                break;
+            case 'S':
+                autoMove('down');
+                break;
+            case 'D':
+                autoMove('right');
+                break;
+            case ' ':
+                stopMove();
+                break;
+        }
+    });
   </script>
 
   <h1 align="center">t2a19-move-background-kyle.html</h1>
