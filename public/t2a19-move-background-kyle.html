@@ -92,43 +92,52 @@
 
   <h1 align="center">t2a19-move-background-kyle.html</h1>
 
-  <!-- Background Movement Controls -->
-  <input type="button" value="Background Move Left" onclick="moveBackground('left')">
-  <input type="button" value="Background Move Right" onclick="moveBackground('right')">
-  <input type="button" value="Background Move Up" onclick="moveBackground('up')">
-  <input type="button" value="Background Move Down" onclick="moveBackground('down')"><br><br>
-
-  <!-- Automatic Background Movement -->
-  <input type="button" value="Auto Background Left Faster" onclick="{
-    clearInterval(myClock01);
-    mySpeed01 -= 30;
-    if (mySpeed01 < 10) { mySpeed01 = 10; }
-    myClock01 = setInterval(function() {
-      moveBackground('left');
-    }, mySpeed01);
-  }">
-  <input type="button" value="Auto Background Left Slower" onclick="{
-    clearInterval(myClock01);
-    mySpeed01 += 30;
-    if (mySpeed01 > 1000) { mySpeed01 = 1000; }
-    myClock01 = setInterval(function() {
-      moveBackground('left');
-    }, mySpeed01);
-  }"><br><br>
-
-  <!-- Image Movement Controls -->
-  <input type="button" value="Image Move Left" onclick="moveImage('left')">
-  <input type="button" value="Image Move Right" onclick="moveImage('right')">
-  <input type="button" value="Image Move Up" onclick="moveImage('up')">
-  <input type="button" value="Image Move Down" onclick="moveImage('down')"><br><br>
-
-  <!-- Automatic Image Movement -->
-  <input type="button" value="Auto Move Image Left" onclick="{
-    clearInterval(myClock02);
-    myClock02 = setInterval(function() {
-      moveImage('left');
-    }, 30);
-  }">
+  <table align="center" style="border-collapse: collapse; margin: 20px;">
+    <tr>
+      <td><input type="button" value="Background Move Left" onclick="moveBackground('left')"></td>
+      <td><input type="button" value="Background Move Right" onclick="moveBackground('right')"></td>
+    </tr>
+    <tr>
+      <td><input type="button" value="Background Move Up" onclick="moveBackground('up')"></td>
+      <td><input type="button" value="Background Move Down" onclick="moveBackground('down')"></td>
+    </tr>
+    <tr>
+      <td><input type="button" value="Auto Background Left Faster" onclick="{
+        clearInterval(myClock01);
+        mySpeed01 -= 30;
+        if (mySpeed01 < 10) { mySpeed01 = 10; }
+        myClock01 = setInterval(function() {
+          moveBackground('left');
+        }, mySpeed01);
+      }"></td>
+      <td><input type="button" value="Auto Background Left Slower" onclick="{
+        clearInterval(myClock01);
+        mySpeed01 += 30;
+        if (mySpeed01 > 1000) { mySpeed01 = 1000; }
+        myClock01 = setInterval(function() {
+          moveBackground('left');
+        }, mySpeed01);
+      }"></td>
+    </tr>
+    <tr>
+      <td><input type="button" value="Image Move Left" onclick="moveImage('left')"></td>
+      <td><input type="button" value="Image Move Right" onclick="moveImage('right')"></td>
+    </tr>
+    <tr>
+      <td><input type="button" value="Image Move Up" onclick="moveImage('up')"></td>
+      <td><input type="button" value="Image Move Down" onclick="moveImage('down')"></td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        <input type="button" value="Auto Move Image Left" onclick="{
+          clearInterval(myClock02);
+          myClock02 = setInterval(function() {
+            moveImage('left');
+          }, 30);
+        }">
+      </td>
+    </tr>
+  </table>
 
   <img id="myImage01" style="position:relative; width:100px; height:80px; top:0px; left:0px;" src="https://www.pngkey.com/png/full/443-4430054_terraria-guide-png-clipart-terraria-minecraft-non-player.png">
 </body>
