@@ -2,6 +2,36 @@
 <html>
 <head>
     <title>t2a19-move-background-kyle</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden; /* Prevent scrolling */
+        }
+        #myBody {
+            background-image: url('https://wallpaperset.com/w/full/a/4/6/179798.jpg');
+            background-repeat: repeat;
+            background-size: cover;
+            height: 100vh; /* Full height of the viewport */
+            position: relative; /* To position the bottom border */
+        }
+        #controls {
+            position: absolute;
+            top: 10px; /* Adjust top position for the control panel */
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10; /* Bring controls above the background */
+        }
+        #bottomBorder {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 20px; /* Height of the bottom border */
+            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+            border-top: 2px solid white; /* White top border */
+            z-index: 5; /* Keep it above the background */
+        }
+    </style>
     <script>
         let myGlobalX = 0; // Background X position
         let myGlobalY = 0; // Background Y position
@@ -10,10 +40,10 @@
         const keysPressed = new Set(); // Track pressed keys
         const imgWidth = 100; // Width of the image
         const imgHeight = 80;  // Height of the image
+        const step = 10; // Movement step
 
         function moveImage(direction) {
             let img = document.getElementById('myImage01');
-            let step = 10;
             let left = parseInt(img.style.left, 10) || 0;
             let top = parseInt(img.style.top, 10) || 0;
 
@@ -48,7 +78,7 @@
             if (newLeft >= 0 && newLeft <= viewportWidth - imgWidth) {
                 img.style.left = newLeft + 'px';
             }
-            if (newTop >= 0 && newTop <= viewportHeight - imgHeight) {
+            if (newTop >= 0 && newTop <= viewportHeight - imgHeight - 20) { // Account for the bottom border
                 img.style.top = newTop + 'px';
             }
 
@@ -109,36 +139,40 @@
         };
     </script>
 </head>
-<body id="myBody" style="background-image: url('https://wallpaperset.com/w/full/a/4/6/179798.jpg'); background-repeat: repeat; background-size: cover;">
-    <h1 align="center">t2a19-move-background-kyle.html</h1>
+<body id="myBody">
+    <div id="controls">
+        <h1 align="center">t2a19-move-background-kyle.html</h1>
 
-    <h2 align="center">Image Movement Controls</h2>
-    <table border="1" align="center">
-        <tr>
-            <td></td>
-            <td><input type="button" value="Up (W)" onclick="moveImage('up')"></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td><input type="button" value="Left (A)" onclick="moveImage('left')"></td>
-            <td></td>
-            <td><input type="button" value="Right (D)" onclick="moveImage('right')"></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td><input type="button" value="Down (S)" onclick="moveImage('down')"></td>
-            <td></td>
-        </tr>
-    </table>
+        <h2 align="center">Image Movement Controls</h2>
+        <table border="1" align="center">
+            <tr>
+                <td></td>
+                <td><input type="button" value="Up (W)" onclick="moveImage('up')"></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><input type="button" value="Left (A)" onclick="moveImage('left')"></td>
+                <td></td>
+                <td><input type="button" value="Right (D)" onclick="moveImage('right')"></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input type="button" value="Down (S)" onclick="moveImage('down')"></td>
+                <td></td>
+            </tr>
+        </table>
 
-    <h2 align="center">Background Movement Controls</h2>
-    <table border="1" align="center">
-        <tr>
-            <td><input type="button" value="Auto Move Left" onclick="autoMove('left')"></td>
-            <td><input type="button" value="Stop (Space)" onclick="stopMove()"></td>
-        </tr>
-    </table>
+        <h2 align="center">Background Movement Controls</h2>
+        <table border="1" align="center">
+            <tr>
+                <td><input type="button" value="Auto Move Left" onclick="autoMove('left')"></td>
+                <td><input type="button" value="Stop (Space)" onclick="stopMove()"></td>
+            </tr>
+        </table>
+    </div>
 
+    <div id="bottomBorder"></div> <!-- Bottom border -->
+    
     <img id="myImage01" style="position:relative; width:100px; height:80px; top:0px; left:0px;" src="https://www.pngkey.com/png/full/443-4430054_terraria-guide-png-clipart-terraria-minecraft-non-player.png">
 </body>
 </html>
