@@ -61,7 +61,7 @@
                 if (myColor === favoriteColors[expectedName]) {
                     document.getElementById('myDiv01').innerHTML += `<br>Great choice! ${myColor} is the favorite color for ${expectedName}.`;
                 } else {
-                    document.getElementById('myDiv01').innerHTML += `<br>That's interesting! ${favoriteColors[expectedName]} is actually the favorite color for ${expectedName}.`;
+                    document.getElementById('myDiv01').innerHTML += `<br>Oops! ${myColor} is not the favorite color for ${expectedName}. Their favorite color is ${favoriteColors[expectedName]}.`;
                 }
             } else {
                 document.getElementById('myDiv01').innerHTML += `<br>That's an interesting color choice!`;
