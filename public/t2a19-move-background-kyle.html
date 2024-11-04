@@ -2,32 +2,52 @@
   <script>
     let myGlobalX = 0;
     let myGlobalY = 0; // Variable for vertical background position
-    let imgX = 0; // Variable for image horizontal position
-    let imgY = 0; // Variable for image vertical position
     let myClock01;
-    let myClock02;
     let mySpeed01 = 400;
+
+    function moveImage(direction) {
+        let img = document.getElementById('myImage01');
+        let step = 10;
+        let left = parseInt(img.style.left, 10) || 0;
+        let top = parseInt(img.style.top, 10) || 0;
+
+        switch (direction) {
+            case 'right':
+                img.style.left = (left + step) + 'px';
+                break;
+            case 'left':
+                img.style.left = (left - step) + 'px';
+                break;
+            case 'up':
+                img.style.top = (top - step) + 'px';
+                break;
+            case 'down':
+                img.style.top = (top + step) + 'px';
+                break;
+        }
+    }
+
+    function moveBackground(direction) {
+        if (direction === 'left') {
+            myGlobalX -= 5;
+        } else if (direction === 'right') {
+            myGlobalX += 5;
+        } else if (direction === 'up') {
+            myGlobalY -= 5;
+        } else if (direction === 'down') {
+            myGlobalY += 5;
+        }
+        document.getElementById('myBody').style.backgroundPosition = myGlobalX + 'px ' + myGlobalY + 'px';
+    }
   </script>
 
   <h1 align="center">t2a19-move-background-kyle.html</h1>
 
   <!-- Background Movement Controls -->
-  <input id="myButtonLeft" type="button" value="Background Move Left" onclick="{
-    myGlobalX -= 5;
-    document.getElementById('myBody').style.backgroundPosition = myGlobalX + 'px ' + myGlobalY + 'px';
-  }">
-  <input id="myButtonRight" type="button" value="Background Move Right" onclick="{
-    myGlobalX += 5;
-    document.getElementById('myBody').style.backgroundPosition = myGlobalX + 'px ' + myGlobalY + 'px';
-  }">
-  <input id="myButtonUp" type="button" value="Background Move Up" onclick="{
-    myGlobalY -= 5;
-    document.getElementById('myBody').style.backgroundPosition = myGlobalX + 'px ' + myGlobalY + 'px';
-  }">
-  <input id="myButtonDown" type="button" value="Background Move Down" onclick="{
-    myGlobalY += 5;
-    document.getElementById('myBody').style.backgroundPosition = myGlobalX + 'px ' + myGlobalY + 'px';
-  }"><br><br>
+  <input type="button" value="Background Move Left" onclick="moveBackground('left')">
+  <input type="button" value="Background Move Right" onclick="moveBackground('right')">
+  <input type="button" value="Background Move Up" onclick="moveBackground('up')">
+  <input type="button" value="Background Move Down" onclick="moveBackground('down')"><br><br>
 
   <!-- Automatic Background Movement -->
   <input type="button" value="Auto Background Left Faster" onclick="{
@@ -35,7 +55,7 @@
     mySpeed01 -= 30;
     if (mySpeed01 < 10) { mySpeed01 = 10; }
     myClock01 = setInterval(function() {
-      document.getElementById('myButtonLeft').click();
+      moveBackground('left');
     }, mySpeed01);
   }">
   <input type="button" value="Auto Background Left Slower" onclick="{
@@ -43,33 +63,21 @@
     mySpeed01 += 30;
     if (mySpeed01 > 1000) { mySpeed01 = 1000; }
     myClock01 = setInterval(function() {
-      document.getElementById('myButtonLeft').click();
+      moveBackground('left');
     }, mySpeed01);
   }"><br><br>
 
   <!-- Image Movement Controls -->
-  <input type="button" id="myButtonImageLeft" value="Image Move Left" onclick="{
-    imgX -= 10;
-    document.getElementById('myImage01').style.left = imgX + 'px';
-  }">
-  <input type="button" id="myButtonImageRight" value="Image Move Right" onclick="{
-    imgX += 10;
-    document.getElementById('myImage01').style.left = imgX + 'px';
-  }">
-  <input type="button" id="myButtonImageUp" value="Image Move Up" onclick="{
-    imgY -= 10;
-    document.getElementById('myImage01').style.top = imgY + 'px';
-  }">
-  <input type="button" id="myButtonImageDown" value="Image Move Down" onclick="{
-    imgY += 10;
-    document.getElementById('myImage01').style.top = imgY + 'px';
-  }"><br><br>
+  <input type="button" value="Image Move Left" onclick="moveImage('left')">
+  <input type="button" value="Image Move Right" onclick="moveImage('right')">
+  <input type="button" value="Image Move Up" onclick="moveImage('up')">
+  <input type="button" value="Image Move Down" onclick="moveImage('down')"><br><br>
 
   <!-- Automatic Image Movement -->
   <input type="button" value="Auto Move Image Left" onclick="{
     clearInterval(myClock02);
     myClock02 = setInterval(function() {
-      document.getElementById('myButtonImageLeft').click();
+      moveImage('left');
     }, 30);
   }">
 
