@@ -5,6 +5,7 @@
     let myClock01;
     let myClock02;
     let mySpeed01 = 400;
+    let isMoving = false; // Track if any automatic movement is active
 
     function moveImage(direction) {
         let img = document.getElementById('myImage01');
@@ -42,6 +43,8 @@
     }
 
     function autoMove(direction) {
+        if (isMoving) return; // Prevent multiple intervals
+        isMoving = true;
         clearInterval(myClock01);
         myClock01 = setInterval(function() {
             moveBackground(direction);
@@ -51,6 +54,7 @@
     function stopMove() {
         clearInterval(myClock01);
         clearInterval(myClock02);
+        isMoving = false; // Reset the moving state
     }
 
     document.addEventListener('keydown', function(event) {
