@@ -9,6 +9,7 @@
         let myClock02;
         let mySpeed01 = 400;
         let isMoving = false; // Track if any automatic movement is active
+        const keysPressed = new Set(); // Track pressed keys
 
         function moveImage(direction) {
             let img = document.getElementById('myImage01');
@@ -60,20 +61,24 @@
             isMoving = false; // Reset the moving state
         }
 
+        function updateMovement() {
+            if (keysPressed.has('w')) moveImage('up');
+            if (keysPressed.has('s')) moveImage('down');
+            if (keysPressed.has('a')) moveImage('left');
+            if (keysPressed.has('d')) moveImage('right');
+        }
+
+        document.addEventListener('keydown', function(event) {
+            keysPressed.add(event.key);
+            updateMovement();
+        });
+
+        document.addEventListener('keyup', function(event) {
+            keysPressed.delete(event.key);
+        });
+
         document.addEventListener('keydown', function(event) {
             switch (event.key) {
-                case 'w':
-                    moveImage('up');
-                    break;
-                case 'a':
-                    moveImage('left');
-                    break;
-                case 's':
-                    moveImage('down');
-                    break;
-                case 'd':
-                    moveImage('right');
-                    break;
                 case 'W':
                     autoMove('up');
                     break;
