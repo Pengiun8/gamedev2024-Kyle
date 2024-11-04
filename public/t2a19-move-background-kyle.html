@@ -1,143 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>t2a19-move-background-kyle</title>
+    <script>
+        let myGlobalX = 0;
+        let myGlobalY = 0;
+        let myClock01;
+        let myClock02;
+        let mySpeed01 = 400;
+        let isMoving = false; // Track if any automatic movement is active
+
+        function moveImage(direction) {
+            let img = document.getElementById('myImage01');
+            let step = 10;
+            let left = parseInt(img.style.left, 10) || 0;
+            let top = parseInt(img.style.top, 10) || 0;
+
+            switch (direction) {
+                case 'right':
+                    img.style.left = (left + step) + 'px';
+                    break;
+                case 'left':
+                    img.style.left = (left - step) + 'px';
+                    break;
+                case 'up':
+                    img.style.top = (top - step) + 'px';
+                    break;
+                case 'down':
+                    img.style.top = (top + step) + 'px';
+                    break;
+            }
+        }
+
+        function moveBackground(direction) {
+            if (direction === 'left') {
+                myGlobalX -= 5;
+            } else if (direction === 'right') {
+                myGlobalX += 5;
+            } else if (direction === 'up') {
+                myGlobalY -= 5;
+            } else if (direction === 'down') {
+                myGlobalY += 5;
+            }
+            document.getElementById('myBody').style.backgroundPosition = myGlobalX + 'px ' + myGlobalY + 'px';
+        }
+
+        function autoMove(direction) {
+            if (isMoving) return; // Prevent multiple intervals
+            isMoving = true;
+            clearInterval(myClock01);
+            myClock01 = setInterval(function() {
+                moveBackground(direction);
+            }, 100);
+        }
+
+        function stopMove() {
+            clearInterval(myClock01);
+            clearInterval(myClock02);
+            isMoving = false; // Reset the moving state
+        }
+
+        document.addEventListener('keydown', function(event) {
+            switch (event.key) {
+                case 'w':
+                    moveImage('up');
+                    break;
+                case 'a':
+                    moveImage('left');
+                    break;
+                case 's':
+                    moveImage('down');
+                    break;
+                case 'd':
+                    moveImage('right');
+                    break;
+                case 'W':
+                    autoMove('up');
+                    break;
+                case 'A':
+                    autoMove('left');
+                    break;
+                case 'S':
+                    autoMove('down');
+                    break;
+                case 'D':
+                    autoMove('right');
+                    break;
+                case ' ':
+                    stopMove();
+                    break;
+            }
+        });
+    </script>
+</head>
 <body id="myBody" style="background-image: url('https://wallpaperset.com/w/full/a/4/6/179798.jpg'); background-repeat: repeat; background-size: cover;">
-  <script>
-    let myGlobalX = 0;
-    let myGlobalY = 0;
-    let myClock01;
-    let myClock02;
-    let mySpeed01 = 400;
-    let isMoving = false; // Track if any automatic movement is active
+    <h1 align="center">t2a19-move-background-kyle.html</h1>
 
-    function moveImage(direction) {
-        let img = document.getElementById('myImage01');
-        let step = 10;
-        let left = parseInt(img.style.left, 10) || 0;
-        let top = parseInt(img.style.top, 10) || 0;
+    <h2 align="center">Image Movement Controls</h2>
+    <table border="1" align="center">
+        <tr>
+            <td></td>
+            <td><input type="button" value="Up (W)" onclick="moveImage('up')"></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td><input type="button" value="Left (A)" onclick="moveImage('left')"></td>
+            <td></td>
+            <td><input type="button" value="Right (D)" onclick="moveImage('right')"></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><input type="button" value="Down (S)" onclick="moveImage('down')"></td>
+            <td></td>
+        </tr>
+    </table>
 
-        switch (direction) {
-            case 'right':
-                img.style.left = (left + step) + 'px';
-                break;
-            case 'left':
-                img.style.left = (left - step) + 'px';
-                break;
-            case 'up':
-                img.style.top = (top - step) + 'px';
-                break;
-            case 'down':
-                img.style.top = (top + step) + 'px';
-                break;
-        }
-    }
+    <h2 align="center">Background Movement Controls</h2>
+    <table border="1" align="center">
+        <tr>
+            <td><input type="button" value="Background Move Left" onclick="moveBackground('left')"></td>
+            <td><input type="button" value="Background Move Right" onclick="moveBackground('right')"></td>
+        </tr>
+        <tr>
+            <td><input type="button" value="Background Move Up" onclick="moveBackground('up')"></td>
+            <td><input type="button" value="Background Move Down" onclick="moveBackground('down')"></td>
+        </tr>
+        <tr>
+            <td><input type="button" value="Auto Move Left" onclick="autoMove('left')"></td>
+            <td><input type="button" value="Stop (Space)" onclick="stopMove()"></td>
+        </tr>
+    </table>
 
-    function moveBackground(direction) {
-        if (direction === 'left') {
-            myGlobalX -= 5;
-        } else if (direction === 'right') {
-            myGlobalX += 5;
-        } else if (direction === 'up') {
-            myGlobalY -= 5;
-        } else if (direction === 'down') {
-            myGlobalY += 5;
-        }
-        document.getElementById('myBody').style.backgroundPosition = myGlobalX + 'px ' + myGlobalY + 'px';
-    }
-
-    function autoMove(direction) {
-        if (isMoving) return; // Prevent multiple intervals
-        isMoving = true;
-        clearInterval(myClock01);
-        myClock01 = setInterval(function() {
-            moveBackground(direction);
-        }, 100);
-    }
-
-    function stopMove() {
-        clearInterval(myClock01);
-        clearInterval(myClock02);
-        isMoving = false; // Reset the moving state
-    }
-
-    document.addEventListener('keydown', function(event) {
-        switch (event.key) {
-            case 'w':
-                moveImage('up');
-                break;
-            case 'a':
-                moveImage('left');
-                break;
-            case 's':
-                moveImage('down');
-                break;
-            case 'd':
-                moveImage('right');
-                break;
-            case 'W':
-                autoMove('up');
-                break;
-            case 'A':
-                autoMove('left');
-                break;
-            case 'S':
-                autoMove('down');
-                break;
-            case 'D':
-                autoMove('right');
-                break;
-            case ' ':
-                stopMove();
-                break;
-        }
-    });
-  </script>
-
-  <h1 align="center">t2a19-move-background-kyle.html</h1>
-
-  <table align="center" style="border-collapse: collapse; margin: 20px;">
-    <tr>
-      <td></td>
-      <td><input type="button" value="Image Move Up" onclick="moveImage('up')"></td>
-      <td></td>
-    </tr>
-    <tr>
-      <td><input type="button" value="Image Move Left" onclick="moveImage('left')"></td>
-      <td><input type="button" value="Stop" onclick="stopMove()"></td>
-      <td><input type="button" value="Image Move Right" onclick="moveImage('right')"></td>
-    </tr>
-    <tr>
-      <td></td>
-      <td><input type="button" value="Image Move Down" onclick="moveImage('down')"></td>
-      <td></td>
-    </tr>
-  </table>
-
-  <table align="center" style="border-collapse: collapse; margin: 20px;">
-    <tr>
-      <td><input type="button" value="Background Move Left" onclick="moveBackground('left')"></td>
-      <td><input type="button" value="Background Move Right" onclick="moveBackground('right')"></td>
-    </tr>
-    <tr>
-      <td><input type="button" value="Background Move Up" onclick="moveBackground('up')"></td>
-      <td><input type="button" value="Background Move Down" onclick="moveBackground('down')"></td>
-    </tr>
-    <tr>
-      <td><input type="button" value="Auto Background Left Faster" onclick="{
-        clearInterval(myClock01);
-        mySpeed01 -= 30;
-        if (mySpeed01 < 10) { mySpeed01 = 10; }
-        myClock01 = setInterval(function() {
-          moveBackground('left');
-        }, mySpeed01);
-      }"></td>
-      <td><input type="button" value="Auto Background Left Slower" onclick="{
-        clearInterval(myClock01);
-        mySpeed01 += 30;
-        if (mySpeed01 > 1000) { mySpeed01 = 1000; }
-        myClock01 = setInterval(function() {
-          moveBackground('left');
-        }, mySpeed01);
-      }"></td>
-    </tr>
-  </table>
-
-  <img id="myImage01" style="position:relative; width:100px; height:80px; top:0px; left:0px;" src="https://www.pngkey.com/png/full/443-4430054_terraria-guide-png-clipart-terraria-minecraft-non-player.png">
+    <img id="myImage01" style="position:relative; width:100px; height:80px; top:0px; left:0px;" src="https://www.pngkey.com/png/full/443-4430054_terraria-guide-png-clipart-terraria-minecraft-non-player.png">
 </body>
+</html>
