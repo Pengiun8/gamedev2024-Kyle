@@ -57,11 +57,11 @@
                 'Deefer': 'white'
             };
 
-            if (myIn1 in favoriteColors) {
-                if (myColor === favoriteColors[myIn1]) {
-                    document.getElementById('myDiv01').innerHTML += `<br>Great choice! ${favoriteColors[myIn1]} is your favorite color.`;
+            if (expectedName in favoriteColors) {
+                if (myColor === favoriteColors[expectedName]) {
+                    document.getElementById('myDiv01').innerHTML += `<br>Great choice! ${myColor} is the favorite color for ${expectedName}.`;
                 } else {
-                    document.getElementById('myDiv01').innerHTML += `<br>That's interesting! ${favoriteColors[myIn1]} is actually the favorite color for ${myIn1}.`;
+                    document.getElementById('myDiv01').innerHTML += `<br>That's interesting! ${favoriteColors[expectedName]} is actually the favorite color for ${expectedName}.`;
                 }
             } else {
                 document.getElementById('myDiv01').innerHTML += `<br>That's an interesting color choice!`;
