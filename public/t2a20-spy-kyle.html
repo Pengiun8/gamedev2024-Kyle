@@ -1,24 +1,25 @@
-<h1 align=center>t2a20-spy-Kyle.html</h1>
-<textarea id="myArea01" rows=4 cols=70>Hello how are you</textarea><br>
+<h1 align="center">t2a20-spy-Kyle.html</h1>
+<textarea id="myArea01" rows="4" cols="70">Hello how are you</textarea><br>
 
-<input type=button value="Encrypt" onclick="{
-  let myTemp = ''
-  myString = document.getElementById('myArea01').value.toLowerCase().split('')
-  for (let myLoop=0; myLoop < myString.length; myLoop++){
-  myTemp = myString[myLoop}
-  if (myString[myLoop] =='e') {myTemp = 'f'}
-  if (myString[myLoop] =='h') {myTemp = 'i'}
-  myString[myLoop] = myTemp
-}
-  document.getElementById('myArea02').value = myString.join('')
-  }"><br><br>
-
-<textarea id="myArea02" rows=4 cols=70></textarea><br>
-
-<input type=button value="decrypt" onclick="{
-  alert('Sorry, you have to do this!')
+<input type="button" value="Encrypt" onclick="{
+  let myTemp = '';
+  let myString = document.getElementById('myArea01').value.toLowerCase().split(''); // Split the string into an array of characters
+  for (let myLoop = 0; myLoop < myString.length; myLoop++) {
+    // Encrypt 'e' to 'f' and 'h' to 'i'
+    if (myString[myLoop] === 'e') {
+      myString[myLoop] = 'f'; // Replace 'e' with 'f'
+    } else if (myString[myLoop] === 'h') {
+      myString[myLoop] = 'i'; // Replace 'h' with 'i'
+    }
+  }
+  // Join the array back into a string and output it to myArea02
+  document.getElementById('myArea02').value = myString.join('');
 }"><br><br>
 
-<textarea id="myArea03" rows=4 cols=70></textarea><br>
-  
-  
+<textarea id="myArea02" rows="4" cols="70"></textarea><br>
+
+<input type="button" value="decrypt" onclick="{
+  alert('Sorry, you have to do this!');
+}"><br><br>
+
+<textarea id="myArea03" rows="4" cols="70"></textarea><br>
