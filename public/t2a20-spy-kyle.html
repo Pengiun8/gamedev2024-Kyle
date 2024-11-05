@@ -7,9 +7,8 @@
   for (let myLoop = 0; myLoop < myString.length; myLoop++) {
     if (myString[myLoop] === 'e') {
       myString[myLoop] = 'f'; 
-    } else if (myString[myLoop] === 'h') {
-      myString[myLoop] = 'i'; 
-    }
+    } else if (myString[myLoop] === 'h') {myTemp = 'i'}
+   
   }
   // Join the array back into a string and output it to myArea02
   document.getElementById('myArea02').value = myString.join('');
