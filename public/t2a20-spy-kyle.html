@@ -5,11 +5,10 @@
   let myTemp = '';
   let myString = document.getElementById('myArea01').value.toLowerCase().split(''); // Split the string into an array of characters
   for (let myLoop = 0; myLoop < myString.length; myLoop++) {
-    // Encrypt 'e' to 'f' and 'h' to 'i'
     if (myString[myLoop] === 'e') {
-      myString[myLoop] = 'f'; // Replace 'e' with 'f'
+      myString[myLoop] = 'f'; 
     } else if (myString[myLoop] === 'h') {
-      myString[myLoop] = 'i'; // Replace 'h' with 'i'
+      myString[myLoop] = 'i'; 
     }
   }
   // Join the array back into a string and output it to myArea02
