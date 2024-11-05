@@ -3,72 +3,90 @@
 <head>
     <title>t2a19-move-background-kyle</title>
     <style>
+        /* Apply styles to the body element */
         body {
             margin: 0;
-            overflow: hidden; /* Prevent scrolling */
+            overflow: hidden; /* Prevent scrolling when moving image or background */
         }
+
+        /* Styling for the background of the page */
         #myBody {
             background-image: url('https://wallpaperset.com/w/full/a/4/6/179798.jpg');
-            background-repeat: repeat;
-            background-size: cover;
-            height: 100vh; /* Full height of the viewport */
-            position: relative; /* To position borders */
+            background-repeat: repeat; /* Make the background image repeat */
+            background-size: cover; /* Ensure the background image covers the entire viewport */
+            height: 100vh; /* Set the height to fill the entire viewport */
+            position: relative; /* To position the borders absolutely within this container */
         }
+
+        /* Styling for the controls container */
         #controls {
             position: absolute;
-            top: 10px; /* Adjust top position for the control panel */
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 10; /* Bring controls above the background */
+            top: 10px; /* Position the controls at the top of the screen */
+            left: 50%; /* Center horizontally */
+            transform: translateX(-50%); /* Correct for the centering */
+            z-index: 10; /* Make sure controls are above the background */
         }
+
+        /* Styling for the border elements */
         .border {
             position: absolute;
             background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
-            z-index: 5; /* Keep it above the background */
+            z-index: 5; /* Ensure borders are above the background */
         }
+
+        /* Top border style */
         #topBorder {
             top: 0;
             left: 0;
             width: 100%;
-            height: 20px; /* Height of the top border */
-            border-bottom: 2px solid white; /* White bottom border */
+            height: 20px; /* Set height of top border */
+            border-bottom: 2px solid white; /* White border at the bottom */
         }
+
+        /* Bottom border style */
         #bottomBorder {
             bottom: 0;
             left: 0;
             width: 100%;
-            height: 20px; /* Height of the bottom border */
-            border-top: 2px solid white; /* White top border */
+            height: 20px; /* Set height of bottom border */
+            border-top: 2px solid white; /* White border at the top */
         }
+
+        /* Left border style */
         #leftBorder {
             top: 0;
             left: 0;
-            width: 20px; /* Width of the left border */
+            width: 20px; /* Set width of left border */
             height: 100%; /* Full height of the viewport */
-            border-right: 2px solid white; /* White right border */
+            border-right: 2px solid white; /* White border on the right */
         }
+
+        /* Right border style */
         #rightBorder {
             top: 0;
             right: 0;
-            width: 20px; /* Width of the right border */
+            width: 20px; /* Set width of right border */
             height: 100%; /* Full height of the viewport */
-            border-left: 2px solid white; /* White left border */
+            border-left: 2px solid white; /* White border on the left */
         }
     </style>
+
     <script>
+        // Global variables to control the background position
         let myGlobalX = 0; // Background X position
         let myGlobalY = 0; // Background Y position
-        let myClock01;
-        let isMoving = false; // Track if any automatic movement is active
-        const keysPressed = new Set(); // Track pressed keys
+        let myClock01; // For controlling automatic movement
+        let isMoving = false; // Flag to check if automatic movement is active
+        const keysPressed = new Set(); // To track which keys are pressed
         const imgWidth = 100; // Width of the image
-        const imgHeight = 80;  // Height of the image
-        const step = 10; // Movement step
+        const imgHeight = 80; // Height of the image
+        const step = 10; // Movement step for the image
 
+        // Function to move the image based on direction
         function moveImage(direction) {
             let img = document.getElementById('myImage01');
-            let left = parseInt(img.style.left, 10) || 0;
-            let top = parseInt(img.style.top, 10) || 0;
+            let left = parseInt(img.style.left, 10) || 0; // Get current left position, default to 0
+            let top = parseInt(img.style.top, 10) || 0; // Get current top position, default to 0
 
             // Calculate new position based on direction
             let newLeft = left;
@@ -76,56 +94,61 @@
 
             switch (direction) {
                 case 'right':
-                    newLeft = left + step;
-                    myGlobalX -= step; // Move background left
+                    newLeft = left + step; // Move right
+                    myGlobalX -= step; // Move background to the left
                     break;
                 case 'left':
-                    newLeft = left - step;
-                    myGlobalX += step; // Move background right
+                    newLeft = left - step; // Move left
+                    myGlobalX += step; // Move background to the right
                     break;
                 case 'up':
-                    newTop = top - step;
+                    newTop = top - step; // Move up
                     myGlobalY += step; // Move background down
                     break;
                 case 'down':
-                    newTop = top + step;
+                    newTop = top + step; // Move down
                     myGlobalY -= step; // Move background up
                     break;
             }
 
-            // Get viewport dimensions
+            // Get the viewport dimensions
             const viewportWidth = window.innerWidth;
             const viewportHeight = window.innerHeight;
 
-            // Check boundaries
-            if (newLeft >= 20 && newLeft <= viewportWidth - imgWidth - 20) { // Account for side borders
+            // Ensure the image stays within boundaries, considering the borders
+            if (newLeft >= 20 && newLeft <= viewportWidth - imgWidth - 20) { // Ensure within left-right limits
                 img.style.left = newLeft + 'px';
             }
-            if (newTop >= 20 && newTop <= viewportHeight - imgHeight - 20) { // Account for top and bottom borders
+            if (newTop >= 20 && newTop <= viewportHeight - imgHeight - 20) { // Ensure within top-bottom limits
                 img.style.top = newTop + 'px';
             }
 
+            // Update background position
             updateBackgroundPosition();
         }
 
+        // Function to update the background position based on the global variables
         function updateBackgroundPosition() {
             document.getElementById('myBody').style.backgroundPosition = myGlobalX + 'px ' + myGlobalY + 'px';
         }
 
+        // Function for automatic movement in a given direction
         function autoMove(direction) {
-            if (isMoving) return; // Prevent multiple intervals
+            if (isMoving) return; // Prevent multiple intervals from running simultaneously
             isMoving = true;
-            clearInterval(myClock01);
+            clearInterval(myClock01); // Clear previous movement interval
             myClock01 = setInterval(function() {
-                moveImage(direction);
+                moveImage(direction); // Move the image every 100ms
             }, 100);
         }
 
+        // Function to stop the movement (e.g., when spacebar is pressed)
         function stopMove() {
             clearInterval(myClock01);
-            isMoving = false; // Reset the moving state
+            isMoving = false; // Stop the movement
         }
 
+        // Function to update movement based on pressed keys
         function updateMovement() {
             if (keysPressed.has('w')) moveImage('up');
             if (keysPressed.has('s')) moveImage('down');
@@ -133,39 +156,43 @@
             if (keysPressed.has('d')) moveImage('right');
         }
 
+        // Event listener for when a key is pressed
         document.addEventListener('keydown', function(event) {
-            keysPressed.add(event.key);
-            updateMovement();
+            keysPressed.add(event.key); // Add pressed key to the set
+            updateMovement(); // Update the image position based on the pressed keys
         });
 
+        // Event listener for when a key is released
         document.addEventListener('keyup', function(event) {
-            keysPressed.delete(event.key);
+            keysPressed.delete(event.key); // Remove released key from the set
         });
 
+        // Special case for when the spacebar is pressed to stop the movement
         document.addEventListener('keydown', function(event) {
-            switch (event.key) {
-                case ' ':
-                    stopMove();
-                    break;
+            if (event.key === ' ') {
+                stopMove(); // Stop movement if spacebar is pressed
             }
         });
 
-        // Center the character on page load
+        // Center the image when the page is loaded
         window.onload = function() {
             const img = document.getElementById('myImage01');
             const viewportWidth = window.innerWidth;
             const viewportHeight = window.innerHeight;
-            const initialLeft = (viewportWidth - imgWidth) / 2;
-            const initialTop = (viewportHeight - imgHeight) / 2;
-            img.style.left = initialLeft + 'px';
-            img.style.top = initialTop + 'px';
+            const initialLeft = (viewportWidth - imgWidth) / 2; // Center horizontally
+            const initialTop = (viewportHeight - imgHeight) / 2; // Center vertically
+            img.style.left = initialLeft + 'px'; // Set initial position
+            img.style.top = initialTop + 'px';  // Set initial position
         };
     </script>
 </head>
+
 <body id="myBody">
+    <!-- Control Panel for the image and background movement -->
     <div id="controls">
         <h1 align="center">t2a19-move-background-kyle.html</h1>
 
+        <!-- Image Movement Controls -->
         <h2 align="center">Image Movement Controls</h2>
         <table border="1" align="center">
             <tr>
@@ -185,6 +212,7 @@
             </tr>
         </table>
 
+        <!-- Background Movement Controls -->
         <h2 align="center">Background Movement Controls</h2>
         <table border="1" align="center">
             <tr>
@@ -194,11 +222,14 @@
         </table>
     </div>
 
+    <!-- Border elements around the page -->
     <div class="border" id="topBorder"></div> <!-- Top border -->
     <div class="border" id="bottomBorder"></div> <!-- Bottom border -->
     <div class="border" id="leftBorder"></div> <!-- Left border -->
     <div class="border" id="rightBorder"></div> <!-- Right border -->
     
-    <img id="myImage01" style="position:relative; width:100px; height:80px; top:0px; left:0px;" src="https://orig12.deviantart.net/72ad/f/2012/065/7/f/terraria_ninja_by_th3davinci-d4rx4gs.png">
+    <!-- Image to move -->
+    <img id="myImage01" style="position:relative; width:100px; height:80px; top:0px; left:0px;" 
+         src="https://orig12.deviantart.net/72ad/f/2012/065/7/f/terraria_ninja_by_th3davinci-d4rx4gs.png">
 </body>
 </html>
