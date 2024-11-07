@@ -56,6 +56,14 @@
   myContext.clearRect(0, 0, myCanvas.width, myCanvas.height);
 }"><br><br>
 
+<!-- New Controls for Freehand Drawing -->
+<label for="colorPicker">Color: </label>
+<input type="color" id="colorPicker" value="#00ff00" onchange="updateColor()">
+<br>
+<label for="lineWidthSlider">Line Thickness: </label>
+<input type="range" id="lineWidthSlider" min="1" max="20" value="2" onchange="updateLineWidth()">
+<span id="lineWidthValue">2</span>px<br><br>
+
 <!-- Canvas element where the drawing happens -->
 <canvas id="myCoolTag" width="1000" height="600" style="border:1px solid #000000;"></canvas>
 
@@ -69,6 +77,8 @@ let myContext = myCanvas.getContext('2d');
 let drawing = false;
 let lastX = 0;
 let lastY = 0;
+let currentColor = '#00ff00';  // Default color (green)
+let currentLineWidth = 2;      // Default line thickness
 
 // Set up event listeners for mouse events
 myCanvas.addEventListener('mousedown', startDrawing);
@@ -90,8 +100,8 @@ function draw(event) {
   myContext.beginPath();
   myContext.moveTo(lastX, lastY);
   myContext.lineTo(event.offsetX, event.offsetY);
-  myContext.strokeStyle = 'green';  // You can change the color
-  myContext.lineWidth = 2;  // You can adjust the line thickness
+  myContext.strokeStyle = currentColor;  // Use selected color
+  myContext.lineWidth = currentLineWidth; // Use selected thickness
   myContext.stroke();
 
   lastX = event.offsetX;
@@ -101,6 +111,17 @@ function draw(event) {
 // Stop drawing when mouse button is released or mouse leaves canvas
 function stopDrawing() {
   drawing = false;
+}
+
+// Update color based on color picker input
+function updateColor() {
+  currentColor = document.getElementById('colorPicker').value;
+}
+
+// Update line thickness based on slider input
+function updateLineWidth() {
+  currentLineWidth = document.getElementById('lineWidthSlider').value;
+  document.getElementById('lineWidthValue').textContent = currentLineWidth;
 }
 
 // Optional: Clear the entire canvas
