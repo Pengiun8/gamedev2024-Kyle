@@ -1,134 +1,192 @@
-<h2 align="center">t2a21-canvas-Kyle.html</h2>
-<p>You can use both the buttons below and freehand drawing with your mouse!</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Canvas Drawing</title>
+  <style>
+    /* Center everything using Flexbox */
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      flex-direction: column;
+      text-align: center;
+    }
 
-<!-- Buttons to draw using specific commands -->
-<input type="button" value=".lineTo(30,200)" onclick="{
-  myContext.beginPath();
-  myContext.lineWidth = 1;
-  myContext.strokeStyle = 'green';
-  myContext.moveTo(20,10);
-  myContext.lineTo(30,200);
-  myContext.stroke();
-}">
+    h2 {
+      margin-bottom: 20px;
+    }
 
-<input type="button" value=".arc(95, 50, 40, 0, 2 * Math.PI)" onclick="{
-  myContext.beginPath();
-  myContext.lineWidth = 10;
-  myContext.strokeStyle = 'green';
-  myContext.arc(95, 50, 40, 0, 2 * Math.PI);
-  myContext.stroke();
-}">
+    .controls {
+      margin-bottom: 20px;
+    }
 
-<input type="button" value=".fillText('Hello World', 400, 100)" onclick="{
-  myContext.font = '20px Arial';
-  myContext.fillText('Hello World', 400, 100);
-  myContext.translate(400, 100);
-  myContext.rotate(60 * Math.PI / 180);
-  myContext.fillText('Hello World', 10, 10);
-  myContext.stroke();
-  myContext.resetTransform();
-}">
+    .canvas-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
-<input type="button" value=".quadraticCurveTo(100,220,240,110)" onclick="{
-  myContext.beginPath();
-  myContext.moveTo(300,100);
-  myContext.quadraticCurveTo(100,220,240,110);
-  myContext.stroke();
-}">
+    /* Canvas Style */
+    canvas {
+      border: 1px solid black;
+      background-color: #f0f0f0;
+    }
 
-<input type="button" value=".createLinearGradient(100, 300, 200, 400)" onclick="{
-  let myGradient = myContext.createLinearGradient(100, 300, 200, 400);
-  myGradient.addColorStop(0, 'red');
-  myGradient.addColorStop(0.5, 'blue');
-  myGradient.addColorStop(1, 'yellow');
+    /* Button and slider spacing */
+    input[type="button"], input[type="color"], input[type="range"] {
+      margin: 10px;
+    }
 
-  myContext.fillStyle = myGradient;
-  myContext.fillRect(100, 300, 200, 400);
-  // Reset fillStyle to black
-  myContext.fillStyle = 'black';
-}"><br><br>
+    /* Make the canvas bigger */
+    #myCoolTag {
+      width: 1200px;  /* Increased width */
+      height: 800px;  /* Increased height */
+    }
+  </style>
+</head>
+<body>
 
-<input type="button" value="clearRect(20, 20, 50, 50)" onclick="{
-  myContext.clearRect(20, 20, 50, 50);
-}">
+  <h2>t2a21-canvas-Kyle.html</h2>
+  <p>You can use both the buttons below and freehand drawing with your mouse!</p>
 
-<input type="button" value="Clear all" onclick="{
-  myContext.clearRect(0, 0, myCanvas.width, myCanvas.height);
-}"><br><br>
+  <!-- Controls section -->
+  <div class="controls">
+    <!-- Buttons to draw using specific commands -->
+    <input type="button" value=".lineTo(30,200)" onclick="{
+      myContext.beginPath();
+      myContext.lineWidth = 1;
+      myContext.strokeStyle = 'green';
+      myContext.moveTo(20,10);
+      myContext.lineTo(30,200);
+      myContext.stroke();
+    }">
 
-<!-- New Controls for Freehand Drawing -->
-<label for="colorPicker">Color: </label>
-<input type="color" id="colorPicker" value="#00ff00" onchange="updateColor()">
-<br>
-<label for="lineWidthSlider">Line Thickness: </label>
-<input type="range" id="lineWidthSlider" min="1" max="20" value="2" onchange="updateLineWidth()">
-<span id="lineWidthValue">2</span>px<br><br>
+    <input type="button" value=".arc(95, 50, 40, 0, 2 * Math.PI)" onclick="{
+      myContext.beginPath();
+      myContext.lineWidth = 10;
+      myContext.strokeStyle = 'green';
+      myContext.arc(95, 50, 40, 0, 2 * Math.PI);
+      myContext.stroke();
+    }">
 
-<!-- Canvas element where the drawing happens -->
-<canvas id="myCoolTag" width="1000" height="600" style="border:1px solid #000000;"></canvas>
+    <input type="button" value=".fillText('Hello World', 400, 100)" onclick="{
+      myContext.font = '20px Arial';
+      myContext.fillText('Hello World', 400, 100);
+      myContext.translate(400, 100);
+      myContext.rotate(60 * Math.PI / 180);
+      myContext.fillText('Hello World', 10, 10);
+      myContext.stroke();
+      myContext.resetTransform();
+    }">
 
-<!-- JavaScript for drawing functionality -->
-<script>
-// Set up global variables
-let myCanvas = document.getElementById('myCoolTag');
-let myContext = myCanvas.getContext('2d');
+    <input type="button" value=".quadraticCurveTo(100,220,240,110)" onclick="{
+      myContext.beginPath();
+      myContext.moveTo(300,100);
+      myContext.quadraticCurveTo(100,220,240,110);
+      myContext.stroke();
+    }">
 
-// Initialize drawing variables for freehand drawing
-let drawing = false;
-let lastX = 0;
-let lastY = 0;
-let currentColor = '#00ff00';  // Default color (green)
-let currentLineWidth = 2;      // Default line thickness
+    <input type="button" value=".createLinearGradient(100, 300, 200, 400)" onclick="{
+      let myGradient = myContext.createLinearGradient(100, 300, 200, 400);
+      myGradient.addColorStop(0, 'red');
+      myGradient.addColorStop(0.5, 'blue');
+      myGradient.addColorStop(1, 'yellow');
 
-// Set up event listeners for mouse events
-myCanvas.addEventListener('mousedown', startDrawing);
-myCanvas.addEventListener('mousemove', draw);
-myCanvas.addEventListener('mouseup', stopDrawing);
-myCanvas.addEventListener('mouseout', stopDrawing);
+      myContext.fillStyle = myGradient;
+      myContext.fillRect(100, 300, 200, 400);
+      // Reset fillStyle to black
+      myContext.fillStyle = 'black';
+    }"><br><br>
 
-// Start drawing on mouse press
-function startDrawing(event) {
-  drawing = true;
-  lastX = event.offsetX;
-  lastY = event.offsetY;
-}
+    <input type="button" value="clearRect(20, 20, 50, 50)" onclick="{
+      myContext.clearRect(20, 20, 50, 50);
+    }">
 
-// Draw as mouse moves
-function draw(event) {
-  if (!drawing) return;
+    <input type="button" value="Clear all" onclick="{
+      myContext.clearRect(0, 0, myCanvas.width, myCanvas.height);
+    }"><br><br>
 
-  myContext.beginPath();
-  myContext.moveTo(lastX, lastY);
-  myContext.lineTo(event.offsetX, event.offsetY);
-  myContext.strokeStyle = currentColor;  // Use selected color
-  myContext.lineWidth = currentLineWidth; // Use selected thickness
-  myContext.stroke();
+    <!-- New Controls for Freehand Drawing -->
+    <label for="colorPicker">Color: </label>
+    <input type="color" id="colorPicker" value="#00ff00" onchange="updateColor()">
+    <br>
+    <label for="lineWidthSlider">Line Thickness: </label>
+    <input type="range" id="lineWidthSlider" min="1" max="20" value="2" onchange="updateLineWidth()">
+    <span id="lineWidthValue">2</span>px<br><br>
+  </div>
 
-  lastX = event.offsetX;
-  lastY = event.offsetY;
-}
+  <!-- Canvas element where the drawing happens -->
+  <div class="canvas-container">
+    <canvas id="myCoolTag" width="1200" height="800"></canvas>
+  </div>
 
-// Stop drawing when mouse button is released or mouse leaves canvas
-function stopDrawing() {
-  drawing = false;
-}
+  <script>
+    // Set up global variables
+    let myCanvas = document.getElementById('myCoolTag');
+    let myContext = myCanvas.getContext('2d');
 
-// Update color based on color picker input
-function updateColor() {
-  currentColor = document.getElementById('colorPicker').value;
-}
+    // Initialize drawing variables for freehand drawing
+    let drawing = false;
+    let lastX = 0;
+    let lastY = 0;
+    let currentColor = '#00ff00';  // Default color (green)
+    let currentLineWidth = 2;      // Default line thickness
 
-// Update line thickness based on slider input
-function updateLineWidth() {
-  currentLineWidth = document.getElementById('lineWidthSlider').value;
-  document.getElementById('lineWidthValue').textContent = currentLineWidth;
-}
+    // Set up event listeners for mouse events
+    myCanvas.addEventListener('mousedown', startDrawing);
+    myCanvas.addEventListener('mousemove', draw);
+    myCanvas.addEventListener('mouseup', stopDrawing);
+    myCanvas.addEventListener('mouseout', stopDrawing);
 
-// Optional: Clear the entire canvas
-function clearCanvas() {
-  myContext.clearRect(0, 0, myCanvas.width, myCanvas.height);
-}
+    // Start drawing on mouse press
+    function startDrawing(event) {
+      drawing = true;
+      lastX = event.offsetX;
+      lastY = event.offsetY;
+    }
 
-// Add clear canvas functionality to the button
-document.querySelector('input[value="Clear all"]').addEventListener('click', clearCanvas);
-</script>
+    // Draw as mouse moves
+    function draw(event) {
+      if (!drawing) return;
+
+      myContext.beginPath();
+      myContext.moveTo(lastX, lastY);
+      myContext.lineTo(event.offsetX, event.offsetY);
+      myContext.strokeStyle = currentColor;  // Use selected color
+      myContext.lineWidth = currentLineWidth; // Use selected thickness
+      myContext.stroke();
+
+      lastX = event.offsetX;
+      lastY = event.offsetY;
+    }
+
+    // Stop drawing when mouse button is released or mouse leaves canvas
+    function stopDrawing() {
+      drawing = false;
+    }
+
+    // Update color based on color picker input
+    function updateColor() {
+      currentColor = document.getElementById('colorPicker').value;
+    }
+
+    // Update line thickness based on slider input
+    function updateLineWidth() {
+      currentLineWidth = document.getElementById('lineWidthSlider').value;
+      document.getElementById('lineWidthValue').textContent = currentLineWidth;
+    }
+
+    // Optional: Clear the entire canvas
+    function clearCanvas() {
+      myContext.clearRect(0, 0, myCanvas.width, myCanvas.height);
+    }
+
+    // Add clear canvas functionality to the button
+    document.querySelector('input[value="Clear all"]').addEventListener('click', clearCanvas);
+  </script>
+</body>
+</html>
