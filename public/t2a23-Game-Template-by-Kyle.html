@@ -88,7 +88,7 @@ if ( myHitOther('myImg01','myImg03') ){
 
 function moveImage(direction) {
     let img = document.getElementById('myImg01');
-    let step = 10;
+    let step = 2;  // Smaller step size for smoother movement
     let left = parseInt(img.style.left, 10) || 0;
     let top = parseInt(img.style.top, 10) || 0;
 
@@ -112,13 +112,14 @@ function moveImage(direction) {
     myCheckHit();
 }
 
+function autoMove(direction) {
+    clearInterval(myClock02);
+    let intervalTime = 10;  // More frequent updates for smoother movement
+    myClock02 = setInterval(function() {
+        moveImage(direction);
+    }, intervalTime);  // Faster interval for smoother movement
+}
 
-        function autoMove(direction) {
-            clearInterval(myClock02);
-            myClock02 = setInterval(function() {
-                moveImage(direction);
-            }, 30);
-        }
 
         function stopMove() {
             clearInterval(myClock02);
