@@ -86,27 +86,32 @@ if ( myHitOther('myImg01','myImg03') ){
 
            let myClock02;
 
-        function moveImage(direction) {
-            let img = document.getElementById('myImg01');
-            let step = 10;
-            let left = parseInt(img.style.left, 10) || 0;
-            let top = parseInt(img.style.top, 10) || 0;
+function moveImage(direction) {
+    let img = document.getElementById('myImg01');
+    let step = 10;
+    let left = parseInt(img.style.left, 10) || 0;
+    let top = parseInt(img.style.top, 10) || 0;
 
-            switch (direction) {
-                case 'right':
-                    img.style.left = (left + step) + 'px';
-                    break;
-                case 'left':
-                    img.style.left = (left - step) + 'px';
-                    break;
-                case 'up':
-                    img.style.top = (top - step) + 'px';
-                    break;
-                case 'down':
-                    img.style.top = (top + step) + 'px';
-                    break;
-            }
-        }
+    // Move the image in the given direction
+    switch (direction) {
+        case 'right':
+            img.style.left = (left + step) + 'px';
+            break;
+        case 'left':
+            img.style.left = (left - step) + 'px';
+            break;
+        case 'up':
+            img.style.top = (top - step) + 'px';
+            break;
+        case 'down':
+            img.style.top = (top + step) + 'px';
+            break;
+    }
+
+    // After moving, check for collisions
+    myCheckHit();
+}
+
 
         function autoMove(direction) {
             clearInterval(myClock02);
