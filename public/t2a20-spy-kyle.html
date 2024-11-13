@@ -6,6 +6,9 @@
   let spaceCounter = 0;  // Initialize a counter for spaces
   let spaceIndices = [];  // Array to store positions of spaces
 
+  // Define special characters that we will shift
+  const specialChars = ['!', '"', '#', '$', '%', '&', "'", '(', ')', '*', '+', ',', '-', '.', '/', ':', ';', '<', '=', '>', '?', '@', '[', '\\', ']', '^', '_', '`', '{', '|', '}', '~'];
+
   for (let myLoop = 0; myLoop < myString.length; myLoop++) {
     let char = myString[myLoop]; // Get the current character
 
@@ -19,6 +22,10 @@
       myString[myLoop] = String.fromCharCode(((char.charCodeAt(0) - 65 - 1 + 26) % 26) + 65);  // Shift letters backward
     } else if (char >= '0' && char <= '9') {  // If it's a number
       myString[myLoop] = String.fromCharCode(((char.charCodeAt(0) - 48 - 1 + 10) % 10) + 48);  // Shift numbers backward
+    } else if (specialChars.includes(char)) {  // If it's a special character
+      let index = specialChars.indexOf(char);
+      let nextIndex = (index + 1) % specialChars.length; // Cycle to next special character
+      myString[myLoop] = specialChars[nextIndex];
     }
   }
 
@@ -36,6 +43,9 @@
   let spaceCounter = 0;  // Initialize a counter for spaces
   let spaceIndices = document.getElementById('spaceIndices').value.split(','); // Get the saved space indices
 
+  // Define special characters that we will shift
+  const specialChars = ['!', '"', '#', '$', '%', '&', "'", '(', ')', '*', '+', ',', '-', '.', '/', ':', ';', '<', '=', '>', '?', '@', '[', '\\', ']', '^', '_', '`', '{', '|', '}', '~'];
+
   for (let myLoop = 0; myLoop < myString.length; myLoop++) {
     let char = myString[myLoop]; // Get the current character
 
@@ -45,6 +55,10 @@
       myString[myLoop] = String.fromCharCode(((char.charCodeAt(0) - 65 + 1) % 26) + 65); // Shift forward by 1
     } else if (char >= '0' && char <= '9') {  // If it's a number
       myString[myLoop] = String.fromCharCode(((char.charCodeAt(0) - 48 + 1) % 10) + 48); // Shift numbers forward
+    } else if (specialChars.includes(char)) {  // If it's a special character
+      let index = specialChars.indexOf(char);
+      let prevIndex = (index - 1 + specialChars.length) % specialChars.length; // Cycle back to previous special character
+      myString[myLoop] = specialChars[prevIndex];
     }
 
     // If the current position is one of the saved space indices, replace the character with a space
