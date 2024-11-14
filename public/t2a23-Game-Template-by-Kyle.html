@@ -118,7 +118,7 @@ function stopMove() {
     clearInterval(myClock02);
 }
 
-// Function to make boxes 2 and 3 track towards box 1
+// Function to make boxes 2 and 3 track towards target (box 1)
 function trackBoxTowardsTarget() {
     let box1 = document.getElementById('myImg01');
     let box2 = document.getElementById('myImg02');
@@ -214,6 +214,7 @@ document.addEventListener('wheel', resizeImage);
 
 <input type="button" value="Start Tracking" onclick="startTracking()">
 <input type="button" value="Stop Tracking" onclick="stopTracking()">
+
 <input type=button value="Auto Background Left" onclick="{
   clearInterval(myClock)
   let myTemp = '100px 0px'
