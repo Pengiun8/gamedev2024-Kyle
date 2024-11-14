@@ -24,17 +24,17 @@
     <table border="1" align="center">
         <tr>
             <td></td>
-            <td><input type="button" value="Auto Up-Left (Shift + W + A)" onclick="moveDiagonal('up left')"></td>
+            <td><input type="button" value="Auto Up-Left (Shift + W + A)" onclick="moveDiagonal('up-left')"></td>
             <td></td>
         </tr>
         <tr>
-            <td><input type="button" value="Auto Down-Left (Shift + S + A)" onclick="moveDiagonal('down left')"></td>
+            <td><input type="button" value="Auto Down-Left (Shift + S + A)" onclick="moveDiagonal('down-left')"></td>
             <td><input type="button" value="Stop (Space)" onclick="stopMove()"></td>
-            <td><input type="button" value="Auto Up-Right (Shift + W + D)" onclick="moveDiagonal('up right')"></td>
+            <td><input type="button" value="Auto Up-Right (Shift + W + D)" onclick="moveDiagonal('up-right')"></td>
         </tr>
         <tr>
             <td></td>
-            <td><input type="button" value="Auto Down-Right (Shift + S + D)" onclick="moveDiagonal('down right')"></td>
+            <td><input type="button" value="Auto Down-Right (Shift + S + D)" onclick="moveDiagonal('down-right')"></td>
             <td></td>
         </tr>
     </table>
@@ -85,13 +85,14 @@ function moveImage(directionX, directionY) {
     let left = parseInt(img.style.left, 10) || 0;
     let top = parseInt(img.style.top, 10) || 0;
 
-    // Move the image in the specified directions
+    // Move the image in the specified horizontal direction (X)
     if (directionX === 'right') {
         img.style.left = (left + step) + 'px';
     } else if (directionX === 'left') {
         img.style.left = (left - step) + 'px';
     }
 
+    // Move the image in the specified vertical direction (Y)
     if (directionY === 'up') {
         img.style.top = (top - step) + 'px';
     } else if (directionY === 'down') {
@@ -120,14 +121,15 @@ function moveDiagonal(direction) {
         directionY = 'down';
     }
 
+    // Move the image with both X and Y directions
     moveImage(directionX, directionY);
 }
 
-function autoMove(direction) {
+function autoMove(directionX, directionY) {
     clearInterval(myClock02);
     let intervalTime = 10;  // More frequent updates for smoother movement
     myClock02 = setInterval(function() {
-        moveImage(direction, '');
+        moveImage(directionX, directionY);
     }, intervalTime);  // Faster interval for smoother movement
 }
 
@@ -149,32 +151,32 @@ document.addEventListener('keydown', function(event) {
     // Handle single key movement
     switch (event.key) {
         case 'w':
-            moveImage('up', '');
+            moveImage('', 'up');
             break;
         case 'a':
-            moveImage('', 'left');
+            moveImage('left', '');
             break;
         case 's':
-            moveImage('down', '');
+            moveImage('', 'down');
             break;
         case 'd':
-            moveImage('', 'right');
+            moveImage('right', '');
             break;
     }
 
     // Handle diagonal movement with Shift key
     if (event.shiftKey) {
         if (event.key === 'w' && event.code === 'KeyA') {
-            moveDiagonal('up left');
+            moveDiagonal('up-left');
         }
         if (event.key === 'w' && event.code === 'KeyD') {
-            moveDiagonal('up right');
+            moveDiagonal('up-right');
         }
         if (event.key === 's' && event.code === 'KeyA') {
-            moveDiagonal('down left');
+            moveDiagonal('down-left');
         }
         if (event.key === 's' && event.code === 'KeyD') {
-            moveDiagonal('down right');
+            moveDiagonal('down-right');
         }
     }
 });
