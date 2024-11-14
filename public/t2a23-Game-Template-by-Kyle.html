@@ -43,38 +43,37 @@
 <script>
 
 // global variables here
-let myGlobalX = 0
-let myClock
-
+let myGlobalX = 0;
+let myClock;
 let trackingClock; // For tracking boxes 2 and 3
 
 // global functions here
-function myHitOther(my1,my2){
-   let left1   = parseInt(document.getElementById(my1).style.left)
-   let right1  = left1 + parseInt(document.getElementById(my1).style.width)
-   let top1    = parseInt(document.getElementById(my1).style.top)   
-   let bottom1 = top1   + parseInt(document.getElementById(my1).style.height)
-   let left2   = parseInt(document.getElementById(my2).style.left)
-   let right2  = left2 + parseInt(document.getElementById(my2).style.width)
-   let top2    = parseInt(document.getElementById(my2).style.top)   
-   let bottom2 = top2   + parseInt(document.getElementById(my2).style.height)
+function myHitOther(my1, my2) {
+   let left1   = parseInt(document.getElementById(my1).style.left);
+   let right1  = left1 + parseInt(document.getElementById(my1).style.width);
+   let top1    = parseInt(document.getElementById(my1).style.top);   
+   let bottom1 = top1   + parseInt(document.getElementById(my1).style.height);
+   let left2   = parseInt(document.getElementById(my2).style.left);
+   let right2  = left2 + parseInt(document.getElementById(my2).style.width);
+   let top2    = parseInt(document.getElementById(my2).style.top);   
+   let bottom2 = top2   + parseInt(document.getElementById(my2).style.height);
    if ((right1  >=  left2  ) &&       
        (bottom1 >=  top2   ) &&
        (left1   <=  right2 ) &&
-       (top1    <=  bottom2) ){
-       return true
+       (top1    <=  bottom2)) {
+       return true;
    }
 }
 
 function myCheckHit(){
-   if ( myHitOther('myImg01','myImg02') ){
-       alert('you lose 2')  
-       document.getElementById('myImg01').style.left = '20px'
-       location = 'https://www.google.ca'
+   if ( myHitOther('myImg01', 'myImg02') ){
+       alert('you lose 2');  
+       document.getElementById('myImg01').style.left = '20px';
+       location = 'https://www.google.ca';
    }
-   if ( myHitOther('myImg01','myImg03') ){
-       alert('you lose 3')  
-       document.getElementById('myImg01').style.left = '20px'
+   if ( myHitOther('myImg01', 'myImg03') ){
+       alert('you lose 3');  
+       document.getElementById('myImg01').style.left = '20px';
    }
 }  // end of myCheckHit()
 
@@ -135,13 +134,13 @@ function trackBoxTowardsTarget() {
     let left3 = parseInt(box3.style.left, 10);
     let top3 = parseInt(box3.style.top, 10);
 
-    // Move box 2 towards box 1
+    // Move box 2 towards box 1 (X and Y axis tracking)
     if (left2 < left1) box2.style.left = (left2 + step) + 'px';
     if (left2 > left1) box2.style.left = (left2 - step) + 'px';
     if (top2 < top1) box2.style.top = (top2 + step) + 'px';
     if (top2 > top1) box2.style.top = (top2 - step) + 'px';
 
-    // Move box 3 towards box 1
+    // Move box 3 towards box 1 (X and Y axis tracking)
     if (left3 < left1) box3.style.left = (left3 + step) + 'px';
     if (left3 > left1) box3.style.left = (left3 - step) + 'px';
     if (top3 < top1) box3.style.top = (top3 + step) + 'px';
@@ -214,20 +213,5 @@ document.addEventListener('wheel', resizeImage);
 
 <input type="button" value="Start Tracking" onclick="startTracking()">
 <input type="button" value="Stop Tracking" onclick="stopTracking()">
-
-<input type=button value="Auto Background Left" onclick="{
-  clearInterval(myClock)
-  let myTemp = '100px 0px'
-  myClock = setInterval(function(){
-      myGlobalX -= 5
-      myTemp =  myGlobalX + 'px 0px'
-      document.getElementById('myBody').style.backgroundPosition = myTemp
-  }, 10)
-}">
-
-<input type=button value="Image Right Fast Button" onTouchStart="{this.click(); event.preventDefault();}" onclick="{
-  document.getElementById('myImg01').style.left = parseInt(document.getElementById('myImg01').style.left) + 10 + 'px'
-  myCheckHit()     // checks for all collisions
-}"><br><br>
 
 </body>
