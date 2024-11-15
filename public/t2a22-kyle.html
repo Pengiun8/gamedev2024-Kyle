@@ -6,78 +6,95 @@
     <title>Store and Retrieve Multiple Values</title>
 </head>
 <body onload="{
-   // Load the stored keys into the select dropdown
+   // Load the stored keys into the select dropdowns
    let storedKeys = Object.keys(localStorage);
-   let select = document.getElementById('selectStoredValue');
+   let selectStore = document.getElementById('selectStore');
+   let selectRetrieve = document.getElementById('selectRetrieve');
+   
    storedKeys.forEach((key, index) => {
       let option = document.createElement('option');
       option.value = key;
       option.textContent = 'Stored Item ' + (index + 1);
-      select.appendChild(option);
+      selectStore.appendChild(option);
+      selectRetrieve.appendChild(option.cloneNode(true)); // Add same options to both selects
    }
 
-   // Retrieve the first item by default if any values are stored
+   // Optionally, select the first item by default if any values are stored
    if (storedKeys.length > 0) {
-      loadStoredValue(storedKeys[0]);
+      selectStore.value = storedKeys[0];
+      selectRetrieve.value = storedKeys[0];
+      loadStoredValue(selectRetrieve.value);
    }
 }">
 
-<!-- Select dropdown to choose which stored value to load -->
-<select id="selectStoredValue" onchange="loadStoredValue(this.value)">
-   <option value="">Select a stored item</option>
-</select><br>
+<h3>Store New Value</h3>
+<!-- Input box to enter a new value -->
+<input id="myInput" type="text" size="70" placeholder="Enter text to store"><br><br>
 
-<!-- Input box to display the selected stored value -->
-<input id="myText" type="text" size="70" placeholder="Choose a stored value from the dropdown"><br><br>
+<!-- Select dropdown to choose which stored value to save the new text under -->
+<select id="selectStore">
+   <option value="">Select where to store</option>
+</select><br><br>
 
-<!-- Button to save the current value to localStorage with the selected key -->
-<input type="button" value="Save Selected Text" onclick="saveText()">
+<!-- Button to store the text in the selected storage -->
+<input type="button" value="Store Text" onclick="storeText()"><br><br>
 
-<!-- Button to store a new value with a unique key -->
-<input type="button" value="Store New Text" onclick="storeNewText()">
+<h3>Retrieve Stored Value</h3>
+<!-- Select dropdown to choose which stored value to load into the second text box -->
+<select id="selectRetrieve" onchange="loadStoredValue(this.value)">
+   <option value="">Select a stored item to retrieve</option>
+</select><br><br>
+
+<!-- Text box to display the selected stored value -->
+<input id="myOutput" type="text" size="70" readonly><br><br>
+
+<!-- Button to retrieve and display the selected value in the output text box -->
+<input type="button" value="Retrieve Text" onclick="retrieveText()">
 
 <script>
-// Function to load a stored value from localStorage
+// Function to store the text input into the selected storage location
+function storeText() {
+   let inputText = document.getElementById('myInput').value;
+   let selectedKey = document.getElementById('selectStore').value;
+
+   if (selectedKey && inputText) {
+      localStorage.setItem(selectedKey, inputText);
+      alert('Text has been stored under: ' + selectedKey);
+
+      // Add the new item to the select dropdowns
+      let selectStore = document.getElementById('selectStore');
+      let selectRetrieve = document.getElementById('selectRetrieve');
+      let option = document.createElement('option');
+      option.value = selectedKey;
+      option.textContent = 'Stored Item ' + (selectStore.options.length);
+
+      selectStore.appendChild(option);
+      selectRetrieve.appendChild(option.cloneNode(true)); // Add to both selects
+
+      // Optionally clear the input box after storing
+      document.getElementById('myInput').value = '';
+   } else {
+      alert('Please enter some text and select where to store it.');
+   }
+}
+
+// Function to retrieve the selected text from localStorage
 function loadStoredValue(key) {
    if (key) {
       let storedValue = localStorage.getItem(key);
-      document.getElementById('myText').value = storedValue;
+      document.getElementById('myOutput').value = storedValue || 'No value stored.';
+   } else {
+      document.getElementById('myOutput').value = '';
    }
 }
 
-// Function to save the current text in the input box to localStorage
-function saveText() {
-   let textBox = document.getElementById('myText');
-   let selectedKey = document.getElementById('selectStoredValue').value;
-
-   if (selectedKey && textBox.value) {
-      localStorage.setItem(selectedKey, textBox.value);
-      alert('Text has been saved to ' + selectedKey);
+// Function to retrieve and display the selected stored value in the second text box
+function retrieveText() {
+   let selectedKey = document.getElementById('selectRetrieve').value;
+   if (selectedKey) {
+      loadStoredValue(selectedKey);
    } else {
-      alert('Please select an item and enter text to save');
-   }
-}
-
-// Function to store a new value with a new key
-function storeNewText() {
-   let textBox = document.getElementById('myText');
-   let newKey = 'storedItem' + (Object.keys(localStorage).length + 1);
-
-   if (textBox.value) {
-      localStorage.setItem(newKey, textBox.value);
-      alert('New text has been stored as ' + newKey);
-
-      // Add the new item to the select dropdown
-      let select = document.getElementById('selectStoredValue');
-      let option = document.createElement('option');
-      option.value = newKey;
-      option.textContent = 'Stored Item ' + (select.options.length);
-      select.appendChild(option);
-      
-      // Optionally clear the input box after storing
-      textBox.value = '';
-   } else {
-      alert('Please enter some text to store');
+      alert('Please select an item to retrieve.');
    }
 }
 </script>
