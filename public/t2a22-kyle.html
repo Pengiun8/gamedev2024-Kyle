@@ -1,29 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Store and Retrieve Multiple Values</title>
+</head>
 <body onload="{
-   let username = localStorage.getItem('username');
-   let email = localStorage.getItem('email');
-   if (username) document.getElementById('username').value = username;
-   if (email) document.getElementById('email').value = email;
-}">
-   
-<input id="username" type="text" placeholder="Username"><br>
-<input id="email" type="text" placeholder="Email"><br>
+   // Load the stored keys into the select dropdown
+   let storedKeys = Object.keys(localStorage);
+   let select = document.getElementById('selectStoredValue');
+   storedKeys.forEach((key, index) => {
+      let option = document.createElement('option');
+      option.value = key;
+      option.textContent = 'Stored Item ' + (index + 1);
+      select.appendChild(option);
+   }
 
-<input type="button" value="Store Variables" onClick="{
-   let usernameValue = document.getElementById('username').value;
-   let emailValue = document.getElementById('email').value;
-
-   localStorage.setItem('username', usernameValue);
-   localStorage.setItem('email', emailValue);
-
-   alert('User data has been stored');
+   // Retrieve the first item by default if any values are stored
+   if (storedKeys.length > 0) {
+      loadStoredValue(storedKeys[0]);
+   }
 }">
 
-<input type="button" value="Retrieve Username" onClick="{
-   let username = localStorage.getItem('username');
-   if (username) alert('Username: ' + username);
-}">
+<!-- Select dropdown to choose which stored value to load -->
+<select id="selectStoredValue" onchange="loadStoredValue(this.value)">
+   <option value="">Select a stored item</option>
+</select><br>
 
-<input type="button" value="Retrieve Email" onClick="{
-   let email = localStorage.getItem('email');
-   if (email) alert('Email: ' + email);
-}">
+<!-- Input box to display the selected stored value -->
+<input id="myText" type="text" size="70" placeholder="Choose a stored value from the dropdown"><br><br>
+
+<!-- Button to save the current value to localStorage with the selected key -->
+<input type="button" value="Save Selected Text" onclick="saveText()">
+
+<!-- Button to store a new value with a unique key -->
+<input type="button" value="Store New Text" onclick="storeNewText()">
+
+<script>
+// Function to load a stored value from localStorage
+function loadStoredValue(key) {
+   if (key) {
+      let storedValue = localStorage.getItem(key);
+      document.getElementById('myText').value = storedValue;
+   }
+}
+
+// Function to save the current text in the input box to localStorage
+function saveText() {
+   let textBox = document.getElementById('myText');
+   let selectedKey = document.getElementById('selectStoredValue').value;
+
+   if (selectedKey && textBox.value) {
+      localStorage.setItem(selectedKey, textBox.value);
+      alert('Text has been saved to ' + selectedKey);
+   } else {
+      alert('Please select an item and enter text to save');
+   }
+}
+
+// Function to store a new value with a new key
+function storeNewText() {
+   let textBox = document.getElementById('myText');
+   let newKey = 'storedItem' + (Object.keys(localStorage).length + 1);
+
+   if (textBox.value) {
+      localStorage.setItem(newKey, textBox.value);
+      alert('New text has been stored as ' + newKey);
+
+      // Add the new item to the select dropdown
+      let select = document.getElementById('selectStoredValue');
+      let option = document.createElement('option');
+      option.value = newKey;
+      option.textContent = 'Stored Item ' + (select.options.length);
+      select.appendChild(option);
+      
+      // Optionally clear the input box after storing
+      textBox.value = '';
+   } else {
+      alert('Please enter some text to store');
+   }
+}
+</script>
+
+</body>
+</html>
