@@ -5,38 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Store and Retrieve Multiple Values</title>
 </head>
-<body onload="{
-   // Load the stored keys into the select dropdowns
-   let storedKeys = Object.keys(localStorage);
-   let selectStore = document.getElementById('selectStore');
-   let selectRetrieve = document.getElementById('selectRetrieve');
-   
-   storedKeys.forEach((key, index) => {
-      let option = document.createElement('option');
-      option.value = key;
-      option.textContent = 'Stored Item ' + (index + 1);
-      selectStore.appendChild(option);
-      selectRetrieve.appendChild(option.cloneNode(true)); // Add same options to both selects
-   }
-
-   // Optionally, select the first item by default if any values are stored
-   if (storedKeys.length > 0) {
-      selectStore.value = storedKeys[0];
-      selectRetrieve.value = storedKeys[0];
-      loadStoredValue(selectRetrieve.value);
-   }
-}">
+<body onload="initializeSlots()">
 
 <h3>Store New Value</h3>
 <!-- Input box to enter a new value -->
 <input id="myInput" type="text" size="70" placeholder="Enter text to store"><br><br>
 
-<!-- Select dropdown to choose which stored value to save the new text under -->
+<!-- Select dropdown to choose which slot to store the new text -->
 <select id="selectStore">
    <option value="">Select where to store</option>
 </select><br><br>
 
-<!-- Button to store the text in the selected storage -->
+<!-- Button to store the text in the selected slot -->
 <input type="button" value="Store Text" onclick="storeText()"><br><br>
 
 <h3>Retrieve Stored Value</h3>
@@ -52,25 +32,35 @@
 <input type="button" value="Retrieve Text" onclick="retrieveText()">
 
 <script>
-// Function to store the text input into the selected storage location
+// Function to initialize the slots with default values
+function initializeSlots() {
+   // Initialize select dropdowns with 5 default slots
+   let selectStore = document.getElementById('selectStore');
+   let selectRetrieve = document.getElementById('selectRetrieve');
+   
+   // Create 5 default slots for both dropdowns
+   for (let i = 1; i <= 5; i++) {
+      let optionStore = document.createElement('option');
+      optionStore.value = 'Slot' + i;
+      optionStore.textContent = 'Slot ' + i;
+      selectStore.appendChild(optionStore);
+
+      let optionRetrieve = document.createElement('option');
+      optionRetrieve.value = 'Slot' + i;
+      optionRetrieve.textContent = 'Slot ' + i;
+      selectRetrieve.appendChild(optionRetrieve);
+   }
+}
+
+// Function to store the text input into the selected slot
 function storeText() {
    let inputText = document.getElementById('myInput').value;
-   let selectedKey = document.getElementById('selectStore').value;
+   let selectedSlot = document.getElementById('selectStore').value;
 
-   if (selectedKey && inputText) {
-      localStorage.setItem(selectedKey, inputText);
-      alert('Text has been stored under: ' + selectedKey);
-
-      // Add the new item to the select dropdowns
-      let selectStore = document.getElementById('selectStore');
-      let selectRetrieve = document.getElementById('selectRetrieve');
-      let option = document.createElement('option');
-      option.value = selectedKey;
-      option.textContent = 'Stored Item ' + (selectStore.options.length);
-
-      selectStore.appendChild(option);
-      selectRetrieve.appendChild(option.cloneNode(true)); // Add to both selects
-
+   if (selectedSlot && inputText) {
+      localStorage.setItem(selectedSlot, inputText);
+      alert('Text has been stored under: ' + selectedSlot);
+      
       // Optionally clear the input box after storing
       document.getElementById('myInput').value = '';
    } else {
@@ -90,9 +80,9 @@ function loadStoredValue(key) {
 
 // Function to retrieve and display the selected stored value in the second text box
 function retrieveText() {
-   let selectedKey = document.getElementById('selectRetrieve').value;
-   if (selectedKey) {
-      loadStoredValue(selectedKey);
+   let selectedSlot = document.getElementById('selectRetrieve').value;
+   if (selectedSlot) {
+      loadStoredValue(selectedSlot);
    } else {
       alert('Please select an item to retrieve.');
    }
