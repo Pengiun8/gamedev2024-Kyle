@@ -1,3 +1,49 @@
+<body id="myBody" style="background-repeat:repeat; background-size: 80%" background="myBackground01.jpg">
+
+<h1 align="center">t2a23-Game-Template-by-Kyle</h1>
+<br><br><br><br>
+
+<!-- Movement Control Table -->
+<table border="1" align="center">
+    <tr>
+        <td></td>
+        <td><input type="button" value="Up (W)" onclick="moveImage('up')"></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td><input type="button" value="Left (A)" onclick="moveImage('left')"></td>
+        <td></td>
+        <td><input type="button" value="Right (D)" onclick="moveImage('right')"></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td><input type="button" value="Down (S)" onclick="moveImage('down')"></td>
+        <td></td>
+    </tr>
+</table>
+
+<h1 align="center">Auto Move</h1>
+
+<!-- Auto Move Control Table -->
+<table border="1" align="center">
+    <tr>
+        <td></td>
+        <td><input type="button" value="Auto Up (Shift + W)" onclick="autoMove('up')"></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td><input type="button" value="Auto Left (Shift + A)" onclick="autoMove('left')"></td>
+        <td><input type="button" value="Stop (Space)" onclick="stopMove()"></td>
+        <td><input type="button" value="Auto Right (Shift + D)" onclick="autoMove('right')"></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td><input type="button" value="Auto Down (Shift + S)" onclick="autoMove('down')"></td>
+        <td></td>
+    </tr>
+</table>
+<br><br>
+
 <script>
    // global variables here
    let myGlobalX = 0;
@@ -144,8 +190,9 @@
 
 </script>
 
+<!-- Images -->
 <img id="myImg01" style="position:absolute; width:100px; height:80px; top:100px; left:50px;"  src="https://th.bing.com/th/id/OIP.kbI7mjIliY65HX_iVkaCPwHaHa?rs=1&pid=ImgDetMain">
-<img id="myImg02" style="position:absolute; width:100px; height:80px; top:100px; left:150px;" src="https://files.123freevectors.com/wp-content/solidbackground/traditional-royal-blue-free-solidcolor-background.jpg">
-<img id="myImg03" style="position:absolute; width:100px; height:80px; top:100px; left:250px;" src="https://wallpapers.com/images/hd/yellow-square-1000-x-1000-wallpaper-012q36x57zmvf259.jpg">
+<img id="myImg02" style="position:absolute; width:100px; height:80px; top:100px; left:800px;" src="https://files.123freevectors.com/wp-content/solidbackground/traditional-royal-blue-free-solidcolor-background.jpg">
+<img id="myImg03" style="position:absolute; width:100px; height:80px; top:100px; left:950px;" src="https://wallpapers.com/images/hd/yellow-square-1000-x-1000-wallpaper-012q36x57zmvf259.jpg">
 
 </body>
