@@ -50,25 +50,15 @@
    let myClock;
    let myClock02;
 
-   // Initial positions for myImg01 (center), myImg02 (left), and myImg03 (right)
-   const screenWidth = window.innerWidth;
-   const screenHeight = window.innerHeight;
-
    // Set initial positions for the images
-   const initialPosition = {
-       myImg01: { left: screenWidth / 2, top: screenHeight / 2 },
-       myImg02: { left: screenWidth / 4, top: screenHeight / 2 },
-       myImg03: { left: (screenWidth * 3) / 4, top: screenHeight / 2 }
-   };
+   document.getElementById('myImg01').style.left = '400px';  // Center (myImg01)
+   document.getElementById('myImg01').style.top = '300px';
 
-   document.getElementById('myImg01').style.left = `${initialPosition.myImg01.left}px`;
-   document.getElementById('myImg01').style.top = `${initialPosition.myImg01.top}px`;
+   document.getElementById('myImg02').style.left = '100px';  // Middle-left (myImg02)
+   document.getElementById('myImg02').style.top = '300px';
 
-   document.getElementById('myImg02').style.left = `${initialPosition.myImg02.left}px`;
-   document.getElementById('myImg02').style.top = `${initialPosition.myImg02.top}px`;
-
-   document.getElementById('myImg03').style.left = `${initialPosition.myImg03.left}px`;
-   document.getElementById('myImg03').style.top = `${initialPosition.myImg03.top}px`;
+   document.getElementById('myImg03').style.left = '700px';  // Middle-right (myImg03)
+   document.getElementById('myImg03').style.top = '300px';
 
    // Global functions here
    function myHitOther(my1, my2) {
@@ -221,9 +211,9 @@
 </script>
 
 <!-- Images -->
-<img id="myImg01" style="position:absolute; width:100px; height:80px; top:0px; left:0px;"  src="https://th.bing.com/th/id/OIP.kbI7mjIliY65HX_iVkaCPwHaHa?rs=1&pid=ImgDetMain">
-<img id="myImg02" style="position:absolute; width:100px; height:80px; top:0px; left:0px;" src="https://files.123freevectors.com/wp-content/solidbackground/traditional-royal-blue-free-solidcolor-background.jpg">
-<img id="myImg03" style="position:absolute; width:100px; height:80px; top:0px; left:0px;" src="https://wallpapers.com/images/hd/yellow-square-1000-x-1000-wallpaper-012q36x57zmvf259.jpg">
+<img id="myImg01" style="position:absolute; width:100px; height:80px;" src="https://th.bing.com/th/id/OIP.kbI7mjIliY65HX_iVkaCPwHaHa?rs=1&pid=ImgDetMain">
+<img id="myImg02" style="position:absolute; width:100px; height:80px;" src="https://files.123freevectors.com/wp-content/solidbackground/traditional-royal-blue-free-solidcolor-background.jpg">
+<img id="myImg03" style="position:absolute; width:100px; height:80px;" src="https://wallpapers.com/images/hd/yellow-square-1000-x-1000-wallpaper-012q36x57zmvf259.jpg">
 
 <!-- Auto Background and Movement Controls -->
 <input type="button" value="Auto Background Left" onclick="{
