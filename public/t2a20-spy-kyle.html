@@ -11,13 +11,14 @@
 
 <textarea id="myArea01" rows="4" cols="70">Hello how are you</textarea><br>
 
+<!-- Encrypt Button -->
 <input type="button" value="Encrypt" onclick="{
   let myString = document.getElementById('myArea01').value.split(''); // Split the string into an array of characters
   let spaceCounter = 0;  // Initialize a counter for spaces
   let spaceIndices = [];  // Array to store positions of spaces
 
   // Define special characters that we will shift
-  const specialChars = ['!', '"', '#', '$', '%', '&', "'", '(', ')', '*', '+', ',', '-', '.', '/', ':', ';', '<', '=', '>', '?', '@', '[', '\\', ']', '^', '_', '`', '{', '|', '}', '~'];
+  const specialChars = ['&#33;', '&#34;', '&#35;', '&#36;', '&#37;', '&#38;', '&#39;', '&#40;', '&#41;', '&#42;', '&#43;', '&#44;', '&#45;', '&#46;', '&#47;', '&#58;', '&#59;', '&#60;', '&#61;', '&#62;', '&#63;', '&#64;', '&#91;', '&#92;', '&#93;', '&#94;', '&#95;', '&#96;', '&#123;', '&#124;', '&#125;', '&#126;'];
 
   for (let myLoop = 0; myLoop < myString.length; myLoop++) {
     let char = myString[myLoop]; // Get the current character
@@ -46,15 +47,17 @@
   document.getElementById('myArea02').value = myString.join('');
 }"><br><br>
 
+<!-- Encrypted Text Area -->
 <textarea id="myArea02" rows="4" cols="70"></textarea><br>
 
+<!-- Decrypt Button -->
 <input type="button" value="Decrypt" onclick="{
   let myString = document.getElementById('myArea02').value.split(''); // Split the string into an array of characters
   let spaceCounter = 0;  // Initialize a counter for spaces
   let spaceIndices = document.getElementById('spaceIndices').value.split(','); // Get the saved space indices
 
   // Define special characters that we will shift
-  const specialChars = ['!', '"', '#', '$', '%', '&', "'", '(', ')', '*', '+', ',', '-', '.', '/', ':', ';', '<', '=', '>', '?', '@', '[', '\\', ']', '^', '_', '`', '{', '|', '}', '~'];
+  const specialChars = ['&#33;', '&#34;', '&#35;', '&#36;', '&#37;', '&#38;', '&#39;', '&#40;', '&#41;', '&#42;', '&#43;', '&#44;', '&#45;', '&#46;', '&#47;', '&#58;', '&#59;', '&#60;', '&#61;', '&#62;', '&#63;', '&#64;', '&#91;', '&#92;', '&#93;', '&#94;', '&#95;', '&#96;', '&#123;', '&#124;', '&#125;', '&#126;'];
 
   for (let myLoop = 0; myLoop < myString.length; myLoop++) {
     let char = myString[myLoop]; // Get the current character
@@ -81,13 +84,11 @@
   document.getElementById('myArea03').value = myString.join('');
 }"><br><br>
 
+<!-- Decrypted Text Area -->
 <textarea id="myArea03" rows="4" cols="70"></textarea><br>
 
+<!-- Hidden Input to Store Space Indices -->
 <input type="hidden" id="spaceIndices" value=""> 
-
-<script>
-// The JavaScript code that was inside the HTML markup should go here.
-</script>
 
 </body>
 </html>
