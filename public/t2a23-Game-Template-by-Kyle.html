@@ -50,6 +50,8 @@
    let myClock;
    let myClock02;
 
+   let movingUp = false, movingDown = false, movingLeft = false, movingRight = false;
+
    // global functions here
    function myHitOther(my1, my2) {
        let left1 = parseInt(document.getElementById(my1).style.left);
@@ -114,13 +116,52 @@
    function autoMove(direction) {
        clearInterval(myClock02);
        let intervalTime = 10;  // More frequent updates for smoother movement
+
+       // Update movement flags
+       switch (direction) {
+           case 'up':
+               movingUp = true;
+               break;
+           case 'down':
+               movingDown = true;
+               break;
+           case 'left':
+               movingLeft = true;
+               break;
+           case 'right':
+               movingRight = true;
+               break;
+       }
+
+       // Handle combined movements (diagonal)
        myClock02 = setInterval(function() {
-           moveImage(direction);
+           if (movingUp && movingLeft) {
+               moveImage('up');
+               moveImage('left');
+           } else if (movingUp && movingRight) {
+               moveImage('up');
+               moveImage('right');
+           } else if (movingDown && movingLeft) {
+               moveImage('down');
+               moveImage('left');
+           } else if (movingDown && movingRight) {
+               moveImage('down');
+               moveImage('right');
+           } else if (movingUp) {
+               moveImage('up');
+           } else if (movingDown) {
+               moveImage('down');
+           } else if (movingLeft) {
+               moveImage('left');
+           } else if (movingRight) {
+               moveImage('right');
+           }
        }, intervalTime);  // Faster interval for smoother movement
    }
 
    function stopMove() {
        clearInterval(myClock02);
+       movingUp = movingDown = movingLeft = movingRight = false;
    }
 
    // Function to make myImg02 and myImg03 smoothly follow myImg01 at a constant speed
@@ -206,20 +247,5 @@
 <img id="myImg02" style="position:absolute; width:100px; height:80px; top:100px; left:800px;" src="https://files.123freevectors.com/wp-content/solidbackground/traditional-royal-blue-free-solidcolor-background.jpg">
 <img id="myImg03" style="position:absolute; width:100px; height:80px; top:100px; left:950px;" src="https://wallpapers.com/images/hd/yellow-square-1000-x-1000-wallpaper-012q36x57zmvf259.jpg">
 
-<!-- Auto Background and Movement Controls -->
-<input type="button" value="Auto Background Left" onclick="{
-    clearInterval(myClock)
-    let myTemp = '100px 0px'
-    myClock = setInterval(function(){
-        myGlobalX -= 5
-        myTemp =  myGlobalX + 'px 0px'
-        document.getElementById('myBody').style.backgroundPosition = myTemp
-    }, 10)
-}">
-
-<input type="button" value="Image Right Fast Button" onTouchStart="{this.click(); event.preventDefault();}" onclick="{
-    document.getElementById('myImg01').style.left = parseInt(document.getElementById('myImg01').style.left) + 10 + 'px'
-    myCheckHit()  // checks for all collisions
-}">
 </body>
 </html>
