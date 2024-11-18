@@ -107,7 +107,7 @@
        // After moving, check for collisions
        myCheckHit();
 
-       // Update positions of myImg02 and myImg03 to smoothly follow myImg01
+       // Update positions of myImg02 and myImg03 to smoothly follow myImg01 at constant speed
        updateFollowImages();
    }
 
@@ -123,7 +123,7 @@
        clearInterval(myClock02);
    }
 
-   // Function to make myImg02 and myImg03 smoothly follow myImg01 at a slower speed
+   // Function to make myImg02 and myImg03 smoothly follow myImg01 at a constant speed
    function updateFollowImages() {
        let img1 = document.getElementById('myImg01');
        let img2 = document.getElementById('myImg02');
@@ -137,22 +137,33 @@
        let left3 = parseInt(img3.style.left, 10);
        let top3 = parseInt(img3.style.top, 10);
 
-       // Define offset for the following images (e.g., slightly behind or to the side)
-       let offsetX2 = 100; // 100px to the right of myImg01
-       let offsetY2 = 20;  // 20px below myImg01
-       let offsetX3 = 200; // 200px to the right of myImg01
-       let offsetY3 = 40;  // 40px below myImg01
+       // Define constant speed for the following images
+       let speed = 2;  // Constant speed (you can adjust this value)
 
-       // Smoothly move myImg02 toward myImg01 at a slower speed
-       let moveSpeed = 0.05;  // Slower speed for chasing
+       // Move myImg02 toward myImg01 at a constant speed
+       moveToward(img2, left1, top1, speed);
 
-       // Adjust the movement speed for smoother but slower following
-       img2.style.left = (left2 + (left1 + offsetX2 - left2) * moveSpeed) + 'px';
-       img2.style.top = (top2 + (top1 + offsetY2 - top2) * moveSpeed) + 'px';
+       // Move myImg03 toward myImg01 at a constant speed
+       moveToward(img3, left1, top1, speed);
+   }
 
-       // Smoothly move myImg03 toward myImg01 at a slower speed
-       img3.style.left = (left3 + (left1 + offsetX3 - left3) * moveSpeed) + 'px';
-       img3.style.top = (top3 + (top1 + offsetY3 - top3) * moveSpeed) + 'px';
+   // Function to move an image toward a target position (left1, top1) with a constant speed
+   function moveToward(img, targetLeft, targetTop, speed) {
+       let left = parseInt(img.style.left, 10);
+       let top = parseInt(img.style.top, 10);
+
+       // Calculate direction vector
+       let dx = targetLeft - left;
+       let dy = targetTop - top;
+       let distance = Math.sqrt(dx * dx + dy * dy);  // Distance to target
+
+       // Normalize direction vector and move by a fixed speed
+       if (distance > 0) {
+           dx /= distance;
+           dy /= distance;
+           img.style.left = (left + dx * speed) + 'px';
+           img.style.top = (top + dy * speed) + 'px';
+       }
    }
 
    // Keyboard controls for manual movement
@@ -195,4 +206,20 @@
 <img id="myImg02" style="position:absolute; width:100px; height:80px; top:100px; left:800px;" src="https://files.123freevectors.com/wp-content/solidbackground/traditional-royal-blue-free-solidcolor-background.jpg">
 <img id="myImg03" style="position:absolute; width:100px; height:80px; top:100px; left:950px;" src="https://wallpapers.com/images/hd/yellow-square-1000-x-1000-wallpaper-012q36x57zmvf259.jpg">
 
+<!-- Auto Background and Movement Controls -->
+<input type="button" value="Auto Background Left" onclick="{
+    clearInterval(myClock)
+    let myTemp = '100px 0px'
+    myClock = setInterval(function(){
+        myGlobalX -= 5
+        myTemp =  myGlobalX + 'px 0px'
+        document.getElementById('myBody').style.backgroundPosition = myTemp
+    }, 10)
+}">
+
+<input type="button" value="Image Right Fast Button" onTouchStart="{this.click(); event.preventDefault();}" onclick="{
+    document.getElementById('myImg01').style.left = parseInt(document.getElementById('myImg01').style.left) + 10 + 'px'
+    myCheckHit()  // checks for all collisions
+}">
 </body>
+</html>
