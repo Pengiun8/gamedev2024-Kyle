@@ -45,12 +45,32 @@
 <br><br>
 
 <script>
-   // global variables here
+   // Global variables here
    let myGlobalX = 0;
    let myClock;
    let myClock02;
 
-   // global functions here
+   // Initial positions for myImg01 (center), myImg02 (left), and myImg03 (right)
+   const screenWidth = window.innerWidth;
+   const screenHeight = window.innerHeight;
+
+   // Set initial positions for the images
+   const initialPosition = {
+       myImg01: { left: screenWidth / 2, top: screenHeight / 2 },
+       myImg02: { left: screenWidth / 4, top: screenHeight / 2 },
+       myImg03: { left: (screenWidth * 3) / 4, top: screenHeight / 2 }
+   };
+
+   document.getElementById('myImg01').style.left = `${initialPosition.myImg01.left}px`;
+   document.getElementById('myImg01').style.top = `${initialPosition.myImg01.top}px`;
+
+   document.getElementById('myImg02').style.left = `${initialPosition.myImg02.left}px`;
+   document.getElementById('myImg02').style.top = `${initialPosition.myImg02.top}px`;
+
+   document.getElementById('myImg03').style.left = `${initialPosition.myImg03.left}px`;
+   document.getElementById('myImg03').style.top = `${initialPosition.myImg03.top}px`;
+
+   // Global functions here
    function myHitOther(my1, my2) {
        let left1 = parseInt(document.getElementById(my1).style.left);
        let right1 = left1 + parseInt(document.getElementById(my1).style.width);
@@ -73,7 +93,7 @@
        if (myHitOther('myImg01', 'myImg02')) {
            alert('You lose 2');
            document.getElementById('myImg01').style.left = '20px';
-           location = 'https://pengiun8.github.io/gamedev2024-Kyle/public/t2a23-Game-Template-by-Kyle.html';
+           location = 'https://www.google.ca';
        }
        if (myHitOther('myImg01', 'myImg03')) {
            alert('You lose 3');
@@ -166,7 +186,7 @@
        }
    }
 
-   // Keyboard controls for manual movement
+   // Event listener for movement keys
    document.addEventListener('keydown', function(event) {
        switch (event.key) {
            case 'w':
@@ -198,13 +218,12 @@
                break;
        }
    });
-
 </script>
 
 <!-- Images -->
-<img id="myImg01" style="position:absolute; width:100px; height:80px; top:100px; left:50px;"  src="https://th.bing.com/th/id/OIP.kbI7mjIliY65HX_iVkaCPwHaHa?rs=1&pid=ImgDetMain">
-<img id="myImg02" style="position:absolute; width:100px; height:80px; top:100px; left:800px;" src="https://files.123freevectors.com/wp-content/solidbackground/traditional-royal-blue-free-solidcolor-background.jpg">
-<img id="myImg03" style="position:absolute; width:100px; height:80px; top:100px; left:950px;" src="https://wallpapers.com/images/hd/yellow-square-1000-x-1000-wallpaper-012q36x57zmvf259.jpg">
+<img id="myImg01" style="position:absolute; width:100px; height:80px; top:0px; left:0px;"  src="https://th.bing.com/th/id/OIP.kbI7mjIliY65HX_iVkaCPwHaHa?rs=1&pid=ImgDetMain">
+<img id="myImg02" style="position:absolute; width:100px; height:80px; top:0px; left:0px;" src="https://files.123freevectors.com/wp-content/solidbackground/traditional-royal-blue-free-solidcolor-background.jpg">
+<img id="myImg03" style="position:absolute; width:100px; height:80px; top:0px; left:0px;" src="https://wallpapers.com/images/hd/yellow-square-1000-x-1000-wallpaper-012q36x57zmvf259.jpg">
 
 <!-- Auto Background and Movement Controls -->
 <input type="button" value="Auto Background Left" onclick="{
@@ -221,5 +240,6 @@
     document.getElementById('myImg01').style.left = parseInt(document.getElementById('myImg01').style.left) + 10 + 'px'
     myCheckHit()  // checks for all collisions
 }">
+
 </body>
 </html>
