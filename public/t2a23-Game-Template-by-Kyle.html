@@ -1,3 +1,4 @@
+
 <body id="myBody" style="background-repeat:repeat; background-size: 80%" background="myBackground01.jpg">
 
 <h1 align="center">t2a23-Game-Template-by-Kyle</h1>
@@ -22,7 +23,7 @@
     </tr>
 </table>
 
-<h1 align="center">Small move</h1>
+<h1 align="center">Auto Move</h1>
 
 <!-- Auto Move Control Table -->
 <table border="1" align="center">
@@ -72,12 +73,12 @@
    function myCheckHit() {
        if (myHitOther('myImg01', 'myImg02')) {
            alert('You lose 2');
-           document.getElementById('myImg01').style.left = '50%'; // Reset to middle
+           document.getElementById('myImg01').style.left = '20px';
            location = 'https://pengiun8.github.io/gamedev2024-Kyle/public/t2a23-Game-Template-by-Kyle.html';
        }
        if (myHitOther('myImg01', 'myImg03')) {
            alert('You lose 3');
-           document.getElementById('myImg01').style.left = '50%'; // Reset to middle
+           document.getElementById('myImg01').style.left = '20px';
        }
    }
 
@@ -202,9 +203,9 @@
 </script>
 
 <!-- Images -->
-<img id="myImg01" style="position:absolute; width:100px; height:80px; top:100px; left:50%;" src="https://th.bing.com/th/id/OIP.kbI7mjIliY65HX_iVkaCPwHaHa?rs=1&pid=ImgDetMain">
-<img id="myImg02" style="position:absolute; width:100px; height:80px; top:100px; left:0;" src="https://files.123freevectors.com/wp-content/solidbackground/traditional-royal-blue-free-solidcolor-background.jpg">
-<img id="myImg03" style="position:absolute; width:100px; height:80px; top:100px; left:100%;" src="https://wallpapers.com/images/hd/yellow-square-1000-x-1000-wallpaper-012q36x57zmvf259.jpg">
+<img id="myImg01" style="position:absolute; width:100px; height:80px; top:100px; left:50px;"  src="https://th.bing.com/th/id/OIP.kbI7mjIliY65HX_iVkaCPwHaHa?rs=1&pid=ImgDetMain">
+<img id="myImg02" style="position:absolute; width:100px; height:80px; top:100px; left:800px;" src="https://files.123freevectors.com/wp-content/solidbackground/traditional-royal-blue-free-solidcolor-background.jpg">
+<img id="myImg03" style="position:absolute; width:100px; height:80px; top:100px; left:950px;" src="https://wallpapers.com/images/hd/yellow-square-1000-x-1000-wallpaper-012q36x57zmvf259.jpg">
 
 <!-- Auto Background and Movement Controls -->
 <input type="button" value="Auto Background Left" onclick="{
@@ -222,3 +223,4 @@
     myCheckHit()  // checks for all collisions
 }">
 </body>
+</html>
