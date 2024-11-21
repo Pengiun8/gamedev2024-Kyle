@@ -169,47 +169,47 @@
 
    // Function to make myImg02, myImg03, myImg04, and myImg05 smoothly follow myImg01 at a constant speed
    function updateFollowImages() {
-       let img1 = document.getElementById('myImg01');
-       let img2 = document.getElementById('myImg02');
-       let img3 = document.getElementById('myImg03');
-       let img4 = document.getElementById('myImg04');
-       let img5 = document.getElementById('myImg05');
+    let img1 = document.getElementById('myImg01');
+    let img2 = document.getElementById('myImg02');
+    let img3 = document.getElementById('myImg03');
+    let img4 = document.getElementById('myImg04');
+    let img5 = document.getElementById('myImg05');
 
-       // Get current positions of images
-       let left1 = parseInt(img1.style.left, 10);
-       let top1 = parseInt(img1.style.top, 10);
+    // Get current positions of images
+    let left1 = parseInt(img1.style.left, 10);
+    let top1 = parseInt(img1.style.top, 10);
 
-       // Define different speeds for each image
-       let speed2 = 3;  // myImg02 will move faster
-       let speed3 = 2;  // myImg03 will move slower
-       let speed4 = 1;  // myImg04 will move slower
-       let speed5 = 0.5;  // myImg05 will move slowest
+    // Define different speeds for each image
+    let speed2 = 2;  // myImg02 will move faster
+    let speed3 = 1.5;  // myImg03 will move slower
+    let speed4 = 1;  // myImg04 will move slower
+    let speed5 = 0.5;  // myImg05 will move slowest
 
-       // Move each image towards myImg01 at different speeds
-       moveToward(img2, left1, top1, speed2);
-       moveToward(img3, left1, top1, speed3);
-       moveToward(img4, left1, top1, speed4);
-       moveToward(img5, left1, top1, speed5);
-   }
+    // Move each image towards myImg01 at different speeds
+    moveToward(img2, left1, top1, speed2);
+    moveToward(img3, left1, top1, speed3);
+    moveToward(img4, left1, top1, speed4);
+    moveToward(img5, left1, top1, speed5);
+}
 
-   // Function to move an image toward a target position (left1, top1) with a constant speed
-   function moveToward(img, targetLeft, targetTop, speed) {
-       let left = parseInt(img.style.left, 10);
-       let top = parseInt(img.style.top, 10);
+// Function to move an image toward a target position (left1, top1) with a constant speed
+function moveToward(img, targetLeft, targetTop, speed) {
+    let left = parseInt(img.style.left, 10);
+    let top = parseInt(img.style.top, 10);
 
-       // Calculate direction vector
-       let dx = targetLeft - left;
-       let dy = targetTop - top;
-       let distance = Math.sqrt(dx * dx + dy * dy);  // Distance to target
+    // Calculate direction vector
+    let dx = targetLeft - left;
+    let dy = targetTop - top;
+    let distance = Math.sqrt(dx * dx + dy * dy);  // Distance to target
 
-       // Normalize direction vector and move by a fixed speed
-       if (distance > 0) {
-           dx /= distance;  // Normalize x distance
-           dy /= distance;  // Normalize y distance
-           img.style.left = (left + dx * speed) + 'px';
-           img.style.top = (top + dy * speed) + 'px';
-       }
-   }
+    // Normalize direction vector and move by a fixed speed
+    if (distance > 0) {
+        dx /= distance;  // Normalize x distance
+        dy /= distance;  // Normalize y distance
+        img.style.left = (left + dx * speed) + 'px';
+        img.style.top = (top + dy * speed) + 'px';
+    }
+}
 
    // Keyboard controls for manual movement
    document.addEventListener('keydown', function(event) {
