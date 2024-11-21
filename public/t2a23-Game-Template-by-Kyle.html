@@ -183,14 +183,14 @@
     // Define different speeds for each image
     let speed2 = 2;  // myImg02 will move faster
     let speed3 = 1.5;  // myImg03 will move slower
-    let speed4 = 1;  // myImg04 will move slower
-    let speed5 = 0.5;  // myImg05 will move slowest
+    let speed4 = 1;  // myImg04 will move slower (same as before)
+    let speed5 = 0.5;  // myImg05 will move slowest (same as before)
 
     // Move each image towards myImg01 at different speeds
     moveToward(img2, left1, top1, speed2);
     moveToward(img3, left1, top1, speed3);
-    moveToward(img4, left1, top1, speed4);
-    moveToward(img5, left1, top1, speed5);
+    moveToward(img4, left1, top1, speed4); // Added img4 to follow myImg01
+    moveToward(img5, left1, top1, speed5); // Added img5 to follow myImg01
 }
 
 // Function to move an image toward a target position (left1, top1) with a constant speed
