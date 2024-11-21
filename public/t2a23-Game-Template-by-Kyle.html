@@ -115,20 +115,8 @@
        // After moving, check for collisions
        myCheckHit();
 
-       // Update positions of all following images to smoothly follow myImg01 at constant speed
+       // Update positions of all following images to smoothly follow myImg01 at constant speeds
        updateFollowImages();
-   }
-
-   function autoMove(direction) {
-       clearInterval(myClock02);
-       let intervalTime = 10;  // More frequent updates for smoother movement
-       myClock02 = setInterval(function() {
-           moveImage(direction);
-       }, intervalTime);  // Faster interval for smoother movement
-   }
-
-   function stopMove() {
-       clearInterval(myClock02);
    }
 
    // Function to make myImg02, myImg03, myImg04, and myImg05 smoothly follow myImg01 at a constant speed
@@ -142,23 +130,18 @@
        // Get current positions of images
        let left1 = parseInt(img1.style.left, 10);
        let top1 = parseInt(img1.style.top, 10);
-       let left2 = parseInt(img2.style.left, 10);
-       let top2 = parseInt(img2.style.top, 10);
-       let left3 = parseInt(img3.style.left, 10);
-       let top3 = parseInt(img3.style.top, 10);
-       let left4 = parseInt(img4.style.left, 10);
-       let top4 = parseInt(img4.style.top, 10);
-       let left5 = parseInt(img5.style.left, 10);
-       let top5 = parseInt(img5.style.top, 10);
 
-       // Define constant speed for the following images
-       let speed = 2;  // Constant speed (you can adjust this value)
+       // Define different speeds for each image
+       let speed2 = 3;  // myImg02 will move faster
+       let speed3 = 2;  // myImg03 will move slower
+       let speed4 = 1;  // myImg04 will move slower
+       let speed5 = 0.5;  // myImg05 will move slowest
 
-       // Move myImg02, myImg03, myImg04, and myImg05 toward myImg01 at a constant speed
-       moveToward(img2, left1, top1, speed);
-       moveToward(img3, left1, top1, speed);
-       moveToward(img4, left1, top1, speed);
-       moveToward(img5, left1, top1, speed);
+       // Move each image towards myImg01 at different speeds
+       moveToward(img2, left1, top1, speed2);
+       moveToward(img3, left1, top1, speed3);
+       moveToward(img4, left1, top1, speed4);
+       moveToward(img5, left1, top1, speed5);
    }
 
    // Function to move an image toward a target position (left1, top1) with a constant speed
@@ -173,11 +156,23 @@
 
        // Normalize direction vector and move by a fixed speed
        if (distance > 0) {
-           dx /= distance;
-           dy /= distance;
+           dx /= distance;  // Normalize x distance
+           dy /= distance;  // Normalize y distance
            img.style.left = (left + dx * speed) + 'px';
            img.style.top = (top + dy * speed) + 'px';
        }
+   }
+
+   function autoMove(direction) {
+       clearInterval(myClock02);
+       let intervalTime = 10;  // More frequent updates for smoother movement
+       myClock02 = setInterval(function() {
+           moveImage(direction);
+       }, intervalTime);  // Faster interval for smoother movement
+   }
+
+   function stopMove() {
+       clearInterval(myClock02);
    }
 
    // Keyboard controls for manual movement
@@ -212,6 +207,10 @@
                break;
        }
    });
+
+   // Auto Background and Movement Controls
+   document.getElementById('myBody').style.backgroundRepeat = 'repeat';
+   document.getElementById('myBody').style.backgroundSize = '80%';
 
 </script>
 
