@@ -1,32 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>t2a23-Game-Template-by-Kyle</title>
-    <style>
-        body {
-            background-repeat: repeat;
-            background-size: 80%;
-        }
-        h1 {
-            text-align: center;
-        }
-        table {
-            margin: 0 auto;
-        }
-        img {
-            position: absolute;
-        }
-    </style>
-</head>
-<body id="myBody" background="myBackground01.jpg">
 
-<h1>t2a23-Game-Template-by-Kyle</h1>
+<body id="myBody" style="background-repeat:repeat; background-size: 80%" background="myBackground01.jpg">
+
+<h1 align="center">t2a23-Game-Template-by-Kyle</h1>
 <br><br><br><br>
 
 <!-- Movement Control Table -->
-<table border="1">
+<table border="1" align="center">
     <tr>
         <td></td>
         <td><input type="button" value="Up (W)" onclick="moveImage('up')"></td>
@@ -44,10 +23,10 @@
     </tr>
 </table>
 
-<h1>Auto Move</h1>
+<h1 align="center">Auto Move</h1>
 
 <!-- Auto Move Control Table -->
-<table border="1">
+<table border="1" align="center">
     <tr>
         <td></td>
         <td><input type="button" value="Auto Up (Shift + W)" onclick="autoMove('up')"></td>
@@ -67,7 +46,7 @@
 <br><br>
 
 <script>
-   // Global variables
+   // global variables here
    let myGlobalX = 0;
    let myClock;
    let myClock02;
@@ -76,7 +55,7 @@
    const screenWidth = window.innerWidth;
    const screenHeight = window.innerHeight;
 
-   // Collision detection function
+   // global functions here
    function myHitOther(my1, my2) {
        let left1 = parseInt(document.getElementById(my1).style.left);
        let right1 = left1 + parseInt(document.getElementById(my1).style.width);
@@ -99,6 +78,7 @@
        if (myHitOther('myImg01', 'myImg02')) {
            alert('You lose 2');
            document.getElementById('myImg01').style.left = '20px';
+           location = 'https://pengiun8.github.io/gamedev2024-Kyle/public/t2a23-Game-Template-by-Kyle.html';
        }
        if (myHitOther('myImg01', 'myImg03')) {
            alert('You lose 3');
@@ -143,6 +123,30 @@
                    img.style.top = (top + step) + 'px';
                }
                break;
+           case 'up-right':
+               if (left + step < screenWidth - img.width && top - step > 0) {
+                   img.style.left = (left + step) + 'px';
+                   img.style.top = (top - step) + 'px';
+               }
+               break;
+           case 'down-left':
+               if (left - step > 0 && top + step < screenHeight - img.height) {
+                   img.style.left = (left - step) + 'px';
+                   img.style.top = (top + step) + 'px';
+               }
+               break;
+           case 'down-right':
+               if (left + step < screenWidth - img.width && top + step < screenHeight - img.height) {
+                   img.style.left = (left + step) + 'px';
+                   img.style.top = (top + step) + 'px';
+               }
+               break;
+           case 'up-left':
+               if (left - step > 0 && top - step > 0) {
+                   img.style.left = (left - step) + 'px';
+                   img.style.top = (top - step) + 'px';
+               }
+               break;
        }
 
        // After moving, check for collisions
@@ -166,47 +170,47 @@
 
    // Function to make myImg02, myImg03, myImg04, and myImg05 smoothly follow myImg01 at a constant speed
    function updateFollowImages() {
-       let img1 = document.getElementById('myImg01');
-       let img2 = document.getElementById('myImg02');
-       let img3 = document.getElementById('myImg03');
-       let img4 = document.getElementById('myImg04');
-       let img5 = document.getElementById('myImg05');
+    let img1 = document.getElementById('myImg01');
+    let img2 = document.getElementById('myImg02');
+    let img3 = document.getElementById('myImg03');
+    let img4 = document.getElementById('myImg04');
+    let img5 = document.getElementById('myImg05');
 
-       // Get current positions of images
-       let left1 = parseInt(img1.style.left, 10);
-       let top1 = parseInt(img1.style.top, 10);
+    // Get current positions of images
+    let left1 = parseInt(img1.style.left, 10);
+    let top1 = parseInt(img1.style.top, 10);
 
-       // Define different speeds for each image
-       let speed2 = 3;  // myImg02 will move faster
-       let speed3 = 2;  // myImg03 will move slower
-       let speed4 = 1;  // myImg04 will move slower
-       let speed5 = 0.5;  // myImg05 will move slowest
+    // Define different speeds for each image
+    let speed2 = 2;  // myImg02 will move faster
+    let speed3 = 1.5;  // myImg03 will move slower
+    let speed4 = 1;  // myImg04 will move slower
+    let speed5 = 0.5;  // myImg05 will move slowest
 
-       // Move each image towards myImg01 at different speeds
-       moveToward(img2, left1, top1, speed2);
-       moveToward(img3, left1, top1, speed3);
-       moveToward(img4, left1, top1, speed4);
-       moveToward(img5, left1, top1, speed5);
-   }
+    // Move each image towards myImg01 at different speeds
+    moveToward(img2, left1, top1, speed2);
+    moveToward(img3, left1, top1, speed3);
+    moveToward(img4, left1, top1, speed4);
+    moveToward(img5, left1, top1, speed5);
+}
 
-   // Function to move an image toward a target position (left1, top1) with a constant speed
-   function moveToward(img, targetLeft, targetTop, speed) {
-       let left = parseInt(img.style.left, 10);
-       let top = parseInt(img.style.top, 10);
+// Function to move an image toward a target position (left1, top1) with a constant speed
+function moveToward(img, targetLeft, targetTop, speed) {
+    let left = parseInt(img.style.left, 10);
+    let top = parseInt(img.style.top, 10);
 
-       // Calculate direction vector
-       let dx = targetLeft - left;
-       let dy = targetTop - top;
-       let distance = Math.sqrt(dx * dx + dy * dy);  // Distance to target
+    // Calculate direction vector
+    let dx = targetLeft - left;
+    let dy = targetTop - top;
+    let distance = Math.sqrt(dx * dx + dy * dy);  // Distance to target
 
-       // Normalize direction vector and move by a fixed speed
-       if (distance > 0) {
-           dx /= distance;  // Normalize x distance
-           dy /= distance;  // Normalize y distance
-           img.style.left = (left + dx * speed) + 'px';
-           img.style.top = (top + dy * speed) + 'px';
-       }
-   }
+    // Normalize direction vector and move by a fixed speed
+    if (distance > 0) {
+        dx /= distance;  // Normalize x distance
+        dy /= distance;  // Normalize y distance
+        img.style.left = (left + dx * speed) + 'px';
+        img.style.top = (top + dy * speed) + 'px';
+    }
+}
 
    // Keyboard controls for manual movement
    document.addEventListener('keydown', function(event) {
@@ -235,33 +239,46 @@
            case 'D':
                autoMove('right');
                break;
+           case ' ':
+               stopMove();
+               break;
+           case 'Q':  // Diagonal up-left
+               autoMove('up-left');
+               break;
+           case 'E':  // Diagonal up-right
+               autoMove('up-right');
+               break;
+           case 'Z':  // Diagonal down-left
+               autoMove('down-left');
+               break;
+           case 'C':  // Diagonal down-right
+               autoMove('down-right');
+               break;
        }
    });
-
-   // Initialize images on page load
-   window.onload = function() {
-       document.getElementById('myImg01').style.left = '100px';
-       document.getElementById('myImg01').style.top = '100px';
-
-       document.getElementById('myImg02').style.left = '200px';
-       document.getElementById('myImg02').style.top = '100px';
-
-       document.getElementById('myImg03').style.left = '300px';
-       document.getElementById('myImg03').style.top = '100px';
-
-       document.getElementById('myImg04').style.left = '400px';
-       document.getElementById('myImg04').style.top = '100px';
-
-       document.getElementById('myImg05').style.left = '500px';
-       document.getElementById('myImg05').style.top = '100px';
-   }
 </script>
 
 <!-- Images -->
-<img id="myImg01" src="myImage01.jpg" style="width: 50px; height: 50px; position: absolute;">
-<img id="myImg02" src="myImage02.jpg" style="width: 50px; height: 50px; position: absolute;">
-<img id="myImg03" src="myImage03.jpg" style="width: 50px; height: 50px; position: absolute;">
-<img id="myImg04" src="myImage04.jpg" style="width: 50px; height: 50px; position: absolute;">
-<img id="myImg05" src="myImage05.jpg" style="width: 50px; height: 50px; position: absolute;">
+<img id="myImg01" style="position:absolute; width:100px; height:80px; top:400px; left:900px;"  src="https://th.bing.com/th/id/OIP.kbI7mjIliY65HX_iVkaCPwHaHa?rs=1&pid=ImgDetMain">
+<img id="myImg02" style="position:absolute; width:100px; height:80px; top:100px; left:100px;" src="https://files.123freevectors.com/wp-content/solidbackground/traditional-royal-blue-free-solidcolor-background.jpg">
+<img id="myImg03" style="position:absolute; width:100px; height:80px; top:700px; left:1700px;" src="https://wallpapers.com/images/hd/yellow-square-1000-x-1000-wallpaper-012q36x57zmvf259.jpg">
+<img id="myImg04" style="position:absolute; width:100px; height:80px; top:100px; left:1700px;" src="https://cdn.suwalls.com/wallpapers/abstract/purple-squares-43497-2560x1600.jpg">
+<img id="myImg05" style="position:absolute; width:100px; height:80px; top:700px; left:100px;" src="https://pngimg.com/uploads/square/square_PNG11.png">
+
+<!-- Auto Background and Movement Controls -->
+<input type="button" value="Auto Background Left" onclick="{
+    clearInterval(myClock)
+    let myTemp = '100px 0px'
+    myClock = setInterval(function(){
+        myGlobalX -= 5
+        myTemp =  myGlobalX + 'px 0px'
+        document.getElementById('myBody').style.backgroundPosition = myTemp
+    }, 10)
+}">
+
+<input type="button" value="Image Right Fast Button" onTouchStart="{this.click(); event.preventDefault();}" onclick="{
+    document.getElementById('myImg01').style.left = parseInt(document.getElementById('myImg01').style.left) + 10 + 'px'
+    myCheckHit()  // checks for all collisions
+}">
 </body>
 </html>
