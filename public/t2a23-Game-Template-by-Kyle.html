@@ -1,4 +1,3 @@
-
 <body id="myBody" style="background-repeat:repeat; background-size: 80%" background="myBackground01.jpg">
 
 <h1 align="center">t2a23-Game-Template-by-Kyle</h1>
@@ -51,6 +50,10 @@
    let myClock;
    let myClock02;
 
+   // Get screen width and height for boundary checking
+   const screenWidth = window.innerWidth;
+   const screenHeight = window.innerHeight;
+
    // global functions here
    function myHitOther(my1, my2) {
        let left1 = parseInt(document.getElementById(my1).style.left);
@@ -100,32 +103,48 @@
        // Move the image in the given direction
        switch (direction) {
            case 'right':
-               img.style.left = (left + step) + 'px';
+               if (left + step < screenWidth - img.width) {
+                   img.style.left = (left + step) + 'px';
+               }
                break;
            case 'left':
-               img.style.left = (left - step) + 'px';
+               if (left - step > 0) {
+                   img.style.left = (left - step) + 'px';
+               }
                break;
            case 'up':
-               img.style.top = (top - step) + 'px';
+               if (top - step > 0) {
+                   img.style.top = (top - step) + 'px';
+               }
                break;
            case 'down':
-               img.style.top = (top + step) + 'px';
+               if (top + step < screenHeight - img.height) {
+                   img.style.top = (top + step) + 'px';
+               }
                break;
            case 'up-right':
-               img.style.left = (left + step) + 'px';
-               img.style.top = (top - step) + 'px';
+               if (left + step < screenWidth - img.width && top - step > 0) {
+                   img.style.left = (left + step) + 'px';
+                   img.style.top = (top - step) + 'px';
+               }
                break;
            case 'down-left':
-               img.style.left = (left - step) + 'px';
-               img.style.top = (top + step) + 'px';
+               if (left - step > 0 && top + step < screenHeight - img.height) {
+                   img.style.left = (left - step) + 'px';
+                   img.style.top = (top + step) + 'px';
+               }
                break;
            case 'down-right':
-               img.style.left = (left + step) + 'px';
-               img.style.top = (top + step) + 'px';
+               if (left + step < screenWidth - img.width && top + step < screenHeight - img.height) {
+                   img.style.left = (left + step) + 'px';
+                   img.style.top = (top + step) + 'px';
+               }
                break;
            case 'up-left':
-               img.style.left = (left - step) + 'px';
-               img.style.top = (top - step) + 'px';
+               if (left - step > 0 && top - step > 0) {
+                   img.style.left = (left - step) + 'px';
+                   img.style.top = (top - step) + 'px';
+               }
                break;
        }
 
@@ -237,7 +256,6 @@
        }
    });
 </script>
-
 
 <!-- Images -->
 <img id="myImg01" style="position:absolute; width:100px; height:80px; top:400px; left:900px;"  src="https://th.bing.com/th/id/OIP.kbI7mjIliY65HX_iVkaCPwHaHa?rs=1&pid=ImgDetMain">
