@@ -50,10 +50,6 @@
    let myClock;
    let myClock02;
 
-   // Get screen width and height for boundary checking
-   const screenWidth = window.innerWidth;
-   const screenHeight = window.innerHeight;
-
    // global functions here
    function myHitOther(my1, my2) {
        let left1 = parseInt(document.getElementById(my1).style.left);
@@ -103,48 +99,32 @@
        // Move the image in the given direction
        switch (direction) {
            case 'right':
-               if (left + step < screenWidth - img.width) {
-                   img.style.left = (left + step) + 'px';
-               }
+               img.style.left = (left + step) + 'px';
                break;
            case 'left':
-               if (left - step > 0) {
-                   img.style.left = (left - step) + 'px';
-               }
+               img.style.left = (left - step) + 'px';
                break;
            case 'up':
-               if (top - step > 0) {
-                   img.style.top = (top - step) + 'px';
-               }
+               img.style.top = (top - step) + 'px';
                break;
            case 'down':
-               if (top + step < screenHeight - img.height) {
-                   img.style.top = (top + step) + 'px';
-               }
+               img.style.top = (top + step) + 'px';
                break;
            case 'up-right':
-               if (left + step < screenWidth - img.width && top - step > 0) {
-                   img.style.left = (left + step) + 'px';
-                   img.style.top = (top - step) + 'px';
-               }
+               img.style.left = (left + step) + 'px';
+               img.style.top = (top - step) + 'px';
                break;
            case 'down-left':
-               if (left - step > 0 && top + step < screenHeight - img.height) {
-                   img.style.left = (left - step) + 'px';
-                   img.style.top = (top + step) + 'px';
-               }
+               img.style.left = (left - step) + 'px';
+               img.style.top = (top + step) + 'px';
                break;
            case 'down-right':
-               if (left + step < screenWidth - img.width && top + step < screenHeight - img.height) {
-                   img.style.left = (left + step) + 'px';
-                   img.style.top = (top + step) + 'px';
-               }
+               img.style.left = (left + step) + 'px';
+               img.style.top = (top + step) + 'px';
                break;
            case 'up-left':
-               if (left - step > 0 && top - step > 0) {
-                   img.style.left = (left - step) + 'px';
-                   img.style.top = (top - step) + 'px';
-               }
+               img.style.left = (left - step) + 'px';
+               img.style.top = (top - step) + 'px';
                break;
        }
 
@@ -180,8 +160,8 @@
        let top1 = parseInt(img1.style.top, 10);
 
        // Define different speeds for each image
-       let speed2 = 2;  // myImg02 will move faster
-       let speed3 = 1.5;  // myImg03 will move slower
+       let speed2 = 3;  // myImg02 will move faster
+       let speed3 = 2;  // myImg03 will move slower
        let speed4 = 1;  // myImg04 will move slower
        let speed5 = 0.5;  // myImg05 will move slowest
 
@@ -200,12 +180,17 @@
        // Calculate direction vector
        let dx = targetLeft - left;
        let dy = targetTop - top;
-       let distance = Math.sqrt(dx * dx + dy * dy);  // Distance to target
 
-       // Normalize direction vector and move by a fixed speed
+       // Calculate distance to target
+       let distance = Math.sqrt(dx * dx + dy * dy);
+
+       // If distance is greater than 0, move the image towards the target
        if (distance > 0) {
-           dx /= distance;  // Normalize x distance
-           dy /= distance;  // Normalize y distance
+           // Normalize the direction vector to ensure consistent speed
+           dx /= distance;  // Normalize x direction
+           dy /= distance;  // Normalize y direction
+
+           // Move the image in both x and y directions
            img.style.left = (left + dx * speed) + 'px';
            img.style.top = (top + dy * speed) + 'px';
        }
@@ -240,18 +225,6 @@
                break;
            case ' ':
                stopMove();
-               break;
-           case 'Q':  // Diagonal up-left
-               autoMove('up-left');
-               break;
-           case 'E':  // Diagonal up-right
-               autoMove('up-right');
-               break;
-           case 'Z':  // Diagonal down-left
-               autoMove('down-left');
-               break;
-           case 'C':  // Diagonal down-right
-               autoMove('down-right');
                break;
        }
    });
