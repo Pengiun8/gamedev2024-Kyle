@@ -92,7 +92,7 @@
    // Function to move image and update positions of following images
    function moveImage(direction) {
        let img = document.getElementById('myImg01');
-       let step = 5;  // Smaller step size for smoother movement
+       let step = 5;  // Faster step size for myImg01
        let left = parseInt(img.style.left, 10) || 0;
        let top = parseInt(img.style.top, 10) || 0;
 
@@ -110,6 +110,22 @@
            case 'down':
                img.style.top = (top + step) + 'px';
                break;
+           case 'up-right':
+               img.style.left = (left + step) + 'px';
+               img.style.top = (top - step) + 'px';
+               break;
+           case 'down-left':
+               img.style.left = (left - step) + 'px';
+               img.style.top = (top + step) + 'px';
+               break;
+           case 'down-right':
+               img.style.left = (left + step) + 'px';
+               img.style.top = (top + step) + 'px';
+               break;
+           case 'up-left':
+               img.style.left = (left - step) + 'px';
+               img.style.top = (top - step) + 'px';
+               break;
        }
 
        // After moving, check for collisions
@@ -117,6 +133,18 @@
 
        // Update positions of all following images to smoothly follow myImg01 at constant speeds
        updateFollowImages();
+   }
+
+   function autoMove(direction) {
+       clearInterval(myClock02);
+       let intervalTime = 10;  // More frequent updates for smoother movement
+       myClock02 = setInterval(function() {
+           moveImage(direction);
+       }, intervalTime);  // Faster interval for smoother movement
+   }
+
+   function stopMove() {
+       clearInterval(myClock02);
    }
 
    // Function to make myImg02, myImg03, myImg04, and myImg05 smoothly follow myImg01 at a constant speed
@@ -163,18 +191,6 @@
        }
    }
 
-   function autoMove(direction) {
-       clearInterval(myClock02);
-       let intervalTime = 10;  // More frequent updates for smoother movement
-       myClock02 = setInterval(function() {
-           moveImage(direction);
-       }, intervalTime);  // Faster interval for smoother movement
-   }
-
-   function stopMove() {
-       clearInterval(myClock02);
-   }
-
    // Keyboard controls for manual movement
    document.addEventListener('keydown', function(event) {
        switch (event.key) {
@@ -205,14 +221,22 @@
            case ' ':
                stopMove();
                break;
+           case 'Q':  // Diagonal up-left
+               autoMove('up-left');
+               break;
+           case 'E':  // Diagonal up-right
+               autoMove('up-right');
+               break;
+           case 'Z':  // Diagonal down-left
+               autoMove('down-left');
+               break;
+           case 'C':  // Diagonal down-right
+               autoMove('down-right');
+               break;
        }
    });
-
-   // Auto Background and Movement Controls
-   document.getElementById('myBody').style.backgroundRepeat = 'repeat';
-   document.getElementById('myBody').style.backgroundSize = '80%';
-
 </script>
+
 
 <!-- Images -->
 <img id="myImg01" style="position:absolute; width:100px; height:80px; top:400px; left:900px;"  src="https://th.bing.com/th/id/OIP.kbI7mjIliY65HX_iVkaCPwHaHa?rs=1&pid=ImgDetMain">
