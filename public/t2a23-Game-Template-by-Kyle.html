@@ -1,10 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game Template</title>
-</head>
+
 <body id="myBody" style="background-repeat:repeat; background-size: 80%" background="myBackground01.jpg">
 
 <h1 align="center">t2a23-Game-Template-by-Kyle</h1>
@@ -57,9 +51,6 @@
    let myClock;
    let myClock02;
 
-   const screenWidth = window.innerWidth;
-   const screenHeight = window.innerHeight;
-
    // global functions here
    function myHitOther(my1, my2) {
        let left1 = parseInt(document.getElementById(my1).style.left);
@@ -109,43 +100,34 @@
        // Move the image in the given direction
        switch (direction) {
            case 'right':
-               left += step;
+               img.style.left = (left + step) + 'px';
                break;
            case 'left':
-               left -= step;
+               img.style.left = (left - step) + 'px';
                break;
            case 'up':
-               top -= step;
+               img.style.top = (top - step) + 'px';
                break;
            case 'down':
-               top += step;
-               break;
-           case 'up-left':
-               left -= step;
-               top -= step;
-               break;
-           case 'down-left':
-               left -= step;
-               top += step;
-               break;
-           case 'down-right':
-               left += step;
-               top += step;
+               img.style.top = (top + step) + 'px';
                break;
            case 'up-right':
-               left += step;
-               top -= step;
+               img.style.left = (left + step) + 'px';
+               img.style.top = (top - step) + 'px';
+               break;
+           case 'down-left':
+               img.style.left = (left - step) + 'px';
+               img.style.top = (top + step) + 'px';
+               break;
+           case 'down-right':
+               img.style.left = (left + step) + 'px';
+               img.style.top = (top + step) + 'px';
+               break;
+           case 'up-left':
+               img.style.left = (left - step) + 'px';
+               img.style.top = (top - step) + 'px';
                break;
        }
-
-       // Prevent image from going off screen
-       if (left < 0) left = 0;
-       if (top < 0) top = 0;
-       if (left + img.width > screenWidth) left = screenWidth - img.width;
-       if (top + img.height > screenHeight) top = screenHeight - img.height;
-
-       img.style.left = left + 'px';
-       img.style.top = top + 'px';
 
        // After moving, check for collisions
        myCheckHit();
@@ -212,35 +194,50 @@
 
    // Keyboard controls for manual movement
    document.addEventListener('keydown', function(event) {
-       if (event.key === 'w' && event.key === 'a') {
-           autoMove('up-left');  // combination of W and A for diagonal up-left
-       } else if (event.key === 'w' && event.key === 'd') {
-           autoMove('up-right');  // combination of W and D for diagonal up-right
-       } else if (event.key === 's' && event.key === 'a') {
-           autoMove('down-left');  // combination of S and A for diagonal down-left
-       } else if (event.key === 's' && event.key === 'd') {
-           autoMove('down-right');  // combination of S and D for diagonal down-right
-       } else {
-           switch (event.key) {
-               case 'w':
-                   autoMove('up');
-                   break;
-               case 'a':
-                   autoMove('left');
-                   break;
-               case 's':
-                   autoMove('down');
-                   break;
-               case 'd':
-                   autoMove('right');
-                   break;
-               case ' ':
-                   stopMove();
-                   break;
-           }
+       switch (event.key) {
+           case 'w':
+               moveImage('up');
+               break;
+           case 'a':
+               moveImage('left');
+               break;
+           case 's':
+               moveImage('down');
+               break;
+           case 'd':
+               moveImage('right');
+               break;
+           case 'W':
+               autoMove('up');
+               break;
+           case 'A':
+               autoMove('left');
+               break;
+           case 'S':
+               autoMove('down');
+               break;
+           case 'D':
+               autoMove('right');
+               break;
+           case ' ':
+               stopMove();
+               break;
+           case 'Q':  // Diagonal up-left
+               autoMove('up-left');
+               break;
+           case 'E':  // Diagonal up-right
+               autoMove('up-right');
+               break;
+           case 'Z':  // Diagonal down-left
+               autoMove('down-left');
+               break;
+           case 'C':  // Diagonal down-right
+               autoMove('down-right');
+               break;
        }
    });
 </script>
+
 
 <!-- Images -->
 <img id="myImg01" style="position:absolute; width:100px; height:80px; top:400px; left:900px;"  src="https://th.bing.com/th/id/OIP.kbI7mjIliY65HX_iVkaCPwHaHa?rs=1&pid=ImgDetMain">
@@ -249,5 +246,20 @@
 <img id="myImg04" style="position:absolute; width:100px; height:80px; top:100px; left:1700px;" src="https://cdn.suwalls.com/wallpapers/abstract/purple-squares-43497-2560x1600.jpg">
 <img id="myImg05" style="position:absolute; width:100px; height:80px; top:700px; left:100px;" src="https://pngimg.com/uploads/square/square_PNG11.png">
 
+<!-- Auto Background and Movement Controls -->
+<input type="button" value="Auto Background Left" onclick="{
+    clearInterval(myClock)
+    let myTemp = '100px 0px'
+    myClock = setInterval(function(){
+        myGlobalX -= 5
+        myTemp =  myGlobalX + 'px 0px'
+        document.getElementById('myBody').style.backgroundPosition = myTemp
+    }, 10)
+}">
+
+<input type="button" value="Image Right Fast Button" onTouchStart="{this.click(); event.preventDefault();}" onclick="{
+    document.getElementById('myImg01').style.left = parseInt(document.getElementById('myImg01').style.left) + 10 + 'px'
+    myCheckHit()  // checks for all collisions
+}">
 </body>
 </html>
