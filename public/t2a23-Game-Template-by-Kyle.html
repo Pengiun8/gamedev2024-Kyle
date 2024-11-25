@@ -94,8 +94,8 @@
     function moveImage(direction) {
         let img = document.getElementById('myImg01');
         let step = 5;  // Speed for myImg01
-        let left = parseInt(img.style.left, 10) || 0;
-        let top = parseInt(img.style.top, 10) || 0;
+        let left = parseInt(img.style.left, 10);
+        let top = parseInt(img.style.top, 10);
 
         // Move image based on direction
         switch (direction) {
@@ -178,10 +178,6 @@
             case 'S': autoMove('down'); break;
             case 'D': autoMove('right'); break;
             case ' ': stopMove(); break;
-            case 'Q': autoMove('up-left'); break;
-            case 'E': autoMove('up-right'); break;
-            case 'Z': autoMove('down-left'); break;
-            case 'C': autoMove('down-right'); break;
         }
     });
 </script>
@@ -192,21 +188,4 @@
 <img id="myImg03" style="position: absolute; width: 100px; height: 80px; top: 700px; left: 1700px;" src="https://wallpapers.com/images/hd/yellow-square-1000-x-1000-wallpaper-012q36x57zmvf259.jpg">
 <img id="myImg04" style="position: absolute; width: 100px; height: 80px; top: 100px; left: 1700px;" src="https://cdn.suwalls.com/wallpapers/abstract/purple-squares-43497-2560x1600.jpg">
 <img id="myImg05" style="position: absolute; width: 100px; height: 80px; top: 700px; left: 100px;" src="https://pngimg.com/uploads/square/square_PNG11.png">
-
-<!-- Auto Background and Movement Controls -->
-<input type="button" value="Auto Background Left" onclick="{
-    clearInterval(myClock);
-    let myTemp = '100px 0px';
-    myClock = setInterval(function() {
-        myGlobalX -= 5;
-        myTemp = myGlobalX + 'px 0px';
-        document.getElementById('myBody').style.backgroundPosition = myTemp;
-    }, 10);
-}">
-
-<input type="button" value="Image Right Fast Button" onTouchStart="{this.click(); event.preventDefault();}" onclick="{
-    document.getElementById('myImg01').style.left = parseInt(document.getElementById('myImg01').style.left) + 10 + 'px';
-    myCheckHit();  // Checks for all collisions
-}">
 </body>
-</html>
