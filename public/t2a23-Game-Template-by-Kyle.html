@@ -178,7 +178,7 @@
             moveToward(img5, left1, top1, 0.5);
         }
 
-        // Move an image towards a target with constant speed
+        // Move an image toward a target with constant speed
         function moveToward(img, targetLeft, targetTop, speed) {
             let left = parseInt(img.style.left, 10);
             let top = parseInt(img.style.top, 10);
@@ -215,33 +215,11 @@
     </script>
 
     <!-- Images -->
-    <img id="myImg01" style="width:100px; height:80px; top:400px; left:900px;" src="https://th.bing.com/th/id/OIP.kbI7mjIliY65HX_iVkaCPwHaHa?rs=1&pid=ImgDetMain">
-    <img id="myImg02" style="width:100px; height:80px; top:100px; left:100px;" src="https://files.123freevectors.com/wp-content/solidbackground/traditional-royal-blue-free-solidcolor-background.jpg">
-    <img id="myImg03" style="width:100px; height:80px; top:700px; left:1700px;" src="https://wallpapers.com/images/hd/yellow-square-1000-x-1000-wallpaper-012q36x57zmvf259.jpg">
-    <img id="myImg04" style="width:100px; height:80px; top:100px; left:1700px;" src="https://cdn.suwalls.com/wallpapers/abstract/purple-squares-43497-2560x1600.jpg">
-    <img id="myImg05" style="width:100px; height:80px; top:700px; left:100px;" src="https://pngimg.com/uploads/square/square_PNG11.png">
+    <img id="myImg01" style="width:100px; height:100px; top:50px; left:50px;" src="https://pngimg.com/uploads/square/square_PNG11.png">
+    <img id="myImg02" style="width:80px; height:80px; top:150px; left:150px;" src="https://wallpapers.com/images/hd/yellow-square-1000-x-1000-wallpaper-012q36x57zmvf259.jpg">
+    <img id="myImg03" style="width:80px; height:80px; top:250px; left:250px;" src="https://cdn.suwalls.com/wallpapers/abstract/purple-squares-43497-2560x1600.jpg">
+    <img id="myImg04" style="width:80px; height:80px; top:350px; left:350px;" src="https://pngimg.com/uploads/square/square_PNG11.png">
+    <img id="myImg05" style="width:80px; height:80px; top:450px; left:450px;" src="https://pngimg.com/uploads/square/square_PNG11.png">
 
-    <!-- Auto Background Control -->
-    <input type="button" value="Auto Background Left" onclick="autoBackgroundLeft()">
-    
-    <!-- Fast Image Right Button -->
-    <input type="button" value="Image Right Fast Button" onclick="fastMoveRight()">
-
-    <script>
-        // Auto move background left
-        function autoBackgroundLeft() {
-            clearInterval(myClock);
-            myClock = setInterval(() => {
-                myGlobalX -= 5;
-                document.getElementById('myBody').style.backgroundPosition = `${myGlobalX}px 0px`;
-            }, 10);
-        }
-
-        // Fast move right
-        function fastMoveRight() {
-            document.getElementById('myImg01').style.left = parseInt(document.getElementById('myImg01').style.left) + 10 + 'px';
-            myCheckHit(); // Check for collisions
-        }
-    </script>
 </body>
 </html>
