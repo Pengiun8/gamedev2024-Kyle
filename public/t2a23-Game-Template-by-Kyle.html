@@ -143,11 +143,11 @@
         let left1 = parseInt(img1.style.left, 10);
         let top1 = parseInt(img1.style.top, 10);
 
-        // Different speeds for each image
-        moveToward(img2, left1, top1, 2);
-        moveToward(img3, left1, top1, 1.5);
-        moveToward(img4, left1, top1, 1);
-        moveToward(img5, left1, top1, 0.5);
+        // Same logic for all following images (img2, img3, img4, img5)
+        moveToward(img2, left1, top1, 2);    // Faster speed for img2
+        moveToward(img3, left1, top1, 1.5);  // Medium speed for img3
+        moveToward(img4, left1, top1, 1);    // Slightly slower speed for img4
+        moveToward(img5, left1, top1, 0.5);  // Slowest speed for img5
     }
 
     // Move an image towards a target with a constant speed
