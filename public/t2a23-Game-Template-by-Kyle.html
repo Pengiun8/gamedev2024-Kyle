@@ -1,225 +1,212 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>t2a23-Game-Template-by-Kyle</title>
-    <style>
-        body {
-            background-repeat: repeat;
-            background-size: 80%;
+<body id="myBody" style="background-repeat: repeat; background-size: 80%" background="myBackground01.jpg">
+
+<h1 align="center">t2a23-Game-Template-by-Kyle</h1>
+<br><br><br><br>
+
+<!-- Movement Control Table -->
+<table border="1" align="center">
+    <tr>
+        <td></td>
+        <td><input type="button" value="Up (W)" onclick="moveImage('up')"></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td><input type="button" value="Left (A)" onclick="moveImage('left')"></td>
+        <td></td>
+        <td><input type="button" value="Right (D)" onclick="moveImage('right')"></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td><input type="button" value="Down (S)" onclick="moveImage('down')"></td>
+        <td></td>
+    </tr>
+</table>
+
+<h1 align="center">Auto Move</h1>
+
+<!-- Auto Move Control Table -->
+<table border="1" align="center">
+    <tr>
+        <td></td>
+        <td><input type="button" value="Auto Up (Shift + W)" onclick="autoMove('up')"></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td><input type="button" value="Auto Left (Shift + A)" onclick="autoMove('left')"></td>
+        <td><input type="button" value="Stop (Space)" onclick="stopMove()"></td>
+        <td><input type="button" value="Auto Right (Shift + D)" onclick="autoMove('right')"></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td><input type="button" value="Auto Down (Shift + S)" onclick="autoMove('down')"></td>
+        <td></td>
+    </tr>
+</table>
+<br><br>
+
+<script>
+    // Global variables
+    let myGlobalX = 0;
+    let myClock;
+    let myClock02;
+
+    // Screen dimensions for boundary checking
+    const screenWidth = window.innerWidth;
+    const screenHeight = window.innerHeight;
+
+    // Collision detection function
+    function myHitOther(my1, my2) {
+        let left1 = parseInt(document.getElementById(my1).style.left);
+        let right1 = left1 + parseInt(document.getElementById(my1).style.width);
+        let top1 = parseInt(document.getElementById(my1).style.top);
+        let bottom1 = top1 + parseInt(document.getElementById(my1).style.height);
+
+        let left2 = parseInt(document.getElementById(my2).style.left);
+        let right2 = left2 + parseInt(document.getElementById(my2).style.width);
+        let top2 = parseInt(document.getElementById(my2).style.top);
+        let bottom2 = top2 + parseInt(document.getElementById(my2).style.height);
+
+        return (right1 >= left2) && (bottom1 >= top2) && (left1 <= right2) && (top1 <= bottom2);
+    }
+
+    // Collision check for all relevant images
+    function myCheckHit() {
+        if (myHitOther('myImg01', 'myImg02')) {
+            alert('You lose 2');
+            document.getElementById('myImg01').style.left = '20px';
+            location = 'https://pengiun8.github.io/gamedev2024-Kyle/public/t2a23-Game-Template-by-Kyle.html';
         }
-        h1 {
-            text-align: center;
-        }
-        table {
-            margin: 20px auto;
-            border: 1px solid black;
-        }
-        input[type="button"] {
-            width: 120px;
-            height: 40px;
-        }
-        img {
-            position: absolute;
-        }
-    </style>
-</head>
-<body id="myBody" background="myBackground01.jpg">
-
-    <h1>t2a23-Game-Template-by-Kyle</h1>
-    
-    <!-- Movement Control Table -->
-    <table>
-        <tr>
-            <td></td>
-            <td><input type="button" value="Up (W)" onclick="moveImage('up')"></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td><input type="button" value="Left (A)" onclick="moveImage('left')"></td>
-            <td></td>
-            <td><input type="button" value="Right (D)" onclick="moveImage('right')"></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td><input type="button" value="Down (S)" onclick="moveImage('down')"></td>
-            <td></td>
-        </tr>
-    </table>
-
-    <h1>Auto Move</h1>
-
-    <!-- Auto Move Control Table -->
-    <table>
-        <tr>
-            <td></td>
-            <td><input type="button" value="Auto Up (Shift + W)" onclick="autoMove('up')"></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td><input type="button" value="Auto Left (Shift + A)" onclick="autoMove('left')"></td>
-            <td><input type="button" value="Stop (Space)" onclick="stopMove()"></td>
-            <td><input type="button" value="Auto Right (Shift + D)" onclick="autoMove('right')"></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td><input type="button" value="Auto Down (Shift + S)" onclick="autoMove('down')"></td>
-            <td></td>
-        </tr>
-    </table>
-
-    <script>
-        // Global variables
-        let myGlobalX = 0;
-        let myClock, myClock02;
-        const screenWidth = window.innerWidth;
-        const screenHeight = window.innerHeight;
-
-        // Check collision between two elements
-        function myHitOther(my1, my2) {
-            let left1 = parseInt(document.getElementById(my1).style.left);
-            let right1 = left1 + parseInt(document.getElementById(my1).style.width);
-            let top1 = parseInt(document.getElementById(my1).style.top);
-            let bottom1 = top1 + parseInt(document.getElementById(my1).style.height);
-            let left2 = parseInt(document.getElementById(my2).style.left);
-            let right2 = left2 + parseInt(document.getElementById(my2).style.width);
-            let top2 = parseInt(document.getElementById(my2).style.top);
-            let bottom2 = top2 + parseInt(document.getElementById(my2).style.height);
-
-            return (right1 >= left2) && (bottom1 >= top2) && (left1 <= right2) && (top1 <= bottom2);
-        }
-
-        // Check all collisions
-        function myCheckHit() {
-            if (myHitOther('myImg01', 'myImg02')) {
-                alert('You lose 2');
-                resetPosition();
-            }
-            if (myHitOther('myImg01', 'myImg03')) {
-                alert('You lose 3');
-                resetPosition();
-            }
-            if (myHitOther('myImg01', 'myImg04')) {
-                alert('You lose 4');
-                resetPosition();
-            }
-            if (myHitOther('myImg01', 'myImg05')) {
-                alert('You lose 5');
-                resetPosition();
-            }
-        }
-
-        // Reset position of myImg01
-        function resetPosition() {
+        if (myHitOther('myImg01', 'myImg03')) {
+            alert('You lose 3');
             document.getElementById('myImg01').style.left = '20px';
         }
+        if (myHitOther('myImg01', 'myImg04')) {
+            alert('You lose 4');
+            document.getElementById('myImg01').style.left = '20px';
+        }
+        if (myHitOther('myImg01', 'myImg05')) {
+            alert('You lose 5');
+            document.getElementById('myImg01').style.left = '20px';
+        }
+    }
 
-        // Move image
-        function moveImage(direction) {
-            let img = document.getElementById('myImg01');
-            let step = 5;  // Movement step size
-            let left = parseInt(img.style.left, 10) || 0;
-            let top = parseInt(img.style.top, 10) || 0;
+    // Function to move the image and update positions of following images
+    function moveImage(direction) {
+        let img = document.getElementById('myImg01');
+        let step = 5;  // Speed for myImg01
+        let left = parseInt(img.style.left, 10) || 0;
+        let top = parseInt(img.style.top, 10) || 0;
 
-            switch (direction) {
-                case 'right':
-                    if (left + step < screenWidth - img.width) {
-                        img.style.left = (left + step) + 'px';
-                    }
-                    break;
-                case 'left':
-                    if (left - step > 0) {
-                        img.style.left = (left - step) + 'px';
-                    }
-                    break;
-                case 'up':
-                    if (top - step > 0) {
-                        img.style.top = (top - step) + 'px';
-                    }
-                    break;
-                case 'down':
-                    if (top + step < screenHeight - img.height) {
-                        img.style.top = (top + step) + 'px';
-                    }
-                    break;
-            }
-
-            myCheckHit(); // Check for collisions after moving
-            updateFollowImages(); // Update following images
+        // Move image based on direction
+        switch (direction) {
+            case 'right':
+                if (left + step < screenWidth - img.width) img.style.left = (left + step) + 'px';
+                break;
+            case 'left':
+                if (left - step > 0) img.style.left = (left - step) + 'px';
+                break;
+            case 'up':
+                if (top - step > 0) img.style.top = (top - step) + 'px';
+                break;
+            case 'down':
+                if (top + step < screenHeight - img.height) img.style.top = (top + step) + 'px';
+                break;
         }
 
-        // Automatically move in a direction
-        function autoMove(direction) {
-            clearInterval(myClock02);
-            let intervalTime = 10;  // Faster interval for smoother movement
-            myClock02 = setInterval(() => moveImage(direction), intervalTime);
+        // After moving, check for collisions
+        myCheckHit();
+
+        // Update positions of following images
+        updateFollowImages();
+    }
+
+    // Function for auto movement
+    function autoMove(direction) {
+        clearInterval(myClock02);
+        let intervalTime = 10;  // Faster interval for smoother movement
+        myClock02 = setInterval(() => moveImage(direction), intervalTime);
+    }
+
+    // Stop automatic movement
+    function stopMove() {
+        clearInterval(myClock02);
+    }
+
+    // Update positions of following images
+    function updateFollowImages() {
+        let img1 = document.getElementById('myImg01');
+        let img2 = document.getElementById('myImg02');
+        let img3 = document.getElementById('myImg03');
+        let img4 = document.getElementById('myImg04');
+        let img5 = document.getElementById('myImg05');
+
+        let left1 = parseInt(img1.style.left, 10);
+        let top1 = parseInt(img1.style.top, 10);
+
+        // Different speeds for each image
+        moveToward(img2, left1, top1, 2);
+        moveToward(img3, left1, top1, 1.5);
+        moveToward(img4, left1, top1, 1);
+        moveToward(img5, left1, top1, 0.5);
+    }
+
+    // Move an image towards a target with a constant speed
+    function moveToward(img, targetLeft, targetTop, speed) {
+        let left = parseInt(img.style.left, 10);
+        let top = parseInt(img.style.top, 10);
+        let dx = targetLeft - left;
+        let dy = targetTop - top;
+        let distance = Math.sqrt(dx * dx + dy * dy);
+
+        if (distance > 0) {
+            dx /= distance;  // Normalize direction vector
+            dy /= distance;
+            img.style.left = (left + dx * speed) + 'px';
+            img.style.top = (top + dy * speed) + 'px';
         }
+    }
 
-        // Stop auto movement
-        function stopMove() {
-            clearInterval(myClock02);
+    // Keyboard controls for manual movement
+    document.addEventListener('keydown', function (event) {
+        switch (event.key) {
+            case 'w': moveImage('up'); break;
+            case 'a': moveImage('left'); break;
+            case 's': moveImage('down'); break;
+            case 'd': moveImage('right'); break;
+            case 'W': autoMove('up'); break;
+            case 'A': autoMove('left'); break;
+            case 'S': autoMove('down'); break;
+            case 'D': autoMove('right'); break;
+            case ' ': stopMove(); break;
+            case 'Q': autoMove('up-left'); break;
+            case 'E': autoMove('up-right'); break;
+            case 'Z': autoMove('down-left'); break;
+            case 'C': autoMove('down-right'); break;
         }
+    });
+</script>
 
-        // Update the positions of following images
-        function updateFollowImages() {
-            let img1 = document.getElementById('myImg01');
-            let img2 = document.getElementById('myImg02');
-            let img3 = document.getElementById('myImg03');
-            let img4 = document.getElementById('myImg04');
-            let img5 = document.getElementById('myImg05');
+<!-- Images -->
+<img id="myImg01" style="position: absolute; width: 100px; height: 80px; top: 400px; left: 900px;" src="https://th.bing.com/th/id/OIP.kbI7mjIliY65HX_iVkaCPwHaHa?rs=1&pid=ImgDetMain">
+<img id="myImg02" style="position: absolute; width: 100px; height: 80px; top: 100px; left: 100px;" src="https://files.123freevectors.com/wp-content/solidbackground/traditional-royal-blue-free-solidcolor-background.jpg">
+<img id="myImg03" style="position: absolute; width: 100px; height: 80px; top: 700px; left: 1700px;" src="https://wallpapers.com/images/hd/yellow-square-1000-x-1000-wallpaper-012q36x57zmvf259.jpg">
+<img id="myImg04" style="position: absolute; width: 100px; height: 80px; top: 100px; left: 1700px;" src="https://cdn.suwalls.com/wallpapers/abstract/purple-squares-43497-2560x1600.jpg">
+<img id="myImg05" style="position: absolute; width: 100px; height: 80px; top: 700px; left: 100px;" src="https://pngimg.com/uploads/square/square_PNG11.png">
 
-            let left1 = parseInt(img1.style.left, 10);
-            let top1 = parseInt(img1.style.top, 10);
+<!-- Auto Background and Movement Controls -->
+<input type="button" value="Auto Background Left" onclick="{
+    clearInterval(myClock);
+    let myTemp = '100px 0px';
+    myClock = setInterval(function() {
+        myGlobalX -= 5;
+        myTemp = myGlobalX + 'px 0px';
+        document.getElementById('myBody').style.backgroundPosition = myTemp;
+    }, 10);
+}">
 
-            moveToward(img2, left1, top1, 2);
-            moveToward(img3, left1, top1, 1.5);
-            moveToward(img4, left1, top1, 1);
-            moveToward(img5, left1, top1, 0.5);
-        }
-
-        // Move an image toward a target with constant speed
-        function moveToward(img, targetLeft, targetTop, speed) {
-            let left = parseInt(img.style.left, 10);
-            let top = parseInt(img.style.top, 10);
-            let dx = targetLeft - left;
-            let dy = targetTop - top;
-            let distance = Math.sqrt(dx * dx + dy * dy);
-
-            if (distance > 0) {
-                dx /= distance;
-                dy /= distance;
-                img.style.left = (left + dx * speed) + 'px';
-                img.style.top = (top + dy * speed) + 'px';
-            }
-        }
-
-        // Keyboard controls
-        document.addEventListener('keydown', (event) => {
-            switch (event.key) {
-                case 'w': moveImage('up'); break;
-                case 'a': moveImage('left'); break;
-                case 's': moveImage('down'); break;
-                case 'd': moveImage('right'); break;
-                case 'W': autoMove('up'); break;
-                case 'A': autoMove('left'); break;
-                case 'S': autoMove('down'); break;
-                case 'D': autoMove('right'); break;
-                case ' ': stopMove(); break;
-                case 'Q': autoMove('up-left'); break;
-                case 'E': autoMove('up-right'); break;
-                case 'Z': autoMove('down-left'); break;
-                case 'C': autoMove('down-right'); break;
-            }
-        });
-    </script>
-
-    <!-- Images -->
-    <img id="myImg01" style="width:100px; height:100px; top:50px; left:50px;" src="https://pngimg.com/uploads/square/square_PNG11.png">
-    <img id="myImg02" style="width:80px; height:80px; top:150px; left:150px;" src="https://wallpapers.com/images/hd/yellow-square-1000-x-1000-wallpaper-012q36x57zmvf259.jpg">
-    <img id="myImg03" style="width:80px; height:80px; top:250px; left:250px;" src="https://cdn.suwalls.com/wallpapers/abstract/purple-squares-43497-2560x1600.jpg">
-    <img id="myImg04" style="width:80px; height:80px; top:350px; left:350px;" src="https://pngimg.com/uploads/square/square_PNG11.png">
-    <img id="myImg05" style="width:80px; height:80px; top:450px; left:450px;" src="https://pngimg.com/uploads/square/square_PNG11.png">
-
+<input type="button" value="Image Right Fast Button" onTouchStart="{this.click(); event.preventDefault();}" onclick="{
+    document.getElementById('myImg01').style.left = parseInt(document.getElementById('myImg01').style.left) + 10 + 'px';
+    myCheckHit();  // Checks for all collisions
+}">
 </body>
 </html>
