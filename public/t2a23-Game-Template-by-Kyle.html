@@ -42,6 +42,16 @@
         <td></td>
     </tr>
 </table>
+
+<h1 align="center">Background Movement</h1>
+
+<!-- Background Movement Control Table -->
+<table border="1" align="center">
+    <tr>
+        <td><input type="button" value="Background Left" onclick="moveBackground('left')"></td>
+        <td><input type="button" value="Background Right" onclick="moveBackground('right')"></td>
+    </tr>
+</table>
 <br><br>
 
 <script>
@@ -166,6 +176,20 @@
         }
     }
 
+    // Move the background left or right
+    function moveBackground(direction) {
+        let body = document.getElementById('myBody');
+        let currentBackgroundPosition = parseInt(window.getComputedStyle(body).backgroundPositionX, 10) || 0;
+
+        let step = 10; // Speed of the background movement
+
+        if (direction === 'left') {
+            body.style.backgroundPositionX = (currentBackgroundPosition - step) + 'px';
+        } else if (direction === 'right') {
+            body.style.backgroundPositionX = (currentBackgroundPosition + step) + 'px';
+        }
+    }
+
     // Keyboard controls for manual movement
     document.addEventListener('keydown', function (event) {
         switch (event.key) {
@@ -188,4 +212,5 @@
 <img id="myImg03" style="position: absolute; width: 100px; height: 80px; top: 700px; left: 1700px;" src="https://wallpapers.com/images/hd/yellow-square-1000-x-1000-wallpaper-012q36x57zmvf259.jpg">
 <img id="myImg04" style="position: absolute; width: 100px; height: 80px; top: 100px; left: 1700px;" src="https://cdn.suwalls.com/wallpapers/abstract/purple-squares-43497-2560x1600.jpg">
 <img id="myImg05" style="position: absolute; width: 100px; height: 80px; top: 700px; left: 100px;" src="https://pngimg.com/uploads/square/square_PNG11.png">
+
 </body>
