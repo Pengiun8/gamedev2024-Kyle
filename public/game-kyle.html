@@ -74,11 +74,13 @@
         document.addEventListener("keydown", (e) => {
             if (e.code === "KeyD") keys.right = true; // Move right with 'D'
             if (e.code === "Space") keys.up = true;  // Jump with 'Space'
+            if (e.code === "KeyA") keys.left = true; // Move left with 'A'
         });
 
         document.addEventListener("keyup", (e) => {
             if (e.code === "KeyD") keys.right = false;
             if (e.code === "Space") keys.up = false;
+            if (e.code === "KeyA") keys.left = false;
         });
 
         // Start the game loop after the image loads
