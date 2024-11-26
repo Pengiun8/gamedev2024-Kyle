@@ -31,11 +31,12 @@
             grounded: false
         };
 
-        let keys = { right: false, up: false };
+        let keys = { right: false, up: false, left: false };
 
         // Movement logic (left/right, jump)
         function updatePlayer() {
-            if (keys.right) player.dx = player.speed;
+            if (keys.right) player.dx = player.speed;    // Move right
+            else if (keys.left) player.dx = -player.speed;  // Move left
             else player.dx *= 0.9; // Slow down gradually when no key is pressed
 
             if (keys.up && player.grounded) {
@@ -88,3 +89,4 @@
     </script>
 </body>
 </html>
+
