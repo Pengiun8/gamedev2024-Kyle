@@ -1,9 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Platformer with Image</title>
     <style>
         body, html { margin: 0; padding: 0; overflow: hidden; }
         canvas { display: block; }
@@ -34,13 +31,12 @@
             grounded: false
         };
 
-        let keys = { right: false, left: false, up: false };
+        let keys = { right: false, up: false };
 
         // Movement logic (left/right, jump)
         function updatePlayer() {
             if (keys.right) player.dx = player.speed;
-            else if (keys.left) player.dx = -player.speed;
-            else player.dx *= 0.9;
+            else player.dx *= 0.9; // Slow down gradually when no key is pressed
 
             if (keys.up && player.grounded) {
                 player.dy = player.jumpPower;
@@ -76,15 +72,13 @@
 
         // Keyboard input
         document.addEventListener("keydown", (e) => {
-            if (e.code === "ArrowRight") keys.right = true;
-            if (e.code === "ArrowLeft") keys.left = true;
-            if (e.code === "ArrowUp") keys.up = true;
+            if (e.code === "KeyD") keys.right = true; // Move right with 'D'
+            if (e.code === "Space") keys.up = true;  // Jump with 'Space'
         });
 
         document.addEventListener("keyup", (e) => {
-            if (e.code === "ArrowRight") keys.right = false;
-            if (e.code === "ArrowLeft") keys.left = false;
-            if (e.code === "ArrowUp") keys.up = false;
+            if (e.code === "KeyD") keys.right = false;
+            if (e.code === "Space") keys.up = false;
         });
 
         // Start the game loop after the image loads
