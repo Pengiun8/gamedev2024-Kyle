@@ -15,8 +15,9 @@
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
+        // Use a local image
         const playerImage = new Image();
-        playerImage.src = 'https://via.placeholder.com/50'; // Image for the player
+        playerImage.src = 'player.png'; // Image for the player, make sure the image is in the same folder as your HTML file
 
         const player = {
             x: 50,
@@ -71,6 +72,12 @@
             requestAnimationFrame(gameLoop);
         }
 
+        // Image Preload
+        playerImage.onload = () => {
+            // Start the game loop once the image is fully loaded
+            gameLoop();
+        };
+
         // Keyboard input
         document.addEventListener("keydown", (e) => {
             if (e.code === "KeyD") keys.right = true; // Move right with 'D'
@@ -83,10 +90,6 @@
             if (e.code === "Space") keys.up = false;
             if (e.code === "KeyA") keys.left = false;
         });
-
-        // Start the game loop after the image loads
-        playerImage.onload = gameLoop;
     </script>
 </body>
 </html>
-
