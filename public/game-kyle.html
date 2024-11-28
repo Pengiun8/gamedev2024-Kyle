@@ -29,24 +29,31 @@
             dy: 0,
             gravity: 0.5,
             jumpPower: -15,
-            grounded: false
+            grounded: false,
+            facingRight: true // New property to track which direction Slimer is facing
         };
 
         let keys = { right: false, up: false, left: false };
 
         // Movement logic (left/right, jump)
         function updatePlayer() {
-            if (keys.right) player.dx = player.speed;    // Move right
-            else if (keys.left) player.dx = -player.speed;  // Move left
-            else player.dx *= 0.9; // Slow down gradually when no key is pressed
+            if (keys.right) {
+                player.dx = player.speed;
+                player.facingRight = true; // Face right when moving right
+            } else if (keys.left) {
+                player.dx = -player.speed;
+                player.facingRight = false; // Face left when moving left
+            } else {
+                player.dx *= 0.9; // Slow down gradually when no key is pressed
+            }
 
             if (keys.up && player.grounded) {
                 player.dy = player.jumpPower;
                 player.grounded = false;
             }
 
-            player.dy += player.gravity; 
-            player.x += player.dx; 
+            player.dy += player.gravity;
+            player.x += player.dx;
             player.y += player.dy;
 
             // Prevent player from going out of bounds
@@ -61,7 +68,18 @@
 
         // Draw the image at player position
         function drawPlayer() {
-            ctx.drawImage(playerImage, player.x, player.y, player.width, player.height);
+            ctx.save(); // Save the current canvas state
+
+            if (!player.facingRight) {
+                // Flip the canvas horizontally when moving left
+                ctx.scale(-1, 1); 
+                ctx.drawImage(playerImage, -player.x - player.width, player.y, player.width, player.height);
+            } else {
+                // Draw the image normally when moving right
+                ctx.drawImage(playerImage, player.x, player.y, player.width, player.height);
+            }
+
+            ctx.restore(); // Restore the original canvas state
         }
 
         // Game loop: clear canvas, update player, draw player
