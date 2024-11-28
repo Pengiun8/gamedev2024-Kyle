@@ -59,9 +59,9 @@
                 player.dx *= 0.9; // Slow down gradually when no key is pressed
             }
 
-            // Handle jump charging
+            // Handle jump charging only when grounded
             if (keys.up && player.grounded) {
-                // Start charging the jump when the up key is pressed
+                // Start charging the jump when the up key is pressed, only if grounded
                 player.jumpCharge = Math.max(player.jumpCharge - 0.5, player.maxJumpCharge); // Decrease over time (simulate charging)
             }
 
@@ -87,6 +87,8 @@
                 player.y = canvas.height - player.height;
                 player.dy = 0;
                 player.grounded = true; // Mark as grounded when hitting the ground
+            } else {
+                player.grounded = false; // Not grounded if in the air
             }
         }
 
