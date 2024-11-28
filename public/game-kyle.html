@@ -15,7 +15,7 @@
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
-        // Use local images
+        // Load images
         const playerImageRight = new Image();
         playerImageRight.src = 'slimer right.png'; // Image for Slimer facing right
 
@@ -27,6 +27,9 @@
 
         const playerImageJumpLeft = new Image();
         playerImageJumpLeft.src = 'slimer jump left.png'; // Image for Slimer jumping facing left
+
+        const playerImageJumpCharge = new Image();  // New charging sprite (single direction)
+        playerImageJumpCharge.src = 'slimer jump charge.png'; // Charging sprite for jump (single direction)
 
         const player = {
             x: 50,
@@ -96,8 +99,11 @@
         function drawPlayer() {
             ctx.save();
 
-            // Check if player is grounded or in the air
-            if (!player.grounded) {
+            // Check if the player is charging and grounded
+            if (player.grounded && keys.up) {
+                // Show charging sprite when grounded and space is held down
+                ctx.drawImage(playerImageJumpCharge, player.x, player.y, player.width, player.height);
+            } else if (!player.grounded) {
                 // Draw jumping sprite if not grounded
                 if (player.facingRight) {
                     ctx.drawImage(playerImageJumpRight, player.x, player.y, player.width, player.height);
@@ -105,7 +111,7 @@
                     ctx.drawImage(playerImageJumpLeft, player.x, player.y, player.width, player.height);
                 }
             } else {
-                // Draw walking sprite when grounded
+                // Draw walking sprite when grounded (no charge)
                 if (player.facingRight) {
                     ctx.drawImage(playerImageRight, player.x, player.y, player.width, player.height);
                 } else {
@@ -126,7 +132,7 @@
 
         // Image Preload
         let imagesLoaded = 0;
-        const totalImages = 4; // Number of images to load
+        const totalImages = 5; // Number of images to load (including charging sprite)
 
         function checkImagesLoaded() {
             imagesLoaded++;
@@ -140,11 +146,12 @@
         playerImageLeft.onload = checkImagesLoaded;
         playerImageJumpRight.onload = checkImagesLoaded;
         playerImageJumpLeft.onload = checkImagesLoaded;
+        playerImageJumpCharge.onload = checkImagesLoaded;
 
         // Keyboard input
         document.addEventListener("keydown", (e) => {
             if (e.code === "KeyD") keys.right = true; // Move right with 'D'
-            if (e.code === "Space") keys.up = true;  // Jump with 'Space'
+            if (e.code === "Space") keys.up = true;  // Charge jump with 'Space'
             if (e.code === "KeyA") keys.left = true; // Move left with 'A'
         });
 
