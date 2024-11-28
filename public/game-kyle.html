@@ -38,8 +38,10 @@
             dy: 0,    // Vertical velocity
             gravity: 0.5,
             jumpPower: -15,
+            maxJumpCharge: -20, // Max jump charge power
             grounded: false,
-            facingRight: true // Track direction
+            facingRight: true,
+            jumpCharge: 0 // Track the current charge level
         };
 
         let keys = { right: false, up: false, left: false };
@@ -57,10 +59,18 @@
                 player.dx *= 0.9; // Slow down gradually when no key is pressed
             }
 
-            // Handle jump (only when grounded)
+            // Handle jump charging
             if (keys.up && player.grounded) {
-                player.dy = player.jumpPower;
-                player.grounded = false;
+                // Start charging the jump when the up key is pressed
+                player.jumpCharge = Math.max(player.jumpCharge - 0.5, player.maxJumpCharge); // Decrease over time (simulate charging)
+            }
+
+            // Release the jump and apply the charge when the button is released
+            if (!keys.up && !player.grounded) {
+                if (player.jumpCharge < 0) {
+                    player.dy = player.jumpCharge; // Apply the jump charge
+                    player.jumpCharge = 0; // Reset jump charge
+                }
             }
 
             // Apply gravity
@@ -138,7 +148,13 @@
 
         document.addEventListener("keyup", (e) => {
             if (e.code === "KeyD") keys.right = false;
-            if (e.code === "Space") keys.up = false;
+            if (e.code === "Space") {
+                keys.up = false;  // Stop charging the jump
+                if (player.grounded) {
+                    player.dy = player.jumpCharge; // Apply jump charge when space is released
+                    player.jumpCharge = 0; // Reset the jump charge
+                }
+            }
             if (e.code === "KeyA") keys.left = false;
         });
     </script>
