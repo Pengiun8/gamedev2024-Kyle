@@ -15,9 +15,18 @@
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
-        // Use a local image
-        const playerImage = new Image();
-        playerImage.src = 'slimer right.png'; // Image for the player, make sure the image is in the same folder as your HTML file
+        // Use local images
+        const playerImageRight = new Image();
+        playerImageRight.src = 'slimer right.png'; // Image for Slimer facing right
+
+        const playerImageLeft = new Image();
+        playerImageLeft.src = 'slimer left.png'; // Image for Slimer facing left
+
+        const playerImageJumpRight = new Image();
+        playerImageJumpRight.src = 'slimer jump right.png'; // Image for Slimer jumping facing right
+
+        const playerImageJumpLeft = new Image();
+        playerImageJumpLeft.src = 'slimer jump left.png'; // Image for Slimer jumping facing left
 
         const player = {
             x: 50,
@@ -25,61 +34,74 @@
             width: 76,
             height: 44,
             speed: 5,
-            dx: 0,
-            dy: 0,
+            dx: 0,    // Horizontal velocity
+            dy: 0,    // Vertical velocity
             gravity: 0.5,
             jumpPower: -15,
             grounded: false,
-            facingRight: true // New property to track which direction Slimer is facing
+            facingRight: true // Track direction
         };
 
         let keys = { right: false, up: false, left: false };
 
         // Movement logic (left/right, jump)
         function updatePlayer() {
+            // Handle left/right movement
             if (keys.right) {
                 player.dx = player.speed;
-                player.facingRight = true; // Face right when moving right
+                player.facingRight = true;
             } else if (keys.left) {
                 player.dx = -player.speed;
-                player.facingRight = false; // Face left when moving left
+                player.facingRight = false;
             } else {
                 player.dx *= 0.9; // Slow down gradually when no key is pressed
             }
 
+            // Handle jump (only when grounded)
             if (keys.up && player.grounded) {
                 player.dy = player.jumpPower;
                 player.grounded = false;
             }
 
+            // Apply gravity
             player.dy += player.gravity;
-            player.x += player.dx;
-            player.y += player.dy;
+            player.x += player.dx; // Horizontal movement
+            player.y += player.dy; // Vertical movement
 
-            // Prevent player from going out of bounds
+            // Prevent player from going out of bounds horizontally
             if (player.x < 0) player.x = 0;
             if (player.x + player.width > canvas.width) player.x = canvas.width - player.width;
+
+            // Prevent player from going out of bounds vertically
             if (player.y + player.height > canvas.height) {
                 player.y = canvas.height - player.height;
                 player.dy = 0;
-                player.grounded = true;
+                player.grounded = true; // Mark as grounded when hitting the ground
             }
         }
 
         // Draw the image at player position
         function drawPlayer() {
-            ctx.save(); // Save the current canvas state
+            ctx.save();
 
-            if (!player.facingRight) {
-                // Flip the canvas horizontally when moving left
-                ctx.scale(-1, 1); 
-                ctx.drawImage(playerImage, -player.x - player.width, player.y, player.width, player.height);
+            // Check if player is grounded or in the air
+            if (!player.grounded) {
+                // Draw jumping sprite if not grounded
+                if (player.facingRight) {
+                    ctx.drawImage(playerImageJumpRight, player.x, player.y, player.width, player.height);
+                } else {
+                    ctx.drawImage(playerImageJumpLeft, player.x, player.y, player.width, player.height);
+                }
             } else {
-                // Draw the image normally when moving right
-                ctx.drawImage(playerImage, player.x, player.y, player.width, player.height);
+                // Draw walking sprite when grounded
+                if (player.facingRight) {
+                    ctx.drawImage(playerImageRight, player.x, player.y, player.width, player.height);
+                } else {
+                    ctx.drawImage(playerImageLeft, player.x, player.y, player.width, player.height);
+                }
             }
 
-            ctx.restore(); // Restore the original canvas state
+            ctx.restore();
         }
 
         // Game loop: clear canvas, update player, draw player
@@ -91,10 +113,21 @@
         }
 
         // Image Preload
-        playerImage.onload = () => {
-            // Start the game loop once the image is fully loaded
-            gameLoop();
-        };
+        let imagesLoaded = 0;
+        const totalImages = 4; // Number of images to load
+
+        function checkImagesLoaded() {
+            imagesLoaded++;
+            if (imagesLoaded === totalImages) {
+                gameLoop(); // Start the game loop once all images are loaded
+            }
+        }
+
+        // Image preload
+        playerImageRight.onload = checkImagesLoaded;
+        playerImageLeft.onload = checkImagesLoaded;
+        playerImageJumpRight.onload = checkImagesLoaded;
+        playerImageJumpLeft.onload = checkImagesLoaded;
 
         // Keyboard input
         document.addEventListener("keydown", (e) => {
