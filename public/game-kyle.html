@@ -51,15 +51,17 @@
 
         // Movement logic (left/right, jump)
         function updatePlayer() {
-            // Handle left/right movement
-            if (keys.right) {
-                player.dx = player.speed;
-                player.facingRight = true;
-            } else if (keys.left) {
-                player.dx = -player.speed;
-                player.facingRight = false;
-            } else {
-                player.dx *= 0.9; // Slow down gradually when no key is pressed
+            // Prevent horizontal movement when charging the jump
+            if (!keys.up) { // If space is not being held for charging
+                if (keys.right) {
+                    player.dx = player.speed;
+                    player.facingRight = true;
+                } else if (keys.left) {
+                    player.dx = -player.speed;
+                    player.facingRight = false;
+                } else {
+                    player.dx *= 0.9; // Slow down gradually when no key is pressed
+                }
             }
 
             // Handle jump charging only when grounded
