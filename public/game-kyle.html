@@ -16,7 +16,7 @@
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
-        // Load images
+        // Image source paths
         const images = {
             right: 'slimer right.png',
             left: 'slimer left.png',
@@ -24,35 +24,20 @@
             jumpLeft: 'slimer jump left.png',
             jumpCharge: 'slimer jump charge.png'
         };
-        const playerImageRight = new Image();
-        const playerImageLeft = new Image();
-        const playerImageJumpRight = new Image();
-        const playerImageJumpLeft = new Image();
-        const playerImageJumpCharge = new Image();
-        
-        // Image Preload Check
+
+        // Load images
+        const loadedImages = {};
         let imagesLoaded = 0;
         const totalImages = Object.keys(images).length;
-        
-        function checkImagesLoaded() {
-            imagesLoaded++;
-            if (imagesLoaded === totalImages) {
-                gameLoop(); // Start the game loop once all images are loaded
-            }
+
+        for (let key in images) {
+            loadedImages[key] = new Image();
+            loadedImages[key].src = images[key];
+            loadedImages[key].onload = () => {
+                imagesLoaded++;
+                if (imagesLoaded === totalImages) gameLoop(); // Start the game loop once all images are loaded
+            };
         }
-
-        // Preload images
-        playerImageRight.src = images.right;
-        playerImageLeft.src = images.left;
-        playerImageJumpRight.src = images.jumpRight;
-        playerImageJumpLeft.src = images.jumpLeft;
-        playerImageJumpCharge.src = images.jumpCharge;
-
-        playerImageRight.onload = checkImagesLoaded;
-        playerImageLeft.onload = checkImagesLoaded;
-        playerImageJumpRight.onload = checkImagesLoaded;
-        playerImageJumpLeft.onload = checkImagesLoaded;
-        playerImageJumpCharge.onload = checkImagesLoaded;
 
         // Game Constants
         const GAME_SETTINGS = {
@@ -104,10 +89,28 @@
             if (keys.up && player.grounded) player.dx = 0;
 
             // Handle Dash Logic
-            handleDash();
+            if (keys.dash && player.dashCooldown <= 0 && !player.isDashing) {
+                startDash();
+            }
 
-            // Handle jump charging (only when grounded)
-            handleJumpCharge();
+            if (player.isDashing) {
+                moveDash();
+            }
+
+            // Dash cooldown logic
+            if (player.dashCooldown > 0) {
+                player.dashCooldown--;
+            }
+
+            // Handle Jump Charging
+            if (keys.up && player.grounded) {
+                player.jumpCharge = Math.max(player.jumpCharge - 0.5, GAME_SETTINGS.maxJumpCharge);
+            }
+
+            if (!keys.up && !player.grounded && player.jumpCharge < 0) {
+                player.dy = player.jumpCharge;
+                player.jumpCharge = 0;
+            }
 
             // Apply gravity
             player.dy += GAME_SETTINGS.gravity;
@@ -129,22 +132,6 @@
             }
         }
 
-        // Handle Dash Logic
-        function handleDash() {
-            if (keys.dash && player.dashCooldown <= 0 && !player.isDashing) {
-                startDash();
-            }
-
-            if (player.isDashing) {
-                moveDash();
-            }
-
-            // Dash cooldown logic
-            if (player.dashCooldown > 0) {
-                player.dashCooldown--;
-            }
-        }
-
         // Start Dash
         function startDash() {
             player.isDashing = true;
@@ -163,30 +150,11 @@
             }
         }
 
-        // Handle Jump Charging
-        function handleJumpCharge() {
-            if (keys.up && player.grounded) {
-                player.jumpCharge = Math.max(player.jumpCharge - 0.5, GAME_SETTINGS.maxJumpCharge);
-            }
-
-            if (!keys.up && !player.grounded && player.jumpCharge < 0) {
-                player.dy = player.jumpCharge;
-                player.jumpCharge = 0;
-            }
-        }
-
         // Draw the player based on current state
         function drawPlayer() {
             ctx.save();
-
-            if (player.grounded && keys.up) {
-                ctx.drawImage(playerImageJumpCharge, player.x, player.y, player.width, player.height);
-            } else if (!player.grounded) {
-                ctx.drawImage(player.facingRight ? playerImageJumpRight : playerImageJumpLeft, player.x, player.y, player.width, player.height);
-            } else {
-                ctx.drawImage(player.facingRight ? playerImageRight : playerImageLeft, player.x, player.y, player.width, player.height);
-            }
-
+            const imageKey = player.isDashing ? (player.facingRight ? 'right' : 'left') : (player.facingRight ? 'right' : 'left');
+            ctx.drawImage(loadedImages[imageKey], player.x, player.y, player.width, player.height);
             ctx.restore();
         }
 
