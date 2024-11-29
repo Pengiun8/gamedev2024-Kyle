@@ -153,8 +153,32 @@
         // Draw the player based on current state
         function drawPlayer() {
             ctx.save();
-            const imageKey = player.isDashing ? (player.facingRight ? 'right' : 'left') : (player.facingRight ? 'right' : 'left');
-            ctx.drawImage(loadedImages[imageKey], player.x, player.y, player.width, player.height);
+            
+            // Charging Jump (when grounded and holding space)
+            if (player.grounded && keys.up) {
+                ctx.drawImage(loadedImages.jumpCharge, player.x, player.y, player.width, player.height);
+            } 
+            // Jumping (when in the air)
+            else if (!player.grounded) {
+                if (player.facingRight) {
+                    ctx.drawImage(loadedImages.jumpRight, player.x, player.y, player.width, player.height);
+                } else {
+                    ctx.drawImage(loadedImages.jumpLeft, player.x, player.y, player.width, player.height);
+                }
+            } 
+            // Dashing (when dashing)
+            else if (player.isDashing) {
+                ctx.drawImage(loadedImages.right, player.x, player.y, player.width, player.height);
+            } 
+            // Walking (default)
+            else {
+                if (player.facingRight) {
+                    ctx.drawImage(loadedImages.right, player.x, player.y, player.width, player.height);
+                } else {
+                    ctx.drawImage(loadedImages.left, player.x, player.y, player.width, player.height);
+                }
+            }
+
             ctx.restore();
         }
 
