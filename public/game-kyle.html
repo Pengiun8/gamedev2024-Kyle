@@ -64,6 +64,11 @@
                 }
             }
 
+            // Stop horizontal movement when charging jump
+            if (keys.up && player.grounded) {
+                player.dx = 0; // Stop horizontal movement while charging jump
+            }
+
             // Handle jump charging only when grounded
             if (keys.up && player.grounded) {
                 // Start charging the jump when the up key is pressed, only if grounded
