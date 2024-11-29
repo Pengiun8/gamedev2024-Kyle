@@ -37,19 +37,25 @@
             width: 76,
             height: 44,
             speed: 5,
+            dashSpeed: 15,  // Dash speed
             dx: 0,    // Horizontal velocity
             dy: 0,    // Vertical velocity
             gravity: 0.5,
             jumpPower: -15,
-            maxJumpCharge: -23, // Max jump charge power
+            maxJumpCharge: -20, // Max jump charge power
             grounded: false,
             facingRight: true,
-            jumpCharge: 0 // Track the current charge level
+            jumpCharge: 0, // Track the current charge level
+            isDashing: false,  // Is the player currently dashing?
+            dashDuration: 0,   // Dash duration counter
+            dashCooldown: 0,   // Dash cooldown counter
+            maxDashDuration: 15, // Number of frames the dash lasts
+            dashCooldownTime: 120, // Cooldown time after dash
         };
 
-        let keys = { right: false, up: false, left: false };
+        let keys = { right: false, up: false, left: false, dash: false };
 
-        // Movement logic (left/right, jump)
+        // Movement logic (left/right, jump, dash)
         function updatePlayer() {
             // Prevent horizontal movement when charging the jump
             if (!keys.up) { // If space is not being held for charging
@@ -67,6 +73,33 @@
             // Stop horizontal movement when charging jump
             if (keys.up && player.grounded) {
                 player.dx = 0; // Stop horizontal movement while charging jump
+            }
+
+            // Handle dash logic
+            if (keys.dash && player.dashCooldown <= 0 && !player.isDashing) {
+                // Start dash
+                player.isDashing = true;
+                player.dashDuration = player.maxDashDuration;  // Dash lasts for a short period
+                player.dashCooldown = player.dashCooldownTime; // Start cooldown after dash
+                if (player.facingRight) {
+                    player.dx = player.dashSpeed;  // Dash right
+                } else {
+                    player.dx = -player.dashSpeed;  // Dash left
+                }
+            }
+
+            // Dash cooldown
+            if (player.dashCooldown > 0) {
+                player.dashCooldown--; // Decrease cooldown over time
+            }
+
+            // Handle dash duration
+            if (player.isDashing) {
+                player.dashDuration--; // Decrease dash duration
+                if (player.dashDuration <= 0) {
+                    player.isDashing = false; // End the dash when time is up
+                    player.dx = 0; // Stop dashing
+                }
             }
 
             // Handle jump charging only when grounded
@@ -156,23 +189,26 @@
         playerImageJumpCharge.onload = checkImagesLoaded;
 
         // Keyboard input
-        document.addEventListener("keydown", (e) => {
-            if (e.code === "KeyD") keys.right = true; // Move right with 'D'
-            if (e.code === "Space") keys.up = true;  // Charge jump with 'Space'
-            if (e.code === "KeyA") keys.left = true; // Move left with 'A'
-        });
+document.addEventListener("keydown", (e) => {
+    if (e.code === "KeyD") keys.right = true; // Move right with 'D'
+    if (e.code === "Space") keys.up = true;  // Charge jump with 'Space'
+    if (e.code === "KeyA") keys.left = true; // Move left with 'A'
+    if (e.code === "ShiftLeft" || e.code === "ShiftRight") keys.dash = true; // Dash with Shift
+});
 
-        document.addEventListener("keyup", (e) => {
-            if (e.code === "KeyD") keys.right = false;
-            if (e.code === "Space") {
-                keys.up = false;  // Stop charging the jump
-                if (player.grounded) {
-                    player.dy = player.jumpCharge; // Apply jump charge when space is released
-                    player.jumpCharge = 0; // Reset the jump charge
-                }
-            }
-            if (e.code === "KeyA") keys.left = false;
-        });
+document.addEventListener("keyup", (e) => {
+    if (e.code === "KeyD") keys.right = false;
+    if (e.code === "Space") {
+        keys.up = false;  // Stop charging the jump
+        if (player.grounded) {
+            player.dy = player.jumpCharge; // Apply jump charge when space is released
+            player.jumpCharge = 0; // Reset the jump charge
+        }
+    }
+    if (e.code === "KeyA") keys.left = false;
+    if (e.code === "ShiftLeft" || e.code === "ShiftRight") keys.dash = false; // Stop dashing when Shift is released
+});
+
     </script>
 </body>
 </html>
