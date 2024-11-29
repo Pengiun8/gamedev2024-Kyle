@@ -38,6 +38,7 @@
             height: 44,
             speed: 5,
             dashDistance: 200,  // Predetermined dash distance
+            dashSpeed: 15,  // How fast the dash progresses per frame
             dx: 0,    // Horizontal velocity
             dy: 0,    // Vertical velocity
             gravity: 0.5,
@@ -49,6 +50,7 @@
             isDashing: false,  // Is the player currently dashing?
             dashCooldown: 0,   // Dash cooldown counter
             dashCooldownTime: 120, // Cooldown time after dash
+            dashProgress: 0,  // Progress through the dash
             dashDirection: 0, // Direction of dash, 1 for right, -1 for left
         };
 
@@ -80,7 +82,19 @@
                 player.isDashing = true;
                 player.dashCooldown = player.dashCooldownTime; // Start cooldown after dash
                 player.dashDirection = player.facingRight ? 1 : -1; // Set the direction based on facing
-                player.x += player.dashDirection * player.dashDistance;  // Move by the predetermined dash distance
+                player.dashProgress = 0;  // Reset the dash progress
+            }
+
+            // Handle dash progress (move the player gradually)
+            if (player.isDashing) {
+                if (player.dashProgress < player.dashDistance) {
+                    // Move player gradually based on dash speed
+                    player.x += player.dashDirection * player.dashSpeed;
+                    player.dashProgress += player.dashSpeed; // Increase dash progress
+                } else {
+                    // Finish the dash once the progress is complete
+                    player.isDashing = false;
+                }
             }
 
             // Dash cooldown
@@ -194,7 +208,6 @@
             if (e.code === "KeyA") keys.left = false;
             if (e.code === "ShiftLeft" || e.code === "ShiftRight") keys.dash = false; // Stop dashing when Shift is released
         });
-
     </script>
 </body>
 </html>
