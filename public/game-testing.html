@@ -1,1 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        body, html { margin: 0; padding: 0; overflow: hidden; }
+        canvas { display: block; }
+    </style>
+</head>
+<body>
+    <canvas id="gameCanvas"></canvas>
+    <script>
+        const canvas = document.getElementById("gameCanvas");
+        const ctx = canvas.getContext("2d");
+
+        // Set canvas dimensions to full window size
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        // Image source paths
+        const images = {
+            right: 'slimer right.png',
+            left: 'slimer left.png',
+            jumpRight: 'slimer jump right.png',
+            jumpLeft: 'slimer jump left.png',
+            jumpChargeRight: 'slimer jump charge right.png', // Charging jump sprite (right)
+            jumpChargeLeft: 'slimer jump charge left.png', // Charging jump sprite (left)
+            dashRight: 'slimer dash right.png',  // Dash sprite (right)
+            dashLeft: 'slimer dash left.png'     // Dash sprite (left)
+        };
+
+        // Load images
+        const loadedImages = {};
+        let imagesLoaded = 0;
+        const totalImages = Object.keys(images).length;
+
+        for (let key in images) {
+            loadedImages[key] = new Image();
+            loadedImages[key].src = images[key];
+            loadedImages[key].onload = () => {
+                imagesLoaded++;
+                if (imagesLoaded === totalImages) gameLoop(); // Start the game loop once all images are loaded
+            };
+        }
+
+        // Player state object
+        const player = {
+            x: 50,
+            y: canvas.height - 100,
+            width: 76,
+            height: 44,
+            dx: 0,    // Horizontal velocity
+            dy: 0,    // Vertical velocity
+            grounded: false,
+            facingRight: true,
+            isDashing: false,
+            dashDirection: 0,
+            jumpCharge: 0, // Charge for jump height
+        };
+
+        // Key states
+        const keys = { right: false, up: false, left: false, dash: false };
+
+        const GAME_SETTINGS = {
+            playerSpeed: 5,
+            dashSpeed: 15,
+            dashDistance: 200,
+            dashCooldownTime: 120,
+            gravity: 0.5,
+            maxJumpCharge: -20
+        };
+
+        // Update player position and handle movement logic
+        function updatePlayer() {
+            // Handle horizontal movement
+            if (keys.right) {
+                player.dx = GAME_SETTINGS.playerSpeed;
+                player.facingRight = true;
+            } else if (keys.left) {
+                player.dx = -GAME_SETTINGS.playerSpeed;
+                player.facingRight = false;
+            } else {
+                player.dx *= 0.9; // Slow down when no key is pressed
+            }
+
+            // Handle Dash Logic
+            if (keys.dash && !player.isDashing) {
+                startDash();
+            }
+
+            if (player.isDashing) {
+                moveDash();
+            }
+
+            // Handle Jump Charging
+            if (keys.up && player.grounded) {
+                player.jumpCharge = Math.max(player.jumpCharge - 0.5, GAME_SETTINGS.maxJumpCharge); // Charge jump force
+            }
+
+            if (!keys.up && player.jumpCharge < 0) {
+                player.dy = player.jumpCharge; // Apply the charged jump force
+                player.jumpCharge = 0;
+            }
+
+            // Apply gravity
+            player.dy += GAME_SETTINGS.gravity;
+
+            // Update player position
+            player.x += player.dx;
+            player.y += player.dy;
+
+            // Prevent player from moving out of bounds
+            if (player.x < 0) player.x = 0;
+            if (player.x + player.width > canvas.width) player.x = canvas.width - player.width;
+
+            if (player.y + player.height > canvas.height) {
+                player.y = canvas.height - player.height;
+                player.dy = 0;
+                player.grounded = true;
+            } else {
+                player.grounded = false;
+            }
+        }
+
+        // Start Dash
+        function startDash() {
+            player.isDashing = true;
+            player.dashDirection = player.facingRight ? 1 : -1;
+            player.dx = GAME_SETTINGS.dashSpeed * player.dashDirection;
+            setTimeout(() => {
+                player.isDashing = false;
+                player.dx = 0;  // Reset movement after dash
+            }, GAME_SETTINGS.dashDistance / GAME_SETTINGS.dashSpeed * 1000);
+        }
+
+        // Move the player during dash
+        function moveDash() {
+            player.x += player.dx;
+        }
+
+        // Draw the player based on current state
+        function drawPlayer() {
+            ctx.save();
+            
+            // Charging Jump (when grounded and holding space)
+            if (player.grounded && keys.up) {
+                if (player.facingRight) {
+                    ctx.drawImage(loadedImages.jumpChargeRight, player.x, player.y, player.width, player.height);
+                } else {
+                    ctx.drawImage(loadedImages.jumpChargeLeft, player.x, player.y, player.width, player.height);
+                }
+            } 
+            // Jumping (when in the air)
+            else if (!player.grounded) {
+                if (player.facingRight) {
+                    ctx.drawImage(loadedImages.jumpRight, player.x, player.y, player.width, player.height);
+                } else {
+                    ctx.drawImage(loadedImages.jumpLeft, player.x, player.y, player.width, player.height);
+                }
+            } 
+            // Dashing (when dashing)
+            else if (player.isDashing) {
+                if (player.facingRight) {
+                    ctx.drawImage(loadedImages.dashRight, player.x, player.y, player.width, player.height);
+                } else {
+                    ctx.drawImage(loadedImages.dashLeft, player.x, player.y, player.width, player.height);
+                }
+            } 
+            // Walking (default)
+            else {
+                if (player.facingRight) {
+                    ctx.drawImage(loadedImages.right, player.x, player.y, player.width, player.height);
+                } else {
+                    ctx.drawImage(loadedImages.left, player.x, player.y, player.width, player.height);
+                }
+            }
+
+            ctx.restore();
+        }
+
+        // Main game loop: update, clear, and redraw
+        function gameLoop() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            updatePlayer();
+            drawPlayer();
+            requestAnimationFrame(gameLoop);
+        }
+
+        // Keyboard Input Events
+        document.addEventListener("keydown", (e) => {
+            if (e.code === "KeyD") keys.right = true;  // Move right
+            if (e.code === "Space") keys.up = true;    // Charge jump
+            if (e.code === "KeyA") keys.left = true;   // Move left
+            if (e.code === "ShiftLeft" || e.code === "ShiftRight") keys.dash = true;  // Dash
+        });
+
+        document.addEventListener("keyup", (e) => {
+            if (e.code === "KeyD") keys.right = false;
+            if (e.code === "Space") keys.up = false;
+            if (e.code === "KeyA") keys.left = false;
+            if (e.code === "ShiftLeft" || e.code === "ShiftRight") keys.dash = false;
+        });
+
+        gameLoop();
+    </script>
+</body>
+</html>
 
