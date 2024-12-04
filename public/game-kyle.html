@@ -60,11 +60,12 @@
         };
 
         const keys = { right: false, up: false, left: false, dash: false };
+        let lastDirection = 'right'; // Track the last direction the player moved
 
         function updatePlayer() {
             if (!keys.up) {
                 player.dx = keys.right ? GAME_SETTINGS.playerSpeed : (keys.left ? -GAME_SETTINGS.playerSpeed : player.dx * 0.9);
-                player.facingRight = keys.right;
+                player.facingRight = keys.right ? true : (keys.left ? false : lastDirection === 'right');
             }
 
             if (keys.up && player.grounded) player.dx = 0;
@@ -88,6 +89,10 @@
             } else {
                 player.grounded = false;
             }
+
+            // Update lastDirection if the player is moving
+            if (keys.right) lastDirection = 'right';
+            if (keys.left) lastDirection = 'left';
         }
 
         function startDash() {
