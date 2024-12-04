@@ -70,7 +70,7 @@
         // Key states
         const keys = { right: false, up: false, left: false, dash: false };
 
-        // Platform data
+        // Platforms (add these)
         const platforms = [
             { x: 100, y: canvas.height - 150, width: 200, height: 20 },
             { x: 350, y: canvas.height - 250, width: 200, height: 20 },
@@ -139,25 +139,25 @@
             }
         }
 
-        // Check for platform collisions
+        // Check for platform collisions (Add this logic)
         function checkPlatformCollisions() {
-            player.grounded = false; // Start by assuming the player is not grounded
+            player.grounded = false; // Assume the player is not grounded initially
 
             platforms.forEach(platform => {
-                // Check if the player is falling and overlaps with the platform
+                // Check if player is falling and overlaps with the platform
                 if (player.y + player.height <= platform.y && 
                     player.y + player.height + player.dy >= platform.y && 
                     player.x + player.width > platform.x && 
                     player.x < platform.x + platform.width) {
 
-                    player.dy = 0;  // Stop the vertical movement (gravity)
-                    player.y = platform.y - player.height;  // Place the player on top of the platform
-                    player.grounded = true;  // Set the player to grounded
+                    player.dy = 0;  // Stop downward velocity
+                    player.y = platform.y - player.height;  // Place player on top of the platform
+                    player.grounded = true;  // Player is grounded
                 }
             });
         }
 
-        // Draw the platforms
+        // Draw the platforms (Add this logic)
         function drawPlatforms() {
             ctx.fillStyle = "green"; // Platform color
             platforms.forEach(platform => {
@@ -186,7 +186,7 @@
         // Draw the player based on current state
         function drawPlayer() {
             ctx.save();
-
+            
             // Charging Jump (when grounded and holding space)
             if (player.grounded && keys.up) {
                 ctx.drawImage(loadedImages.jumpCharge, player.x, player.y, player.width, player.height);
@@ -219,7 +219,7 @@
         function gameLoop() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             updatePlayer();
-            checkPlatformCollisions();  // Check collisions with platforms
+            checkPlatformCollisions();  // Check for platform collisions
             drawPlatforms();  // Draw platforms
             drawPlayer();
             requestAnimationFrame(gameLoop);
