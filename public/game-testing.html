@@ -3,7 +3,7 @@
 <head>
     <style>
         body, html { margin: 0; padding: 0; overflow: hidden; }
-        canvas { display: block; }
+        canvas { display: block; background: url('Jungle level one.png') no-repeat center bottom fixed; background-size: cover; }
     </style>
 </head>
 <body>
@@ -12,11 +12,9 @@
         const canvas = document.getElementById("gameCanvas");
         const ctx = canvas.getContext("2d");
 
-        // Set canvas dimensions to full window size
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
-        // Image source paths
         const images = {
             right: 'slimer right.png',
             left: 'slimer left.png',
@@ -25,153 +23,81 @@
             jumpCharge: 'slimer jump charge.png'
         };
 
-        // Load images
         const loadedImages = {};
         let imagesLoaded = 0;
-        const totalImages = Object.keys(images).length;
-
         for (let key in images) {
             loadedImages[key] = new Image();
             loadedImages[key].src = images[key];
             loadedImages[key].onload = () => {
-                imagesLoaded++;
-                if (imagesLoaded === totalImages) gameLoop(); // Start game loop once all images are loaded
+                if (++imagesLoaded === Object.keys(images).length) gameLoop();
             };
         }
 
-        // Game Constants
-        const GAME_SETTINGS = {
-            playerSpeed: 5,
-            dashSpeed: 15,
-            dashDistance: 200,
-            dashCooldownTime: 120,
-            gravity: 0.5,
-            maxJumpCharge: -20
-        };
-
-        // Player state object
         const player = {
-            x: 50,
-            y: canvas.height - 100,
-            width: 76,
-            height: 44,
-            dx: 0,    // Horizontal velocity
-            dy: 0,    // Vertical velocity
-            grounded: false,
-            facingRight: true,
-            isDashing: false,
-            dashProgress: 0,
-            dashDirection: 0,
-            dashCooldown: 0,
-            jumpCharge: 0,
+            x: 50, y: canvas.height - 100, width: 76, height: 44,
+            dx: 0, dy: 0, grounded: false, facingRight: true,
+            isDashing: false, dashProgress: 0, dashDirection: 0, dashCooldown: 0, jumpCharge: 0
         };
 
-        // Key states
         const keys = { right: false, up: false, left: false, dash: false };
 
-        // Handle player movement
         function updatePlayer() {
-            // Horizontal movement (left/right)
-            if (!keys.up) {
-                if (keys.right) {
-                    player.dx = GAME_SETTINGS.playerSpeed;
-                    player.facingRight = true;
-                } else if (keys.left) {
-                    player.dx = -GAME_SETTINGS.playerSpeed;
-                    player.facingRight = false;
-                } else {
-                    player.dx *= 0.9; // Slow down when no key is pressed
-                }
-            }
-
-            // Stop horizontal movement when charging jump
+            if (!keys.up) player.dx = keys.right ? 5 : (keys.left ? -5 : player.dx * 0.9);
             if (keys.up && player.grounded) player.dx = 0;
-
-            // Dash logic
-            if (keys.dash && player.dashCooldown <= 0 && !player.isDashing) {
-                startDash();
-            }
+            if (keys.dash && player.dashCooldown <= 0 && !player.isDashing) startDash();
             if (player.isDashing) moveDash();
-
-            // Dash cooldown
             if (player.dashCooldown > 0) player.dashCooldown--;
+            if (keys.up && player.grounded) player.jumpCharge = Math.max(player.jumpCharge - 0.5, -25);
+            if (!keys.up && !player.grounded && player.jumpCharge < 0) player.dy = player.jumpCharge, player.jumpCharge = 0;
 
-            // Jump charge logic
-            if (keys.up && player.grounded) {
-                player.jumpCharge = Math.max(player.jumpCharge - 0.5, GAME_SETTINGS.maxJumpCharge);
-            }
-            if (!keys.up && !player.grounded && player.jumpCharge < 0) {
-                player.dy = player.jumpCharge;
-                player.jumpCharge = 0;
-            }
-
-            // Apply gravity
-            player.dy += GAME_SETTINGS.gravity;
-
-            // Update player position
+            player.dy += 0.5;
             player.x += player.dx;
             player.y += player.dy;
 
-            // Prevent player from moving out of bounds
             if (player.x < 0) player.x = 0;
             if (player.x + player.width > canvas.width) player.x = canvas.width - player.width;
-
-            // Handle ground collision
             if (player.y + player.height > canvas.height) {
                 player.y = canvas.height - player.height;
                 player.dy = 0;
                 player.grounded = true;
-            } else {
-                player.grounded = false;
-            }
+            } else player.grounded = false;
+
+            if (keys.right) player.facingRight = true;
+            if (keys.left) player.facingRight = false;
         }
 
-        // Start Dash
         function startDash() {
             player.isDashing = true;
-            player.dashCooldown = GAME_SETTINGS.dashCooldownTime;
+            player.dashCooldown = 120;
             player.dashDirection = player.facingRight ? 1 : -1;
             player.dashProgress = 0;
         }
 
-        // Move the player during dash
         function moveDash() {
-            if (player.dashProgress < GAME_SETTINGS.dashDistance) {
-                player.x += player.dashDirection * GAME_SETTINGS.dashSpeed;
-                player.dashProgress += GAME_SETTINGS.dashSpeed;
+            if (player.dashProgress < 200) {
+                player.x += player.dashDirection * 15;
+                player.dashProgress += 15;
             } else {
-                player.isDashing = false; // End the dash
+                player.isDashing = false;
             }
         }
 
-        // Draw the player based on the state
         function drawPlayer() {
-            ctx.save();
             let imageToDraw;
+            if (player.grounded && keys.up) imageToDraw = loadedImages.jumpCharge;
+            else if (!player.grounded) imageToDraw = player.facingRight ? loadedImages.jumpRight : loadedImages.jumpLeft;
+            else imageToDraw = player.isDashing ? loadedImages.right : (player.facingRight ? loadedImages.right : loadedImages.left);
 
-            if (player.grounded && keys.up) {
-                imageToDraw = loadedImages.jumpCharge;
-            } else if (!player.grounded) {
-                imageToDraw = player.facingRight ? loadedImages.jumpRight : loadedImages.jumpLeft;
-            } else if (player.isDashing) {
-                imageToDraw = loadedImages.right; // You can customize this for dashing
-            } else {
-                imageToDraw = player.facingRight ? loadedImages.right : loadedImages.left;
-            }
-
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.drawImage(imageToDraw, player.x, player.y, player.width, player.height);
-            ctx.restore();
         }
 
-        // Main game loop: update, clear, and redraw
         function gameLoop() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
             updatePlayer();
             drawPlayer();
             requestAnimationFrame(gameLoop);
         }
 
-        // Keyboard input events
         document.addEventListener("keydown", (e) => {
             if (e.code === "KeyD") keys.right = true;
             if (e.code === "Space") keys.up = true;
@@ -183,10 +109,7 @@
             if (e.code === "KeyD") keys.right = false;
             if (e.code === "Space") {
                 keys.up = false;
-                if (player.grounded) {
-                    player.dy = player.jumpCharge;
-                    player.jumpCharge = 0;
-                }
+                if (player.grounded) player.dy = player.jumpCharge, player.jumpCharge = 0;
             }
             if (e.code === "KeyA") keys.left = false;
             if (e.code === "ShiftLeft" || e.code === "ShiftRight") keys.dash = false;
