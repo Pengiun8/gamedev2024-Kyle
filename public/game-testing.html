@@ -87,20 +87,27 @@
             let imgWidth = player.width;
             let imgHeight = player.height;
 
+            // Check if player is grounded and pressing the jump key
             if (player.grounded && keys.up) {
                 imageToDraw = loadedImages.jumpCharge;
-                imgWidth = loadedImages.jumpCharge.naturalWidth;
-                imgHeight = loadedImages.jumpCharge.naturalHeight;
-            } else if (!player.grounded) {
+                // Define the size for jump charge sprite (keep it the same as default size)
+                imgWidth = player.width;
+                imgHeight = player.height;
+            } 
+            // If player is not grounded (in the air), use the jump sprites
+            else if (!player.grounded) {
                 imageToDraw = player.facingRight ? loadedImages.jumpRight : loadedImages.jumpLeft;
-                imgWidth = imageToDraw.naturalWidth;
-                imgHeight = imageToDraw.naturalHeight;
+                // Set the size for jumping sprites (same size as default)
+                imgWidth = player.width;
+                imgHeight = player.height;
             } else {
+                // Normal grounded state (right or left movement)
                 imageToDraw = player.isDashing ? loadedImages.right : (player.facingRight ? loadedImages.right : loadedImages.left);
                 imgWidth = imageToDraw.naturalWidth;
                 imgHeight = imageToDraw.naturalHeight;
             }
 
+            // Clear the canvas and draw the appropriate image with the defined size
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.drawImage(imageToDraw, player.x, player.y, imgWidth, imgHeight);
         }
