@@ -1,12 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <style>
         body, html { margin: 0; padding: 0; overflow: hidden; }
-        canvas { display: block;
-                background: url('Jungle level one.png') no-repeat center bottom fixed;
-                background-size: cover;
-               }
+        canvas { display: block; background: url('Jungle level one.png') no-repeat center bottom fixed; background-size: cover; }
     </style>
 </head>
 <body>
@@ -24,63 +22,36 @@
             jumpRight: 'slimer jump right.png',
             jumpLeft: 'slimer jump left.png',
             jumpCharge: 'slimer jump charge.png'
-
         };
 
         const loadedImages = {};
         let imagesLoaded = 0;
-        const totalImages = Object.keys(images).length;
-
         for (let key in images) {
             loadedImages[key] = new Image();
             loadedImages[key].src = images[key];
             loadedImages[key].onload = () => {
-                if (++imagesLoaded === totalImages) gameLoop();
+                if (++imagesLoaded === Object.keys(images).length) gameLoop();
             };
         }
 
-        const GAME_SETTINGS = {
-            playerSpeed: 5,
-            dashSpeed: 15,
-            dashDistance: 200,
-            dashCooldownTime: 120,
-            gravity: 0.5,
-            maxJumpCharge: -25
-        };
-
         const player = {
-            x: 50,
-            y: canvas.height - 100,
-            width: 76,
-            height: 44,
-            dx: 0, dy: 0,
-            grounded: false,
-            facingRight: true,
-            isDashing: false,
-            dashProgress: 0,
-            dashDirection: 0,
-            dashCooldown: 0,
-            jumpCharge: 0
+            x: 50, y: canvas.height - 100, width: 76, height: 44,
+            dx: 0, dy: 0, grounded: false, facingRight: true,
+            isDashing: false, dashProgress: 0, dashDirection: 0, dashCooldown: 0, jumpCharge: 0
         };
 
         const keys = { right: false, up: false, left: false, dash: false };
-        let lastDirection = 'right'; // Track the last direction the player moved
 
         function updatePlayer() {
-            if (!keys.up) {
-                player.dx = keys.right ? GAME_SETTINGS.playerSpeed : (keys.left ? -GAME_SETTINGS.playerSpeed : player.dx * 0.9);
-                player.facingRight = keys.right ? true : (keys.left ? false : lastDirection === 'right');
-            }
-
+            if (!keys.up) player.dx = keys.right ? 5 : (keys.left ? -5 : player.dx * 0.9);
             if (keys.up && player.grounded) player.dx = 0;
             if (keys.dash && player.dashCooldown <= 0 && !player.isDashing) startDash();
             if (player.isDashing) moveDash();
-
             if (player.dashCooldown > 0) player.dashCooldown--;
-            if (keys.up && player.grounded) player.jumpCharge = Math.max(player.jumpCharge - 0.5, GAME_SETTINGS.maxJumpCharge);
+            if (keys.up && player.grounded) player.jumpCharge = Math.max(player.jumpCharge - 0.5, -25);
             if (!keys.up && !player.grounded && player.jumpCharge < 0) player.dy = player.jumpCharge, player.jumpCharge = 0;
 
-            player.dy += GAME_SETTINGS.gravity;
+            player.dy += 0.5;
             player.x += player.dx;
             player.y += player.dy;
 
@@ -90,36 +61,33 @@
                 player.y = canvas.height - player.height;
                 player.dy = 0;
                 player.grounded = true;
-            } else {
-                player.grounded = false;
-            }
+            } else player.grounded = false;
 
-            // Update lastDirection if the player is moving
-            if (keys.right) lastDirection = 'right';
-            if (keys.left) lastDirection = 'left';
+            if (keys.right) player.facingRight = true;
+            if (keys.left) player.facingRight = false;
         }
 
         function startDash() {
             player.isDashing = true;
-            player.dashCooldown = GAME_SETTINGS.dashCooldownTime;
+            player.dashCooldown = 120;
             player.dashDirection = player.facingRight ? 1 : -1;
             player.dashProgress = 0;
         }
 
         function moveDash() {
-            if (player.dashProgress < GAME_SETTINGS.dashDistance) {
-                player.x += player.dashDirection * GAME_SETTINGS.dashSpeed;
-                player.dashProgress += GAME_SETTINGS.dashSpeed;
+            if (player.dashProgress < 200) {
+                player.x += player.dashDirection * 15;
+                player.dashProgress += 15;
             } else {
                 player.isDashing = false;
             }
         }
 
         function drawPlayer() {
-            let imageToDraw = player.grounded && keys.up ? loadedImages.jumpCharge :
-                             !player.grounded ? (player.facingRight ? loadedImages.jumpRight : loadedImages.jumpLeft) :
-                             player.isDashing ? loadedImages.right :
-                             player.facingRight ? loadedImages.right : loadedImages.left;
+            let imageToDraw;
+            if (player.grounded && keys.up) imageToDraw = loadedImages.jumpCharge;
+            else if (!player.grounded) imageToDraw = player.facingRight ? loadedImages.jumpRight : loadedImages.jumpLeft;
+            else imageToDraw = player.isDashing ? loadedImages.right : (player.facingRight ? loadedImages.right : loadedImages.left);
 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.drawImage(imageToDraw, player.x, player.y, player.width, player.height);
