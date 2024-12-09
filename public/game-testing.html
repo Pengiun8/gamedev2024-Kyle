@@ -84,32 +84,28 @@
 
         function drawPlayer() {
             let imageToDraw;
-            let imgWidth = player.width;
-            let imgHeight = player.height;
+            let spriteWidth = player.width;
+            let spriteHeight = player.height;
 
-            // Check if player is grounded and pressing the jump key
             if (player.grounded && keys.up) {
                 imageToDraw = loadedImages.jumpCharge;
-                // Define the size for jump charge sprite (keep it the same as default size)
-                imgWidth = player.width;
-                imgHeight = player.height;
-            } 
-            // If player is not grounded (in the air), use the jump sprites
-            else if (!player.grounded) {
+                // Set jump charge sprite size
+                spriteWidth = 38;  // Adjust width for the jump charge sprite
+                spriteHeight = 22; // Adjust height for the jump charge sprite
+            } else if (!player.grounded) {
                 imageToDraw = player.facingRight ? loadedImages.jumpRight : loadedImages.jumpLeft;
-                // Set the size for jumping sprites (same size as default)
-                imgWidth = player.width;
-                imgHeight = player.height;
+                // Set jump sprite size
+                spriteWidth = 26;  // Adjust width for the jump sprites
+                spriteHeight = 22; // Adjust height for the jump sprites
             } else {
-                // Normal grounded state (right or left movement)
                 imageToDraw = player.isDashing ? loadedImages.right : (player.facingRight ? loadedImages.right : loadedImages.left);
-                imgWidth = imageToDraw.naturalWidth;
-                imgHeight = imageToDraw.naturalHeight;
+                // Set walking sprite size (normal walking size)
+                spriteWidth = 38;  // Width for walking sprites
+                spriteHeight = 22; // Height for walking sprites
             }
 
-            // Clear the canvas and draw the appropriate image with the defined size
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.drawImage(imageToDraw, player.x, player.y, imgWidth, imgHeight);
+            ctx.drawImage(imageToDraw, player.x, player.y, spriteWidth, spriteHeight);
         }
 
         function gameLoop() {
