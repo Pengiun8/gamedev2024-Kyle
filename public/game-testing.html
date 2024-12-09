@@ -84,12 +84,25 @@
 
         function drawPlayer() {
             let imageToDraw;
-            if (player.grounded && keys.up) imageToDraw = loadedImages.jumpCharge;
-            else if (!player.grounded) imageToDraw = player.facingRight ? loadedImages.jumpRight : loadedImages.jumpLeft;
-            else imageToDraw = player.isDashing ? loadedImages.right : (player.facingRight ? loadedImages.right : loadedImages.left);
+            let imgWidth = player.width;
+            let imgHeight = player.height;
+
+            if (player.grounded && keys.up) {
+                imageToDraw = loadedImages.jumpCharge;
+                imgWidth = loadedImages.jumpCharge.naturalWidth;
+                imgHeight = loadedImages.jumpCharge.naturalHeight;
+            } else if (!player.grounded) {
+                imageToDraw = player.facingRight ? loadedImages.jumpRight : loadedImages.jumpLeft;
+                imgWidth = imageToDraw.naturalWidth;
+                imgHeight = imageToDraw.naturalHeight;
+            } else {
+                imageToDraw = player.isDashing ? loadedImages.right : (player.facingRight ? loadedImages.right : loadedImages.left);
+                imgWidth = imageToDraw.naturalWidth;
+                imgHeight = imageToDraw.naturalHeight;
+            }
 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.drawImage(imageToDraw, player.x, player.y, player.width, player.height);
+            ctx.drawImage(imageToDraw, player.x, player.y, imgWidth, imgHeight);
         }
 
         function gameLoop() {
