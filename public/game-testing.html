@@ -84,28 +84,12 @@
 
         function drawPlayer() {
             let imageToDraw;
-            let spriteWidth = player.width;
-            let spriteHeight = player.height;
-
-            if (player.grounded && keys.up) {
-                imageToDraw = loadedImages.jumpCharge;
-                // Set jump charge sprite size
-                spriteWidth = 38;  // Adjust width for the jump charge sprite
-                spriteHeight = 22; // Adjust height for the jump charge sprite
-            } else if (!player.grounded) {
-                imageToDraw = player.facingRight ? loadedImages.jumpRight : loadedImages.jumpLeft;
-                // Set jump sprite size
-                spriteWidth = 26;  // Adjust width for the jump sprites
-                spriteHeight = 22; // Adjust height for the jump sprites
-            } else {
-                imageToDraw = player.isDashing ? loadedImages.right : (player.facingRight ? loadedImages.right : loadedImages.left);
-                // Set walking sprite size (normal walking size)
-                spriteWidth = 38;  // Width for walking sprites
-                spriteHeight = 22; // Height for walking sprites
-            }
+            if (player.grounded && keys.up) imageToDraw = loadedImages.jumpCharge;
+            else if (!player.grounded) imageToDraw = player.facingRight ? loadedImages.jumpRight : loadedImages.jumpLeft;
+            else imageToDraw = player.isDashing ? loadedImages.right : (player.facingRight ? loadedImages.right : loadedImages.left);
 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.drawImage(imageToDraw, player.x, player.y, spriteWidth, spriteHeight);
+            ctx.drawImage(imageToDraw, player.x, player.y, player.width, player.height);
         }
 
         function gameLoop() {
@@ -114,14 +98,15 @@
             requestAnimationFrame(gameLoop);
         }
 
-        document.addEventListener("keydown", (e) => {
+        // Replacing addEventListener with direct key event handling
+        window.onkeydown = function(e) {
             if (e.code === "KeyD") keys.right = true;
             if (e.code === "Space") keys.up = true;
             if (e.code === "KeyA") keys.left = true;
             if (e.code === "ShiftLeft" || e.code === "ShiftRight") keys.dash = true;
-        });
+        };
 
-        document.addEventListener("keyup", (e) => {
+        window.onkeyup = function(e) {
             if (e.code === "KeyD") keys.right = false;
             if (e.code === "Space") {
                 keys.up = false;
@@ -129,7 +114,7 @@
             }
             if (e.code === "KeyA") keys.left = false;
             if (e.code === "ShiftLeft" || e.code === "ShiftRight") keys.dash = false;
-        });
+        };
     </script>
 </body>
 </html>
