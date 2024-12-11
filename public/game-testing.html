@@ -45,23 +45,48 @@
 
         // Position and size for the wooden planks (solid object)
         const woodenPlanks = {
-            x: 200, y: canvas.height - 150, width: 100, height: 100
+            x: 200, y: canvas.height - 150, width: 200, height: 30
         };
 
         // Collision detection between player and wooden planks
         function checkCollision() {
+            // Player's bounding box
+            const playerLeft = player.x;
+            const playerRight = player.x + player.width;
+            const playerTop = player.y;
             const playerBottom = player.y + player.height;
+
+            // Wooden planks' bounding box
+            const plankLeft = woodenPlanks.x;
+            const plankRight = woodenPlanks.x + woodenPlanks.width;
             const plankTop = woodenPlanks.y;
+            const plankBottom = woodenPlanks.y + woodenPlanks.height;
 
-            // Check horizontal overlap
-            const horizontalOverlap = player.x + player.width > woodenPlanks.x && player.x < woodenPlanks.x + woodenPlanks.width;
+            // Check for horizontal overlap (left/right collision)
+            if (playerBottom > plankTop && playerTop < plankBottom) {
+                if (playerRight > plankLeft && playerLeft < plankLeft) {
+                    // Player is colliding from the left side
+                    player.x = plankLeft - player.width; // Position player to the left of the planks
+                    player.dx = 0; // Stop horizontal movement
+                } else if (playerLeft < plankRight && playerRight > plankRight) {
+                    // Player is colliding from the right side
+                    player.x = plankRight; // Position player to the right of the planks
+                    player.dx = 0; // Stop horizontal movement
+                }
+            }
 
-            // If player is below the planks and there is horizontal overlap, handle collision
-            if (horizontalOverlap && playerBottom > plankTop && player.y < plankTop) {
-                // Prevent the player from falling through the planks
-                player.y = plankTop - player.height;
-                player.dy = 0;  // Reset vertical speed (not falling)
-                player.grounded = true; // Make player grounded
+            // Check for vertical overlap (top/bottom collision)
+            if (playerRight > plankLeft && playerLeft < plankRight) {
+                if (playerBottom > plankTop && playerTop < plankTop) {
+                    // Player is colliding from the bottom (player is falling onto the planks)
+                    player.y = plankTop - player.height; // Position player just on top of the planks
+                    player.dy = 0; // Stop downward movement
+                    player.grounded = true; // Mark as grounded
+                } else if (playerTop < plankBottom && playerBottom > plankBottom) {
+                    // Player is colliding from the top (player hits the underside of the planks)
+                    player.y = plankBottom; // Position player just below the planks
+                    player.dy = 0; // Stop upward movement
+                }
             }
         }
 
