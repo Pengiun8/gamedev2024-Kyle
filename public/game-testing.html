@@ -64,30 +64,34 @@
             player.x += player.dx;
             player.y += player.dy;
 
-            // Collision detection with platforms (top, left, right, bottom)
+            // Check for collisions with platforms (top, bottom, left, right)
             player.grounded = false;
             for (let platform of platforms) {
-                // Check collision from the top (standing on the platform)
+                // Top collision (landing on the platform)
                 if (player.x + player.width > platform.x && player.x < platform.x + platform.width &&
                     player.y + player.height <= platform.y && player.y + player.height + player.dy >= platform.y) {
                     player.dy = 0;
                     player.y = platform.y - player.height;
                     player.grounded = true;
-                    break;
                 }
 
-                // Check collision from the left (can't walk through the left side)
+                // Bottom collision (prevent falling through)
+                if (player.x + player.width > platform.x && player.x < platform.x + platform.width &&
+                    player.y >= platform.y + platform.height && player.y + player.dy <= platform.y + platform.height) {
+                    player.dy = 0;
+                    player.y = platform.y + platform.height;
+                }
+
+                // Left collision (prevent moving through the left side)
                 if (player.x < platform.x + platform.width && player.x + player.width > platform.x &&
                     player.y + player.height > platform.y && player.y < platform.y + platform.height) {
                     player.x = platform.x + platform.width; // Stop player from going through left side
-                    break;
                 }
 
-                // Check collision from the right (can't walk through the right side)
+                // Right collision (prevent moving through the right side)
                 if (player.x + player.width > platform.x && player.x < platform.x + platform.width &&
                     player.y + player.height > platform.y && player.y < platform.y + platform.height) {
                     player.x = platform.x - player.width; // Stop player from going through right side
-                    break;
                 }
             }
 
