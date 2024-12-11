@@ -20,7 +20,9 @@
             left: 'slimer left.png',
             jumpRight: 'slimer jump right.png',
             jumpLeft: 'slimer jump left.png',
-            jumpCharge: 'slimer jump charge.png'
+            jumpCharge: 'slimer jump charge.png',
+            woodPlanks: 'Wooden planks.png',
+            woodPlanksEnd: 'Wooden planks 2.png'
         };
 
         const loadedImages = {};
@@ -41,6 +43,14 @@
 
         const keys = { right: false, up: false, left: false, dash: false };
 
+        // Platforms array
+        const platforms = [
+            { x: 100, y: canvas.height - 150, width: 200, height: 20 },
+            { x: 400, y: canvas.height - 250, width: 200, height: 20 },
+            { x: 700, y: canvas.height - 350, width: 200, height: 20 },
+            { x: 1000, y: canvas.height - 450, width: 200, height: 20 }
+        ];
+
         function updatePlayer() {
             if (!keys.up) player.dx = keys.right ? 5 : (keys.left ? -5 : player.dx * 0.9);
             if (keys.up && player.grounded) player.dx = 0;
@@ -56,11 +66,24 @@
 
             if (player.x < 0) player.x = 0;
             if (player.x + player.width > canvas.width) player.x = canvas.width - player.width;
+
+            // Collision detection with platforms
+            player.grounded = false;
+            for (let platform of platforms) {
+                if (player.x + player.width > platform.x && player.x < platform.x + platform.width && 
+                    player.y + player.height <= platform.y && player.y + player.height + player.dy >= platform.y) {
+                    player.dy = 0;
+                    player.y = platform.y - player.height;
+                    player.grounded = true;
+                    break;
+                }
+            }
+
             if (player.y + player.height > canvas.height) {
                 player.y = canvas.height - player.height;
                 player.dy = 0;
                 player.grounded = true;
-            } else player.grounded = false;
+            }
 
             if (keys.right) player.facingRight = true;
             if (keys.left) player.facingRight = false;
@@ -89,6 +112,12 @@
             else imageToDraw = player.isDashing ? loadedImages.right : (player.facingRight ? loadedImages.right : loadedImages.left);
 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw platforms
+            for (let platform of platforms) {
+                ctx.drawImage(loadedImages.woodPlanks, platform.x, platform.y, platform.width, platform.height);
+            }
+
             ctx.drawImage(imageToDraw, player.x, player.y, player.width, player.height);
         }
 
@@ -98,15 +127,14 @@
             requestAnimationFrame(gameLoop);
         }
 
-        // Replacing addEventListener with direct key event handling
-        window.onkeydown = function(e) {
+        document.addEventListener("keydown", (e) => {
             if (e.code === "KeyD") keys.right = true;
             if (e.code === "Space") keys.up = true;
             if (e.code === "KeyA") keys.left = true;
             if (e.code === "ShiftLeft" || e.code === "ShiftRight") keys.dash = true;
-        };
+        });
 
-        window.onkeyup = function(e) {
+        document.addEventListener("keyup", (e) => {
             if (e.code === "KeyD") keys.right = false;
             if (e.code === "Space") {
                 keys.up = false;
@@ -114,7 +142,7 @@
             }
             if (e.code === "KeyA") keys.left = false;
             if (e.code === "ShiftLeft" || e.code === "ShiftRight") keys.dash = false;
-        };
+        });
     </script>
 </body>
 </html>
