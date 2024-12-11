@@ -43,14 +43,6 @@
 
         const keys = { right: false, up: false, left: false, dash: false };
 
-        // Platforms array (example platforms)
-        const platforms = [
-            { x: 100, y: canvas.height - 150, width: 200, height: 20 },
-            { x: 400, y: canvas.height - 250, width: 200, height: 20 },
-            { x: 700, y: canvas.height - 350, width: 200, height: 20 },
-            { x: 1000, y: canvas.height - 450, width: 200, height: 20 }
-        ];
-
         function updatePlayer() {
             if (!keys.up) player.dx = keys.right ? 5 : (keys.left ? -5 : player.dx * 0.9);
             if (keys.up && player.grounded) player.dx = 0;
@@ -64,42 +56,13 @@
             player.x += player.dx;
             player.y += player.dy;
 
-            // Check for collisions with platforms (top, bottom, left, right)
-            player.grounded = false;
-            for (let platform of platforms) {
-                // Top collision (landing on the platform)
-                if (player.x + player.width > platform.x && player.x < platform.x + platform.width &&
-                    player.y + player.height <= platform.y && player.y + player.height + player.dy >= platform.y) {
-                    player.dy = 0;
-                    player.y = platform.y - player.height;
-                    player.grounded = true;
-                }
-
-                // Bottom collision (prevent falling through)
-                if (player.x + player.width > platform.x && player.x < platform.x + platform.width &&
-                    player.y >= platform.y + platform.height && player.y + player.dy <= platform.y + platform.height) {
-                    player.dy = 0;
-                    player.y = platform.y + platform.height;
-                }
-
-                // Left collision (prevent moving through the left side)
-                if (player.x < platform.x + platform.width && player.x + player.width > platform.x &&
-                    player.y + player.height > platform.y && player.y < platform.y + platform.height) {
-                    player.x = platform.x + platform.width; // Stop player from going through left side
-                }
-
-                // Right collision (prevent moving through the right side)
-                if (player.x + player.width > platform.x && player.x < platform.x + platform.width &&
-                    player.y + player.height > platform.y && player.y < platform.y + platform.height) {
-                    player.x = platform.x - player.width; // Stop player from going through right side
-                }
-            }
-
+            if (player.x < 0) player.x = 0;
+            if (player.x + player.width > canvas.width) player.x = canvas.width - player.width;
             if (player.y + player.height > canvas.height) {
                 player.y = canvas.height - player.height;
                 player.dy = 0;
                 player.grounded = true;
-            }
+            } else player.grounded = false;
 
             if (keys.right) player.facingRight = true;
             if (keys.left) player.facingRight = false;
@@ -128,12 +91,6 @@
             else imageToDraw = player.isDashing ? loadedImages.right : (player.facingRight ? loadedImages.right : loadedImages.left);
 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            // Draw platforms
-            for (let platform of platforms) {
-                ctx.drawImage(loadedImages.woodPlanks, platform.x, platform.y, platform.width, platform.height);
-            }
-
             ctx.drawImage(imageToDraw, player.x, player.y, player.width, player.height);
         }
 
