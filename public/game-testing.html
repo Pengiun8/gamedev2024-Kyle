@@ -43,6 +43,11 @@
 
         const keys = { right: false, up: false, left: false, dash: false };
 
+        // Position and size for the wooden planks
+        const woodenPlanks = {
+            x: 200, y: canvas.height - 150, width: 200, height: 200
+        };
+
         function updatePlayer() {
             if (!keys.up) player.dx = keys.right ? 5 : (keys.left ? -5 : player.dx * 0.9);
             if (keys.up && player.grounded) player.dx = 0;
@@ -92,6 +97,9 @@
 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.drawImage(imageToDraw, player.x, player.y, player.width, player.height);
+
+            // Draw the wooden planks on the canvas
+            ctx.drawImage(loadedImages.woodPlanks, woodenPlanks.x, woodenPlanks.y, woodenPlanks.width, woodenPlanks.height);
         }
 
         function gameLoop() {
