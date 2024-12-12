@@ -49,9 +49,14 @@
             x: 200, y: canvas.height - 150, width: 200, height: 30
         };
 
-        // Update player position (collision logic for all 4 sides of the wooden planks)
+        // Update player position (collision logic for all 4 sides)
         function updatePlayer() {
-            if (!keys.up) player.dx = keys.right ? 5 : (keys.left ? -5 : player.dx * 0.9);
+            // Horizontal movement
+            if (!keys.up) {
+                player.dx = keys.right ? 5 : (keys.left ? -5 : player.dx * 0.9);
+            }
+
+            // Jumping logic
             if (keys.up && player.grounded) player.dx = 0;
             if (keys.dash && player.dashCooldown <= 0 && !player.isDashing) startDash();
             if (player.isDashing) moveDash();
@@ -63,32 +68,35 @@
             player.x += player.dx;
             player.y += player.dy;
 
-            // Collision with the wooden planks (all 4 sides)
-            // Left side
-            if (player.x < woodenPlanks.x + woodenPlanks.width && player.x + player.width > woodenPlanks.x && player.y + player.height > woodenPlanks.y && player.y < woodenPlanks.y + woodenPlanks.height) {
-                player.x = woodenPlanks.x + woodenPlanks.width; // Prevent moving through the left side
-                player.dx = 0; // Stop horizontal movement
+            // Collision detection for the wooden planks (all 4 sides)
+            if (myHitOther(player, woodenPlanks)) {
+                // Left side collision: Stop horizontal movement
+                if (player.dx < 0 && player.x < woodenPlanks.x + woodenPlanks.width && player.x + player.width > woodenPlanks.x) {
+                    player.x = woodenPlanks.x + woodenPlanks.width; // Position player to the right of the wooden plank
+                    player.dx = 0; // Stop horizontal movement
+                }
+
+                // Right side collision: Stop horizontal movement
+                if (player.dx > 0 && player.x + player.width > woodenPlanks.x && player.x < woodenPlanks.x + woodenPlanks.width) {
+                    player.x = woodenPlanks.x - player.width; // Position player to the left of the wooden plank
+                    player.dx = 0; // Stop horizontal movement
+                }
+
+                // Top side collision: Stop vertical movement (when falling onto the planks)
+                if (player.dy > 0 && player.y + player.height <= woodenPlanks.y) {
+                    player.y = woodenPlanks.y - player.height;  // Position player on top of the planks
+                    player.dy = 0;  // Stop vertical movement
+                    player.grounded = true; // Player is grounded
+                }
+
+                // Bottom side collision: Stop vertical movement (when below the planks)
+                if (player.dy < 0 && player.y + player.height > woodenPlanks.y + woodenPlanks.height) {
+                    player.y = woodenPlanks.y + woodenPlanks.height; // Position player below the planks
+                    player.dy = 0; // Stop vertical movement
+                }
             }
 
-            // Right side
-            if (player.x + player.width > woodenPlanks.x && player.x < woodenPlanks.x + woodenPlanks.width && player.y + player.height > woodenPlanks.y && player.y < woodenPlanks.y + woodenPlanks.height) {
-                player.x = woodenPlanks.x - player.width; // Prevent moving through the right side
-                player.dx = 0; // Stop horizontal movement
-            }
-
-            // Top side (collide when falling)
-            if (player.y + player.height > woodenPlanks.y && player.y < woodenPlanks.y + woodenPlanks.height && player.x + player.width > woodenPlanks.x && player.x < woodenPlanks.x + woodenPlanks.width && player.dy > 0) {
-                player.y = woodenPlanks.y - player.height;  // Put player on top of the planks
-                player.dy = 0;  // Stop vertical movement
-                player.grounded = true;
-            }
-
-            // Bottom side (collide when above)
-            if (player.y < woodenPlanks.y + woodenPlanks.height && player.y + player.height > woodenPlanks.y && player.x + player.width > woodenPlanks.x && player.x < woodenPlanks.x + woodenPlanks.width && player.dy < 0) {
-                player.y = woodenPlanks.y + woodenPlanks.height;  // Put player under the planks
-                player.dy = 0;  // Stop vertical movement
-            }
-
+            // Prevent the player from going off-screen
             if (player.x < 0) player.x = 0;
             if (player.x + player.width > canvas.width) player.x = canvas.width - player.width;
             if (player.y + player.height > canvas.height) {
@@ -129,6 +137,21 @@
 
             // Draw the wooden planks on the canvas
             ctx.drawImage(loadedImages.woodPlanks, woodenPlanks.x, woodenPlanks.y, woodenPlanks.width, woodenPlanks.height);
+        }
+
+        // Function to check collision
+        function myHitOther(my1, my2) {
+            let left1 = my1.x;
+            let right1 = left1 + my1.width;
+            let top1 = my1.y;
+            let bottom1 = top1 + my1.height;
+
+            let left2 = my2.x;
+            let right2 = left2 + my2.width;
+            let top2 = my2.y;
+            let bottom2 = top2 + my2.height;
+
+            return !(right1 < left2 || left1 > right2 || bottom1 < top2 || top1 > bottom2);
         }
 
         // Game loop to update and draw the player
