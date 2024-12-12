@@ -49,23 +49,7 @@
             x: 200, y: canvas.height - 150, width: 200, height: 30
         };
 
-        // Define a function to check collisions based on element position and size
-        function myHitOther(my1, my2) {
-            let left1 = my1.x;
-            let right1 = left1 + my1.width;
-            let top1 = my1.y;
-            let bottom1 = top1 + my1.height;
-
-            let left2 = my2.x;
-            let right2 = left2 + my2.width;
-            let top2 = my2.y;
-            let bottom2 = top2 + my2.height;
-
-            // Check for overlap between two boxes
-            return !(right1 < left2 || left1 > right2 || bottom1 < top2 || top1 > bottom2);
-        }
-
-        // Update player position
+        // Update player position (collision logic removed)
         function updatePlayer() {
             if (!keys.up) player.dx = keys.right ? 5 : (keys.left ? -5 : player.dx * 0.9);
             if (keys.up && player.grounded) player.dx = 0;
@@ -79,23 +63,7 @@
             player.x += player.dx;
             player.y += player.dy;
 
-            // Check if the player collides with the wooden planks
-            if (myHitOther(player, woodenPlanks)) {
-                // If player is falling and collides from the top, reset position
-                if (player.dy > 0 && player.y + player.height <= woodenPlanks.y) {
-                    player.y = woodenPlanks.y - player.height;  // Put player on top of the planks
-                    player.dy = 0;  // Stop vertical movement
-                    player.grounded = true; // Set player grounded
-                }
-                // If player hits from the side, prevent horizontal movement
-                if (player.dx > 0 && player.x + player.width > woodenPlanks.x) {
-                    player.x = woodenPlanks.x - player.width; // Prevent moving through the right side
-                    player.dx = 0; // Stop horizontal movement
-                } else if (player.dx < 0 && player.x < woodenPlanks.x + woodenPlanks.width) {
-                    player.x = woodenPlanks.x + woodenPlanks.width; // Prevent moving through the left side
-                    player.dx = 0; // Stop horizontal movement
-                }
-            }
+            // Remove collision logic with wooden planks
 
             if (player.x < 0) player.x = 0;
             if (player.x + player.width > canvas.width) player.x = canvas.width - player.width;
