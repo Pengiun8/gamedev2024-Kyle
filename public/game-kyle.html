@@ -24,7 +24,7 @@
             woodPlanks: 'Wooden planks.png',
             woodPlanksEnd: 'Wooden planks 2.png'
         };
-   
+
         const woodenPlanks = {
             x: 200, y: canvas.height - 150, width: 200, height: 30
         };
@@ -88,6 +88,11 @@
             }
         }
 
+        function drawPlatforms() {
+            // Draw the wooden platform
+            ctx.drawImage(loadedImages.woodPlanks, woodenPlanks.x, woodenPlanks.y, woodenPlanks.width, woodenPlanks.height);
+        }
+
         function drawPlayer() {
             let imageToDraw;
             if (player.grounded && keys.up) imageToDraw = loadedImages.jumpCharge;
@@ -95,6 +100,7 @@
             else imageToDraw = player.isDashing ? loadedImages.right : (player.facingRight ? loadedImages.right : loadedImages.left);
 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawPlatforms(); // Draw the platform first
             ctx.drawImage(imageToDraw, player.x, player.y, player.width, player.height);
         }
 
