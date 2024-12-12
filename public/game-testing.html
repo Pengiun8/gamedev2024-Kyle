@@ -68,30 +68,30 @@
             player.x += player.dx;
             player.y += player.dy;
 
-            // Collision detection for the wooden planks (all 4 sides)
+            // Check for collisions with wooden planks (all 4 sides)
             if (myHitOther(player, woodenPlanks)) {
-                // Left side collision: Stop horizontal movement
+                // If colliding from the left
                 if (player.dx < 0 && player.x < woodenPlanks.x + woodenPlanks.width && player.x + player.width > woodenPlanks.x) {
-                    player.x = woodenPlanks.x + woodenPlanks.width; // Position player to the right of the wooden plank
+                    player.x = woodenPlanks.x + woodenPlanks.width; // Stop at the right edge of the box
                     player.dx = 0; // Stop horizontal movement
                 }
 
-                // Right side collision: Stop horizontal movement
+                // If colliding from the right
                 if (player.dx > 0 && player.x + player.width > woodenPlanks.x && player.x < woodenPlanks.x + woodenPlanks.width) {
-                    player.x = woodenPlanks.x - player.width; // Position player to the left of the wooden plank
+                    player.x = woodenPlanks.x - player.width; // Stop at the left edge of the box
                     player.dx = 0; // Stop horizontal movement
                 }
 
-                // Top side collision: Stop vertical movement (when falling onto the planks)
+                // If colliding from above (falling down onto the box)
                 if (player.dy > 0 && player.y + player.height <= woodenPlanks.y) {
-                    player.y = woodenPlanks.y - player.height;  // Position player on top of the planks
-                    player.dy = 0;  // Stop vertical movement
-                    player.grounded = true; // Player is grounded
+                    player.y = woodenPlanks.y - player.height; // Position player on top of the box
+                    player.dy = 0; // Stop vertical movement (no longer falling)
+                    player.grounded = true; // Player is now grounded
                 }
 
-                // Bottom side collision: Stop vertical movement (when below the planks)
+                // If colliding from below (hitting the bottom of the box)
                 if (player.dy < 0 && player.y + player.height > woodenPlanks.y + woodenPlanks.height) {
-                    player.y = woodenPlanks.y + woodenPlanks.height; // Position player below the planks
+                    player.y = woodenPlanks.y + woodenPlanks.height; // Stop below the box
                     player.dy = 0; // Stop vertical movement
                 }
             }
