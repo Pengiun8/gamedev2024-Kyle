@@ -21,7 +21,7 @@
             jumpRight: 'slimer jump right.png',
             jumpLeft: 'slimer jump left.png',
             jumpCharge: 'slimer jump charge.png',
-            woodPlanks: 'Wooden planks.png'
+            woodPlanks: 'Wooden planks.png' // Wooden planks image for platform
         };
 
         const loadedImages = {};
@@ -34,7 +34,6 @@
             };
         }
 
-        // Player properties (slimer)
         const player = {
             x: 50, y: canvas.height - 100, width: 76, height: 44,
             dx: 0, dy: 0, grounded: false, facingRight: true,
@@ -43,19 +42,14 @@
 
         const keys = { right: false, up: false, left: false, dash: false };
 
-        // Wooden planks properties (solid object)
+        // Wooden plank platform object
         const woodenPlanks = {
             x: 200, y: canvas.height - 150, width: 200, height: 30
         };
 
-        // Update player position (collision logic for all 4 sides)
         function updatePlayer() {
-            // Horizontal movement
-            if (!keys.up) {
-                player.dx = keys.right ? 5 : (keys.left ? -5 : player.dx * 0.9);
-            }
-
-            // Jumping logic
+            // Handle player horizontal movement
+            if (!keys.up) player.dx = keys.right ? 5 : (keys.left ? -5 : player.dx * 0.9);
             if (keys.up && player.grounded) player.dx = 0;
             if (keys.dash && player.dashCooldown <= 0 && !player.isDashing) startDash();
             if (player.isDashing) moveDash();
@@ -63,14 +57,11 @@
             if (keys.up && player.grounded) player.jumpCharge = Math.max(player.jumpCharge - 0.5, -25);
             if (!keys.up && !player.grounded && player.jumpCharge < 0) player.dy = player.jumpCharge, player.jumpCharge = 0;
 
-            player.dy += 0.5; // Gravity
+            player.dy += 0.5; // Gravity effect
             player.x += player.dx;
             player.y += player.dy;
 
-            // Check for collisions with wooden planks (all 4 sides)
-            handleCollisions();
-            
-            // Prevent the player from going off-screen
+            // Collision detection with the canvas boundaries
             if (player.x < 0) player.x = 0;
             if (player.x + player.width > canvas.width) player.x = canvas.width - player.width;
             if (player.y + player.height > canvas.height) {
@@ -79,32 +70,12 @@
                 player.grounded = true;
             } else player.grounded = false;
 
+            // Handle the player facing direction
             if (keys.right) player.facingRight = true;
             if (keys.left) player.facingRight = false;
-        }
 
-        function handleCollisions() {
-            // Horizontal collisions (left/right sides of the wooden planks)
-            if (player.dx > 0 && player.x + player.width > woodenPlanks.x && player.x < woodenPlanks.x + woodenPlanks.width) {
-                player.x = woodenPlanks.x - player.width; // Stop at the left edge of the box
-                player.dx = 0; // Stop horizontal movement
-            }
-            if (player.dx < 0 && player.x < woodenPlanks.x + woodenPlanks.width && player.x + player.width > woodenPlanks.x) {
-                player.x = woodenPlanks.x + woodenPlanks.width; // Stop at the right edge of the box
-                player.dx = 0; // Stop horizontal movement
-            }
-
-            // Vertical collisions (top/bottom sides of the wooden planks)
-            if (player.dy > 0 && player.y + player.height <= woodenPlanks.y && player.x + player.width > woodenPlanks.x && player.x < woodenPlanks.x + woodenPlanks.width) {
-                player.y = woodenPlanks.y - player.height; // Land on top of the wooden box
-                player.dy = 0; // Stop falling
-                player.grounded = true;
-            }
-
-            if (player.dy < 0 && player.y + player.height > woodenPlanks.y + woodenPlanks.height && player.x + player.width > woodenPlanks.x && player.x < woodenPlanks.x + woodenPlanks.width) {
-                player.y = woodenPlanks.y + woodenPlanks.height; // Stop at the bottom of the box
-                player.dy = 0; // Stop upward movement
-            }
+            // Platform collision detection
+            handlePlatformCollision();
         }
 
         function startDash() {
@@ -123,7 +94,18 @@
             }
         }
 
-        // Draw player and the wooden planks
+        function handlePlatformCollision() {
+            player.grounded = false; // Assume player is not grounded initially
+
+            // Check for collision with the wooden plank platform
+            if (player.x + player.width > woodenPlanks.x && player.x < woodenPlanks.x + woodenPlanks.width &&
+                player.y + player.height <= woodenPlanks.y + 1 && player.y + player.height + player.dy >= woodenPlanks.y) {
+                player.dy = 0; // Stop falling
+                player.y = woodenPlanks.y - player.height; // Place the player on top of the platform
+                player.grounded = true; // Player is grounded on the platform
+            }
+        }
+
         function drawPlayer() {
             let imageToDraw;
             if (player.grounded && keys.up) imageToDraw = loadedImages.jumpCharge;
@@ -131,28 +113,14 @@
             else imageToDraw = player.isDashing ? loadedImages.right : (player.facingRight ? loadedImages.right : loadedImages.left);
 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.drawImage(imageToDraw, player.x, player.y, player.width, player.height);
 
-            // Draw the wooden planks on the canvas
+            // Draw the wooden platform using its image
             ctx.drawImage(loadedImages.woodPlanks, woodenPlanks.x, woodenPlanks.y, woodenPlanks.width, woodenPlanks.height);
+
+            // Draw player
+            ctx.drawImage(imageToDraw, player.x, player.y, player.width, player.height);
         }
 
-        // Function to check collision (bounding box check)
-        function myHitOther(my1, my2) {
-            let left1 = my1.x;
-            let right1 = left1 + my1.width;
-            let top1 = my1.y;
-            let bottom1 = top1 + my1.height;
-
-            let left2 = my2.x;
-            let right2 = left2 + my2.width;
-            let top2 = my2.y;
-            let bottom2 = top2 + my2.height;
-
-            return !(right1 < left2 || left1 > right2 || bottom1 < top2 || top1 > bottom2);
-        }
-
-        // Game loop to update and draw the player
         function gameLoop() {
             updatePlayer();
             drawPlayer();
