@@ -21,8 +21,7 @@
             jumpRight: 'slimer jump right.png',
             jumpLeft: 'slimer jump left.png',
             jumpCharge: 'slimer jump charge.png',
-            woodPlanks: 'Wooden planks.png',
-            woodPlanksEnd: 'Wooden planks 2.png'
+            woodPlanks: 'Wooden planks.png'
         };
 
         const loadedImages = {};
@@ -69,33 +68,8 @@
             player.y += player.dy;
 
             // Check for collisions with wooden planks (all 4 sides)
-            if (myHitOther(player, woodenPlanks)) {
-                // If colliding from the left
-                if (player.dx < 0 && player.x < woodenPlanks.x + woodenPlanks.width && player.x + player.width > woodenPlanks.x) {
-                    player.x = woodenPlanks.x + woodenPlanks.width; // Stop at the right edge of the box
-                    player.dx = 0; // Stop horizontal movement
-                }
-
-                // If colliding from the right
-                if (player.dx > 0 && player.x + player.width > woodenPlanks.x && player.x < woodenPlanks.x + woodenPlanks.width) {
-                    player.x = woodenPlanks.x - player.width; // Stop at the left edge of the box
-                    player.dx = 0; // Stop horizontal movement
-                }
-
-                // If colliding from above (falling down onto the box)
-                if (player.dy > 0 && player.y + player.height <= woodenPlanks.y) {
-                    player.y = woodenPlanks.y - player.height; // Position player on top of the box
-                    player.dy = 0; // Stop vertical movement (no longer falling)
-                    player.grounded = true; // Player is now grounded
-                }
-
-                // If colliding from below (hitting the bottom of the box)
-                if (player.dy < 0 && player.y + player.height > woodenPlanks.y + woodenPlanks.height) {
-                    player.y = woodenPlanks.y + woodenPlanks.height; // Stop below the box
-                    player.dy = 0; // Stop vertical movement
-                }
-            }
-
+            handleCollisions();
+            
             // Prevent the player from going off-screen
             if (player.x < 0) player.x = 0;
             if (player.x + player.width > canvas.width) player.x = canvas.width - player.width;
@@ -107,6 +81,30 @@
 
             if (keys.right) player.facingRight = true;
             if (keys.left) player.facingRight = false;
+        }
+
+        function handleCollisions() {
+            // Horizontal collisions (left/right sides of the wooden planks)
+            if (player.dx > 0 && player.x + player.width > woodenPlanks.x && player.x < woodenPlanks.x + woodenPlanks.width) {
+                player.x = woodenPlanks.x - player.width; // Stop at the left edge of the box
+                player.dx = 0; // Stop horizontal movement
+            }
+            if (player.dx < 0 && player.x < woodenPlanks.x + woodenPlanks.width && player.x + player.width > woodenPlanks.x) {
+                player.x = woodenPlanks.x + woodenPlanks.width; // Stop at the right edge of the box
+                player.dx = 0; // Stop horizontal movement
+            }
+
+            // Vertical collisions (top/bottom sides of the wooden planks)
+            if (player.dy > 0 && player.y + player.height <= woodenPlanks.y && player.x + player.width > woodenPlanks.x && player.x < woodenPlanks.x + woodenPlanks.width) {
+                player.y = woodenPlanks.y - player.height; // Land on top of the wooden box
+                player.dy = 0; // Stop falling
+                player.grounded = true;
+            }
+
+            if (player.dy < 0 && player.y + player.height > woodenPlanks.y + woodenPlanks.height && player.x + player.width > woodenPlanks.x && player.x < woodenPlanks.x + woodenPlanks.width) {
+                player.y = woodenPlanks.y + woodenPlanks.height; // Stop at the bottom of the box
+                player.dy = 0; // Stop upward movement
+            }
         }
 
         function startDash() {
@@ -139,7 +137,7 @@
             ctx.drawImage(loadedImages.woodPlanks, woodenPlanks.x, woodenPlanks.y, woodenPlanks.width, woodenPlanks.height);
         }
 
-        // Function to check collision
+        // Function to check collision (bounding box check)
         function myHitOther(my1, my2) {
             let left1 = my1.x;
             let right1 = left1 + my1.width;
