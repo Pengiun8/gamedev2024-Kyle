@@ -60,18 +60,26 @@
             // Apply gravity and update position
             player.dy += 0.5; // Gravity effect
 
-            // Check for platform collision (if the player is falling)
-            if (player.y + player.height <= woodenPlanks.y && 
-                player.y + player.height + player.dy >= woodenPlanks.y &&
-                player.x + player.width > woodenPlanks.x &&
-                player.x < woodenPlanks.x + woodenPlanks.width) {
-                
-                // Land on the platform
-                player.y = woodenPlanks.y - player.height; // Position player on top of the platform
-                player.dy = 0; // Stop downward movement (no falling)
-                player.grounded = true;
-            } else {
-                player.grounded = false;
+            // Check for platform collision (top, left, right, bottom)
+            if (player.x + player.width > woodenPlanks.x && player.x < woodenPlanks.x + woodenPlanks.width) {
+                if (player.y + player.height <= woodenPlanks.y && 
+                    player.y + player.height + player.dy >= woodenPlanks.y) {
+                    // Top collision (land on top of platform)
+                    player.y = woodenPlanks.y - player.height; // Position player on top of the platform
+                    player.dy = 0; // Stop downward movement (no falling)
+                    player.grounded = true;
+                } else if (player.y < woodenPlanks.y + woodenPlanks.height && 
+                           player.y + player.height > woodenPlanks.y + woodenPlanks.height) {
+                    // Bottom collision (stop falling through the platform)
+                    player.y = woodenPlanks.y + woodenPlanks.height; // Position player just above the platform
+                    player.dy = 0; // Stop downward movement
+                }
+            }
+
+            // Check left and right collisions (if moving into the platform's left or right side)
+            if (player.x < woodenPlanks.x + woodenPlanks.width && player.x + player.width > woodenPlanks.x) {
+                if (keys.left) player.x = woodenPlanks.x + woodenPlanks.width; // Stop player at left side
+                if (keys.right) player.x = woodenPlanks.x - player.width; // Stop player at right side
             }
 
             // Update player position
