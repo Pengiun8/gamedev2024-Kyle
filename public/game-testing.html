@@ -58,15 +58,20 @@
 
             player.dy += 0.5;
 
-            // Collision detection for wooden plank (platform)
-            if (player.y + player.height > woodenPlanks.y && player.y + player.height < woodenPlanks.y + woodenPlanks.height && player.x + player.width > woodenPlanks.x && player.x < woodenPlanks.x + woodenPlanks.width) {
-                player.y = woodenPlanks.y - player.height; // Place the player on top of the plank
-                player.dy = 0; // Stop downward movement
-                player.grounded = true; // Player is on the ground (platform)
+            // Check if the player is falling on top of the wooden plank
+            if (player.dy >= 0 && player.y + player.height <= woodenPlanks.y + woodenPlanks.height &&
+                player.y + player.height + player.dy >= woodenPlanks.y && 
+                player.x + player.width > woodenPlanks.x && player.x < woodenPlanks.x + woodenPlanks.width) {
+
+                // Player is landing on the wooden platform
+                player.y = woodenPlanks.y - player.height; // Place player on top of the platform
+                player.dy = 0; // Stop downward motion
+                player.grounded = true; // Player is grounded
             } else {
                 player.grounded = false;
             }
 
+            // Update player position
             player.x += player.dx;
             player.y += player.dy;
 
