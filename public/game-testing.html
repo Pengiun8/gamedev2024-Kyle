@@ -21,32 +21,30 @@
             jumpRight: 'slimer jump right.png',
             jumpLeft: 'slimer jump left.png',
             jumpCharge: 'slimer jump charge.png',
-            woodPlanks: 'Wooden planks.png',
+            woodPlanks: 'Wooden planks.png',  // Fixed name here
             woodPlanksEnd: 'Wooden planks 2.png'
-        };
-
-        const woodenPlanks = {
-            x: 200, y: canvas.height - 150, width: 180, height: 60
         };
 
         const loadedImages = {};
         let imagesLoaded = 0;
 
+        // Function to load all images
         for (let key in images) {
             loadedImages[key] = new Image();
             loadedImages[key].src = images[key];
+            console.log(`Attempting to load image: ${images[key]}`);  // Debugging image path
 
             loadedImages[key].onload = () => {
                 imagesLoaded++;
-                console.log(`${key} loaded`);
+                console.log(`${key} loaded successfully`);  // Debugging successful image load
                 if (imagesLoaded === Object.keys(images).length) {
                     console.log("All images loaded, starting game loop");
                     gameLoop();
                 }
             };
 
-            loadedImages[key].onerror = () => {
-                console.error(`Error loading image: ${images[key]}`);
+            loadedImages[key].onerror = (err) => {
+                console.error(`Error loading image: ${images[key]}`);  // Debugging failed image load
             };
         }
 
@@ -58,57 +56,39 @@
 
         const keys = { right: false, up: false, left: false, dash: false };
 
-        // Collision logic
-        function handleCollisions(player, woodenPlanks) {
+        // Collision and platform handling (using "woodPlanks" instead of "woodenPlanks")
+        function handleCollisions(player, woodPlanks) {
             let isSupported = false;
-
-            // Platform collision (Top side)
-            if (player.y + player.height <= woodenPlanks.y && 
-                player.y + player.height + player.dy >= woodenPlanks.y &&
-                player.x + player.width > woodenPlanks.x &&
-                player.x < woodenPlanks.x + woodenPlanks.width) {
-                
-                // Land on the platform
-                player.y = woodenPlanks.y - player.height; // Position player on top of the platform
-                player.dy = 0; // Stop downward movement (no falling)
+            if (player.y + player.height <= woodPlanks.y && player.y + player.height + player.dy >= woodPlanks.y && player.x + player.width > woodPlanks.x && player.x < woodPlanks.x + woodPlanks.width) {
+                player.y = woodPlanks.y - player.height;
+                player.dy = 0;
                 player.grounded = true;
             } else {
                 player.grounded = false;
             }
 
-            // Left side collision
-            if (player.x < woodenPlanks.x + woodenPlanks.width &&
-                player.x + player.width > woodenPlanks.x &&
-                player.y + player.height > woodenPlanks.y &&
-                player.y < woodenPlanks.y + woodenPlanks.height) {
-                player.x = woodenPlanks.x + woodenPlanks.width; // Position player on the left edge of the platform
+            // Left and right collision logic for platform
+            if (player.x < woodPlanks.x + woodPlanks.width && player.x + player.width > woodPlanks.x && player.y + player.height > woodPlanks.y && player.y < woodPlanks.y + woodPlanks.height) {
+                player.x = woodPlanks.x + woodPlanks.width;
             }
 
-            // Right side collision
-            if (player.x + player.width > woodenPlanks.x &&
-                player.x < woodenPlanks.x + woodenPlanks.width &&
-                player.y + player.height > woodenPlanks.y &&
-                player.y < woodenPlanks.y + woodenPlanks.height) {
-                player.x = woodenPlanks.x - player.width; // Position player on the right edge of the platform
+            if (player.x + player.width > woodPlanks.x && player.x < woodPlanks.x + woodPlanks.width && player.y + player.height > woodPlanks.y && player.y < woodPlanks.y + woodPlanks.height) {
+                player.x = woodPlanks.x - player.width;
             }
 
-            // Bottom side collision
-            if (player.x + player.width > woodenPlanks.x &&
-                player.x < woodenPlanks.x + woodenPlanks.width &&
-                player.y + player.height > woodenPlanks.y &&
-                player.y < woodenPlanks.y + woodenPlanks.height) {
-                player.y = woodenPlanks.y + woodenPlanks.height; // Position player on the bottom edge of the platform
-                player.dy = 0; // Stop downward movement when colliding with the bottom side
+            // Update y position to ensure player doesn't fall off the platform
+            if (player.x + player.width > woodPlanks.x && player.x < woodPlanks.x + woodPlanks.width && player.y + player.height > woodPlanks.y && player.y < woodPlanks.y + woodPlanks.height) {
+                player.y = woodPlanks.y + woodPlanks.height;
+                player.dy = 0;
             }
 
-            // Ground detection
+            // Keep the player within screen boundaries
             if (player.y + player.height >= canvas.height) {
                 player.y = canvas.height - player.height;
                 player.dy = 0;
                 player.grounded = true;
             }
 
-            // Left and right screen boundaries
             if (player.x < 0) player.x = 0;
             if (player.x + player.width > canvas.width) player.x = canvas.width - player.width;
 
@@ -116,7 +96,6 @@
         }
 
         function updatePlayer() {
-            // Horizontal movement
             if (!keys.up) player.dx = keys.right ? 5 : (keys.left ? -5 : player.dx * 0.9);
             if (keys.up && player.grounded) player.dx = 0;
             if (keys.dash && player.dashCooldown <= 0 && !player.isDashing) startDash();
@@ -125,28 +104,22 @@
             if (keys.up && player.grounded) player.jumpCharge = Math.max(player.jumpCharge - 0.5, -25);
             if (!keys.up && !player.grounded && player.jumpCharge < 0) player.dy = player.jumpCharge, player.jumpCharge = 0;
 
-            // Apply gravity and update position
             player.dy += 0.5; // Gravity effect
 
-            // Handle collision with the wooden platform and update player position
-            player = handleCollisions(player, woodenPlanks);
+            player = handleCollisions(player, { x: 200, y: canvas.height - 150, width: 180, height: 60 });
 
-            // Update player position
             player.x += player.dx;
             player.y += player.dy;
 
-            // Prevent the player from going off-screen horizontally
             if (player.x < 0) player.x = 0;
             if (player.x + player.width > canvas.width) player.x = canvas.width - player.width;
 
-            // Prevent the player from going off-screen vertically
             if (player.y + player.height > canvas.height) {
                 player.y = canvas.height - player.height;
                 player.dy = 0;
-                player.grounded = true; // Ensure player is grounded when touching the floor
+                player.grounded = true;
             }
 
-            // Update facing direction based on movement
             if (keys.right) player.facingRight = true;
             if (keys.left) player.facingRight = false;
         }
@@ -168,19 +141,16 @@
         }
 
         function drawPlatforms() {
-            // Draw the wooden platform
-            if (loadedImages.woodPlanks) {
-                ctx.drawImage(loadedImages.woodPlanks, woodenPlanks.x, woodenPlanks.y, woodenPlanks.width, woodenPlanks.height);
+            if (loadedImages.woodPlanks) {  // Correct reference to "woodPlanks"
+                ctx.drawImage(loadedImages.woodPlanks, 200, canvas.height - 150, 180, 60);
+            } else {
+                console.error("Wooden planks image is not loaded!");
             }
         }
 
         function drawPlayer() {
             let imageToDraw;
-
-            // Log for debugging player image selection
-            console.log("Drawing player");
-
-            // Determine the correct image based on whether the player is jumping, dashing, or moving.
+            console.log("Drawing player...");
             if (player.grounded && keys.up) {
                 imageToDraw = loadedImages.jumpCharge;
             } else if (!player.grounded) {
@@ -189,13 +159,13 @@
                 imageToDraw = player.isDashing ? loadedImages.right : (player.facingRight ? loadedImages.right : loadedImages.left);
             }
 
-            // Clear the canvas and draw the player and platform
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            drawPlatforms(); // Draw the platform first
+            drawPlatforms();
+
             if (imageToDraw) {
                 ctx.drawImage(imageToDraw, player.x, player.y, player.width, player.height);
             } else {
-                console.error("Image to draw is missing");
+                console.error("Failed to select a player image.");
             }
         }
 
