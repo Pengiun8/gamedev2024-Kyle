@@ -60,18 +60,41 @@
             // Apply gravity and update position
             player.dy += 0.5; // Gravity effect
 
-            // Check for platform collision (if the player is falling)
+            // Check for platform collision (Top side)
             if (player.y + player.height <= woodenPlanks.y && 
                 player.y + player.height + player.dy >= woodenPlanks.y &&
                 player.x + player.width > woodenPlanks.x &&
                 player.x < woodenPlanks.x + woodenPlanks.width) {
-                
-                // Land on the platform
                 player.y = woodenPlanks.y - player.height; // Position player on top of the platform
                 player.dy = 0; // Stop downward movement (no falling)
                 player.grounded = true;
             } else {
                 player.grounded = false;
+            }
+
+            // Check for collision with the left side of the platform
+            if (player.x < woodenPlanks.x + woodenPlanks.width &&
+                player.x + player.width > woodenPlanks.x &&
+                player.y + player.height > woodenPlanks.y &&
+                player.y < woodenPlanks.y + woodenPlanks.height) {
+                player.x = woodenPlanks.x + woodenPlanks.width; // Position player on the left edge of the platform
+            }
+
+            // Check for collision with the right side of the platform
+            if (player.x + player.width > woodenPlanks.x &&
+                player.x < woodenPlanks.x + woodenPlanks.width &&
+                player.y + player.height > woodenPlanks.y &&
+                player.y < woodenPlanks.y + woodenPlanks.height) {
+                player.x = woodenPlanks.x - player.width; // Position player on the right edge of the platform
+            }
+
+            // Check for collision with the bottom side of the platform
+            if (player.x + player.width > woodenPlanks.x &&
+                player.x < woodenPlanks.x + woodenPlanks.width &&
+                player.y + player.height > woodenPlanks.y &&
+                player.y < woodenPlanks.y + woodenPlanks.height) {
+                player.y = woodenPlanks.y + woodenPlanks.height; // Position player on the bottom edge of the platform
+                player.dy = 0; // Stop downward movement when colliding with the bottom side
             }
 
             // Update player position
