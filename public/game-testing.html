@@ -31,11 +31,22 @@
 
         const loadedImages = {};
         let imagesLoaded = 0;
+
         for (let key in images) {
             loadedImages[key] = new Image();
             loadedImages[key].src = images[key];
+
             loadedImages[key].onload = () => {
-                if (++imagesLoaded === Object.keys(images).length) gameLoop();
+                imagesLoaded++;
+                console.log(`${key} loaded`);
+                if (imagesLoaded === Object.keys(images).length) {
+                    console.log("All images loaded, starting game loop");
+                    gameLoop();
+                }
+            };
+
+            loadedImages[key].onerror = () => {
+                console.error(`Error loading image: ${images[key]}`);
             };
         }
 
@@ -158,11 +169,16 @@
 
         function drawPlatforms() {
             // Draw the wooden platform
-            ctx.drawImage(loadedImages.woodPlanks, woodenPlanks.x, woodenPlanks.y, woodenPlanks.width, woodenPlanks.height);
+            if (loadedImages.woodPlanks) {
+                ctx.drawImage(loadedImages.woodPlanks, woodenPlanks.x, woodenPlanks.y, woodenPlanks.width, woodenPlanks.height);
+            }
         }
 
         function drawPlayer() {
             let imageToDraw;
+
+            // Log for debugging player image selection
+            console.log("Drawing player");
 
             // Determine the correct image based on whether the player is jumping, dashing, or moving.
             if (player.grounded && keys.up) {
@@ -173,9 +189,14 @@
                 imageToDraw = player.isDashing ? loadedImages.right : (player.facingRight ? loadedImages.right : loadedImages.left);
             }
 
+            // Clear the canvas and draw the player and platform
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             drawPlatforms(); // Draw the platform first
-            ctx.drawImage(imageToDraw, player.x, player.y, player.width, player.height);
+            if (imageToDraw) {
+                ctx.drawImage(imageToDraw, player.x, player.y, player.width, player.height);
+            } else {
+                console.error("Image to draw is missing");
+            }
         }
 
         function gameLoop() {
