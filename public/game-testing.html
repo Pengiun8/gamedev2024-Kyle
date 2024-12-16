@@ -58,12 +58,12 @@
 
             player.dy += 0.5;
 
-            // Check if the player is falling on top of the wooden plank
+            // Check for collision with all sides of the wooden plank (platform)
+
+            // Bottom Collision (landing on top of the plank)
             if (player.dy >= 0 && player.y + player.height <= woodenPlanks.y + woodenPlanks.height &&
                 player.y + player.height + player.dy >= woodenPlanks.y && 
                 player.x + player.width > woodenPlanks.x && player.x < woodenPlanks.x + woodenPlanks.width) {
-
-                // Player is landing on the wooden platform
                 player.y = woodenPlanks.y - player.height; // Place player on top of the platform
                 player.dy = 0; // Stop downward motion
                 player.grounded = true; // Player is grounded
@@ -71,7 +71,26 @@
                 player.grounded = false;
             }
 
-            // Update player position
+            // Top Collision (prevent passing through the top of the platform)
+            if (player.dy <= 0 && player.y <= woodenPlanks.y + woodenPlanks.height &&
+                player.y + player.dy <= woodenPlanks.y + woodenPlanks.height &&
+                player.x + player.width > woodenPlanks.x && player.x < woodenPlanks.x + woodenPlanks.width) {
+                player.y = woodenPlanks.y + woodenPlanks.height; // Prevent passing through the top
+                player.dy = 0; // Stop upward movement
+            }
+
+            // Left Collision (prevent passing through the left side of the platform)
+            if (player.x + player.width > woodenPlanks.x && player.x < woodenPlanks.x &&
+                player.y + player.height > woodenPlanks.y && player.y < woodenPlanks.y + woodenPlanks.height) {
+                player.x = woodenPlanks.x - player.width; // Prevent going into the platform from the left
+            }
+
+            // Right Collision (prevent passing through the right side of the platform)
+            if (player.x < woodenPlanks.x + woodenPlanks.width && player.x + player.width > woodenPlanks.x + woodenPlanks.width &&
+                player.y + player.height > woodenPlanks.y && player.y < woodenPlanks.y + woodenPlanks.height) {
+                player.x = woodenPlanks.x + woodenPlanks.width; // Prevent going into the platform from the right
+            }
+
             player.x += player.dx;
             player.y += player.dy;
 
