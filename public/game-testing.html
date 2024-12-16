@@ -96,17 +96,19 @@
         }
 
         function updatePlayer() {
+            // Horizontal movement
             if (!keys.up) player.dx = keys.right ? 5 : (keys.left ? -5 : player.dx * 0.9);
-            if (keys.up && player.grounded) player.dx = 0;
+            if (keys.up && player.grounded) player.dy = -15; // Jump force
             if (keys.dash && player.dashCooldown <= 0 && !player.isDashing) startDash();
             if (player.isDashing) moveDash();
             if (player.dashCooldown > 0) player.dashCooldown--;
-            if (keys.up && player.grounded) player.jumpCharge = Math.max(player.jumpCharge - 0.5, -25);
-            if (!keys.up && !player.grounded && player.jumpCharge < 0) player.dy = player.jumpCharge, player.jumpCharge = 0;
 
-            player.dy += 0.5; // Gravity effect
+            // Gravity effect
+            if (!player.grounded) {
+                player.dy += 0.5; // Gravity pulls player down when in the air
+            }
 
-            // Update player based on collisions
+            // Check collisions with the wooden platform
             handleCollisions(player, { x: 200, y: canvas.height - 150, width: 180, height: 60 });
 
             player.x += player.dx;
@@ -178,17 +180,14 @@
 
         document.addEventListener("keydown", (e) => {
             if (e.code === "KeyD") keys.right = true;
-            if (e.code === "Space") keys.up = true;
+            if (e.code === "Space" && player.grounded) keys.up = true;  // Allow jump only when grounded
             if (e.code === "KeyA") keys.left = true;
             if (e.code === "ShiftLeft" || e.code === "ShiftRight") keys.dash = true;
         });
 
         document.addEventListener("keyup", (e) => {
             if (e.code === "KeyD") keys.right = false;
-            if (e.code === "Space") {
-                keys.up = false;
-                if (player.grounded) player.dy = player.jumpCharge, player.jumpCharge = 0;
-            }
+            if (e.code === "Space") keys.up = false;
             if (e.code === "KeyA") keys.left = false;
             if (e.code === "ShiftLeft" || e.code === "ShiftRight") keys.dash = false;
         });
