@@ -79,18 +79,17 @@
                 player.dy = 0; // Stop upward movement
             }
 
-            // Left Collision (prevent passing through the left side of the platform)
-            if (player.x + player.width > woodenPlanks.x && player.x < woodenPlanks.x &&
-                player.y + player.height > woodenPlanks.y && player.y < woodenPlanks.y + woodenPlanks.height) {
-                player.x = woodenPlanks.x - player.width; // Prevent going into the platform from the left
-            }
+          // Left Collision (prevent passing through the left side of the platform only when near the platform)
+if (player.x + player.width > woodenPlanks.x && player.x < woodenPlanks.x &&
+    player.y + player.height > woodenPlanks.y && player.y + player.height < woodenPlanks.y + woodenPlanks.height) {
+    player.x = woodenPlanks.x - player.width; // Prevent going into the platform from the left
+}
 
-            // Right Collision (prevent passing through the right side of the platform)
-            if (player.x < woodenPlanks.x + woodenPlanks.width && player.x + player.width > woodenPlanks.x + woodenPlanks.width &&
-                player.y + player.height > woodenPlanks.y && player.y < woodenPlanks.y + woodenPlanks.height) {
-                player.x = woodenPlanks.x + woodenPlanks.width; // Prevent going into the platform from the right
-            }
-
+// Right Collision (prevent passing through the right side of the platform only when near the platform)
+if (player.x < woodenPlanks.x + woodenPlanks.width && player.x + player.width > woodenPlanks.x + woodenPlanks.width &&
+    player.y + player.height > woodenPlanks.y && player.y + player.height < woodenPlanks.y + woodenPlanks.height) {
+    player.x = woodenPlanks.x + woodenPlanks.width; // Prevent going into the platform from the right
+}
             player.x += player.dx;
             player.y += player.dy;
 
