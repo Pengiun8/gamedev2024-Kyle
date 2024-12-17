@@ -86,9 +86,13 @@
 
             // Detect collision
             if (isCollision(square1, square2)) {
-                ctx.fillStyle = 'green';  // Change to green when collided
+                // Change the color of the squares to green when they collide
+                square1.color = 'green';
+                square2.color = 'green';
             } else {
-                ctx.fillStyle = 'black';  // Default background
+                // Reset to original colors if no collision
+                square1.color = 'blue';
+                square2.color = 'red';
             }
 
             // Draw the squares
