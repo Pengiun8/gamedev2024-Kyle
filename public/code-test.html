@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Collision Detection and Bounce Example</title>
+    <title>Collision Detection with Solid Red Block</title>
     <style>
         body {
             margin: 0;
@@ -36,7 +36,7 @@
             dy: 0   // Speed on the y-axis
         };
 
-        // Object 2: Stationary Red Square
+        // Object 2: Stationary Red Square (Solid)
         const square2 = {
             x: 500,
             y: 100,
@@ -56,17 +56,25 @@
             );
         }
 
-        // Function to handle bouncing
-        function handleBounce(obj1, obj2) {
-            // Simple elastic collision logic: reverse velocities upon collision
-            const tempDx = obj1.dx;
-            const tempDy = obj1.dy;
-
-            // Swap velocities of the two squares
-            obj1.dx = obj2.dx;
-            obj1.dy = obj2.dy;
-            obj2.dx = tempDx;
-            obj2.dy = tempDy;
+        // Function to handle collision and prevent blue square from passing through the red square
+        function handleCollision(obj1, obj2) {
+            // Check for collision on each axis and adjust position
+            if (obj1.x + obj1.size > obj2.x && obj1.x < obj2.x + obj2.size) {
+                if (obj1.y + obj1.size > obj2.y && obj1.y < obj2.y + obj2.size) {
+                    // Collision detected, prevent movement into red square
+                    // Correct the position of square1 to be just outside the red square
+                    if (obj1.dy > 0) {  // Moving down
+                        obj1.y = obj2.y - obj1.size;
+                    } else if (obj1.dy < 0) {  // Moving up
+                        obj1.y = obj2.y + obj2.size;
+                    }
+                    if (obj1.dx > 0) {  // Moving right
+                        obj1.x = obj2.x - obj1.size;
+                    } else if (obj1.dx < 0) {  // Moving left
+                        obj1.x = obj2.x + obj2.size;
+                    }
+                }
+            }
         }
 
         // Listen for arrow key presses to control the blue square
@@ -100,10 +108,8 @@
             square1.x += square1.dx;
             square1.y += square1.dy;
 
-            // Check if the squares are colliding
-            if (isCollision(square1, square2)) {
-                handleBounce(square1, square2); // Bounce off each other
-            }
+            // Handle collision with the red block (square2)
+            handleCollision(square1, square2);
 
             // Draw the squares
             ctx.fillStyle = square1.color;
