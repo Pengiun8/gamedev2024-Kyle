@@ -100,13 +100,13 @@ function checkPlatformCollisions() {
     // Left collision: Player collides with the left side of the platform
     if (player.x + player.width > platformLeft && player.x < platformLeft && player.y + player.height > platformTop && player.y < platformBottom) {
         player.x = platformLeft - player.width; // Align player with the left side of the platform
-        player.dx = 0; // Stop horizontal movement
+        if (keys.left) player.dx = 0; // Stop horizontal movement if moving left
     }
 
     // Right collision: Player collides with the right side of the platform
     if (player.x < platformRight && player.x + player.width > platformRight && player.y + player.height > platformTop && player.y < platformBottom) {
         player.x = platformRight; // Align player with the right side of the platform
-        player.dx = 0; // Stop horizontal movement
+        if (keys.right) player.dx = 0; // Stop horizontal movement if moving right
     }
 }
 
