@@ -47,52 +47,67 @@
 
         const keys = { right: false, up: false, left: false, dash: false };
 
-     function updatePlayer() {
-    // Handle horizontal movement
+   function updatePlayer() {
     if (!keys.up) player.dx = keys.right ? 5 : (keys.left ? -5 : player.dx * 0.9);
     if (keys.up && player.grounded) player.dx = 0;
     if (keys.dash && player.dashCooldown <= 0 && !player.isDashing) startDash();
     if (player.isDashing) moveDash();
     if (player.dashCooldown > 0) player.dashCooldown--;
 
-    // Handle jumping mechanics (charging)
     if (keys.up && player.grounded) player.jumpCharge = Math.max(player.jumpCharge - 0.5, -25);
     if (!keys.up && !player.grounded && player.jumpCharge < 0) player.dy = player.jumpCharge, player.jumpCharge = 0;
 
-    player.dy += 0.5;  // gravity
-
-    // Move the player
+    player.dy += 0.5;
     player.x += player.dx;
     player.y += player.dy;
 
-    // Player collision with the edges of the canvas
+    // Check for collisions with the wooden platform (both sides and top/bottom)
+    checkPlatformCollisions();
+
+    // Boundaries for the canvas
     if (player.x < 0) player.x = 0;
     if (player.x + player.width > canvas.width) player.x = canvas.width - player.width;
+    if (player.y + player.height > canvas.height) {
+        player.y = canvas.height - player.height;
+        player.dy = 0;
+        player.grounded = true;
+    } else player.grounded = false;
 
-    // Collision with the platform (wooden plank) - Make platform solid and impassable
-    if (player.x + player.width > woodenPlanks.x && player.x < woodenPlanks.x + woodenPlanks.width &&
-        player.y + player.height <= woodenPlanks.y && player.y + player.height + player.dy >= woodenPlanks.y) {
-
-        // Only stop downward movement if player is falling (dy > 0)
-        if (player.dy > 0) {
-            player.y = woodenPlanks.y - player.height;  // Position the player on top of the plank
-            player.dy = 0;  // Stop the downward movement
-            player.grounded = true;
-        }
-    } else {
-        // Default gravity (fall if not grounded)
-        if (player.y + player.height > canvas.height) {
-            player.y = canvas.height - player.height;
-            player.dy = 0;
-            player.grounded = true;
-        } else {
-            player.grounded = false;
-        }
-    }
-
-    // Update facing direction
     if (keys.right) player.facingRight = true;
     if (keys.left) player.facingRight = false;
+}
+
+function checkPlatformCollisions() {
+    // Platform edges
+    const platformLeft = woodenPlanks.x;
+    const platformRight = woodenPlanks.x + woodenPlanks.width;
+    const platformTop = woodenPlanks.y;
+    const platformBottom = woodenPlanks.y + woodenPlanks.height;
+
+    // Top collision: Player collides with the top of the platform (player falling onto the platform)
+    if (player.y + player.height <= platformTop + player.dy && player.y + player.height + player.dy >= platformTop && player.x + player.width > platformLeft && player.x < platformRight) {
+        player.y = platformTop - player.height; // Align player with the top of the platform
+        player.dy = 0;
+        player.grounded = true;  // The player is now grounded
+    }
+
+    // Bottom collision: Player collides with the bottom of the platform (player hits the bottom)
+    if (player.y + player.height > platformBottom && player.y + player.height <= platformBottom + player.dy && player.x + player.width > platformLeft && player.x < platformRight) {
+        player.y = platformBottom - player.height; // Align player with the bottom of the platform
+        player.dy = 0;  // Stop vertical movement
+    }
+
+    // Left collision: Player collides with the left side of the platform
+    if (player.x + player.width > platformLeft && player.x < platformLeft && player.y + player.height > platformTop && player.y < platformBottom) {
+        player.x = platformLeft - player.width; // Align player with the left side of the platform
+        player.dx = 0; // Stop horizontal movement
+    }
+
+    // Right collision: Player collides with the right side of the platform
+    if (player.x < platformRight && player.x + player.width > platformRight && player.y + player.height > platformTop && player.y < platformBottom) {
+        player.x = platformRight; // Align player with the right side of the platform
+        player.dx = 0; // Stop horizontal movement
+    }
 }
 
         function startDash() {
