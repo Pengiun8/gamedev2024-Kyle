@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collision Detection Example</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        canvas {
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="gameCanvas"></canvas>
+    <script>
+        // Set up the canvas
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Set canvas size
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        // Object 1: Blue Square
+        const square1 = {
+            x: 100,
+            y: 100,
+            size: 50,
+            color: 'blue',
+            dx: 5,  // Speed on the x-axis
+            dy: 5   // Speed on the y-axis
+        };
+
+        // Object 2: Red Square
+        const square2 = {
+            x: 300,
+            y: 100,
+            size: 50,
+            color: 'red',
+            dx: -5,
+            dy: 5
+        };
+
+        // Collision detection function
+        function isCollision(obj1, obj2) {
+            return (
+                obj1.x < obj2.x + obj2.size &&
+                obj1.x + obj1.size > obj2.x &&
+                obj1.y < obj2.y + obj2.size &&
+                obj1.y + obj1.size > obj2.y
+            );
+        }
+
+        // Update the positions of the squares
+        function update() {
+            // Clear the canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Move square1
+            square1.x += square1.dx;
+            square1.y += square1.dy;
+
+            // Move square2
+            square2.x += square2.dx;
+            square2.y += square2.dy;
+
+            // Bounce squares off canvas borders
+            if (square1.x + square1.size > canvas.width || square1.x < 0) {
+                square1.dx *= -1;
+            }
+            if (square1.y + square1.size > canvas.height || square1.y < 0) {
+                square1.dy *= -1;
+            }
+
+            if (square2.x + square2.size > canvas.width || square2.x < 0) {
+                square2.dx *= -1;
+            }
+            if (square2.y + square2.size > canvas.height || square2.y < 0) {
+                square2.dy *= -1;
+            }
+
+            // Detect collision
+            if (isCollision(square1, square2)) {
+                ctx.fillStyle = 'green';  // Change to green when collided
+            } else {
+                ctx.fillStyle = 'black';  // Default background
+            }
+
+            // Draw the squares
+            ctx.fillStyle = square1.color;
+            ctx.fillRect(square1.x, square1.y, square1.size, square1.size);
+
+            ctx.fillStyle = square2.color;
+            ctx.fillRect(square2.x, square2.y, square2.size, square2.size);
+
+            // Request a new animation frame
+            requestAnimationFrame(update);
+        }
+
+        // Start the game loop
+        update();
+    </script>
+</body>
+</html>
