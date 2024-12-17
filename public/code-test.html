@@ -26,24 +26,24 @@
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
-        // Object 1: Blue Square
+        // Object 1: Controlled Blue Square
         const square1 = {
             x: 100,
             y: 100,
             size: 50,
             color: 'blue',
-            dx: 5,  // Speed on the x-axis
-            dy: 5   // Speed on the y-axis
+            dx: 0,  // Speed on the x-axis
+            dy: 0   // Speed on the y-axis
         };
 
-        // Object 2: Red Square
+        // Object 2: Stationary Red Square
         const square2 = {
-            x: 300,
+            x: 500,
             y: 100,
             size: 50,
             color: 'red',
-            dx: -5,
-            dy: 5
+            dx: 0,
+            dy: 0
         };
 
         // Collision detection function
@@ -69,35 +69,38 @@
             obj2.dy = tempDy;
         }
 
+        // Listen for arrow key presses to control the blue square
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowUp') {
+                square1.dy = -5;
+            } else if (e.key === 'ArrowDown') {
+                square1.dy = 5;
+            } else if (e.key === 'ArrowLeft') {
+                square1.dx = -5;
+            } else if (e.key === 'ArrowRight') {
+                square1.dx = 5;
+            }
+        });
+
+        // Listen for key releases to stop movement when no key is pressed
+        window.addEventListener('keyup', (e) => {
+            if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+                square1.dy = 0;
+            } else if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+                square1.dx = 0;
+            }
+        });
+
         // Update the positions of the squares
         function update() {
             // Clear the canvas
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // Move square1
+            // Move square1 (controlled by user)
             square1.x += square1.dx;
             square1.y += square1.dy;
 
-            // Move square2
-            square2.x += square2.dx;
-            square2.y += square2.dy;
-
-            // Bounce squares off canvas borders
-            if (square1.x + square1.size > canvas.width || square1.x < 0) {
-                square1.dx *= -1;
-            }
-            if (square1.y + square1.size > canvas.height || square1.y < 0) {
-                square1.dy *= -1;
-            }
-
-            if (square2.x + square2.size > canvas.width || square2.x < 0) {
-                square2.dx *= -1;
-            }
-            if (square2.y + square2.size > canvas.height || square2.y < 0) {
-                square2.dy *= -1;
-            }
-
-            // Detect and handle collision between squares
+            // Check if the squares are colliding
             if (isCollision(square1, square2)) {
                 handleBounce(square1, square2); // Bounce off each other
             }
