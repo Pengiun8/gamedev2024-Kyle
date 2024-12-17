@@ -49,12 +49,15 @@
 
         function updatePlayer() {
             if (!keys.up) player.dx = keys.right ? 5 : (keys.left ? -5 : player.dx * 0.9);
-            if (keys.up && player.grounded) player.dx = 0;
             if (keys.dash && player.dashCooldown <= 0 && !player.isDashing) startDash();
             if (player.isDashing) moveDash();
             if (player.dashCooldown > 0) player.dashCooldown--;
-            if (keys.up && player.grounded) player.jumpCharge = Math.max(player.jumpCharge - 0.5, -25);
-            if (!keys.up && !player.grounded && player.jumpCharge < 0) player.dy = player.jumpCharge, player.jumpCharge = 0;
+
+            // Jump charge logic
+            if (keys.up && player.grounded) {
+                player.dy = -10; // Set a jump velocity
+                player.grounded = false; // Player is no longer grounded after jumping
+            }
 
             player.dy += 0.5; // Gravity
             player.x += player.dx;
@@ -70,10 +73,7 @@
                 player.y = canvas.height - player.height;
                 player.dy = 0;
                 player.grounded = true; // Reset grounded state
-            } else player.grounded = false;
-
-            if (keys.right) player.facingRight = true;
-            if (keys.left) player.facingRight = false;
+            }
         }
 
         function handleCollisionWithPlanks() {
@@ -88,9 +88,8 @@
                 const playerBottom = player.y + player.height;
                 const plankTop = woodenPlanks.y;
                 const plankBottom = woodenPlanks.y + woodenPlanks.height;
-                const playerTop = player.y;
 
-                if (playerBottom > plankTop && playerTop < plankTop) {
+                if (playerBottom > plankTop && player.y < plankTop) {
                     // Collision from above
                     player.y = plankTop - player.height; // Place player on top of the plank
                     player.dy = 0; // Reset vertical velocity
@@ -158,7 +157,7 @@
             if (e.code === "KeyD") keys.right = false;
             if (e.code === "Space") {
                 keys.up = false;
-                if (player.grounded) player.dy = player.jumpCharge, player.jumpCharge = 0;
+                if (player.grounded) player.dy = -10; // Jump velocity
             }
             if (e.code === "KeyA") keys.left = false;
             if (e.code === "ShiftLeft" || e.code === "ShiftRight") keys.dash = false;
