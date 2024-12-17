@@ -104,9 +104,13 @@
             // Clear the canvas
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // Move square1 (controlled by user)
-            square1.x += square1.dx;
-            square1.y += square1.dy;
+            // First, check if there will be a collision in the intended movement direction
+            const tempX = square1.x + square1.dx;
+            const tempY = square1.y + square1.dy;
+
+            // Temporarily update the blue square's position
+            square1.x = tempX;
+            square1.y = tempY;
 
             // Handle collision with the red block (square2)
             handleCollision(square1, square2);
