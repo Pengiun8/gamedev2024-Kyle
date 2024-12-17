@@ -47,31 +47,56 @@
 
         const keys = { right: false, up: false, left: false, dash: false };
 
-        function updatePlayer() {
-            if (!keys.up) player.dx = keys.right ? 5 : (keys.left ? -5 : player.dx * 0.9);
-            if (keys.up && player.grounded) player.dx = 0;
-            if (keys.dash && player.dashCooldown <= 0 && !player.isDashing) startDash();
-            if (player.isDashing) moveDash();
-            if (player.dashCooldown > 0) player.dashCooldown--;
-            if (keys.up && player.grounded) player.jumpCharge = Math.max(player.jumpCharge - 0.5, -25);
-            if (!keys.up && !player.grounded && player.jumpCharge < 0) player.dy = player.jumpCharge, player.jumpCharge = 0;
+       function updatePlayer() {
+    // Handle horizontal movement
+    if (!keys.up) player.dx = keys.right ? 5 : (keys.left ? -5 : player.dx * 0.9);
+    if (keys.up && player.grounded) player.dx = 0;
+    if (keys.dash && player.dashCooldown <= 0 && !player.isDashing) startDash();
+    if (player.isDashing) moveDash();
+    if (player.dashCooldown > 0) player.dashCooldown--;
 
-            player.dy += 0.5;
-            player.x += player.dx;
-            player.y += player.dy;
+    // Handle jumping mechanics (charging)
+    if (keys.up && player.grounded) player.jumpCharge = Math.max(player.jumpCharge - 0.5, -25);
+    if (!keys.up && !player.grounded && player.jumpCharge < 0) player.dy = player.jumpCharge, player.jumpCharge = 0;
 
-            if (player.x < 0) player.x = 0;
-            if (player.x + player.width > canvas.width) player.x = canvas.width - player.width;
-            if (player.y + player.height > canvas.height) {
-                player.y = canvas.height - player.height;
-                player.dy = 0;
-                player.grounded = true;
-            } else player.grounded = false;
+    player.dy += 0.5;  // gravity
 
-            if (keys.right) player.facingRight = true;
-            if (keys.left) player.facingRight = false;
+    // Move the player
+    player.x += player.dx;
+    player.y += player.dy;
+
+    // Player collision with the edges of the canvas
+    if (player.x < 0) player.x = 0;
+    if (player.x + player.width > canvas.width) player.x = canvas.width - player.width;
+
+    // Collision with the platform (wooden plank)
+    if (player.x + player.width > woodenPlanks.x && player.x < woodenPlanks.x + woodenPlanks.width &&
+        player.y + player.height <= woodenPlanks.y && player.y + player.height + player.dy >= woodenPlanks.y) {
+        
+        // Position the player on top of the plank
+        player.y = woodenPlanks.y - player.height;
+        player.dy = 0;  // Stop the downward movement when landing
+        player.grounded = true;
+    } else {
+        // Default gravity (fall if not grounded)
+        if (player.y + player.height > canvas.height) {
+            player.y = canvas.height - player.height;
+            player.dy = 0;
+            player.grounded = true;
+        } else {
+            player.grounded = false;
         }
+    }
 
+    // Update facing direction
+    if (keys.right) player.facingRight = true;
+    if (keys.left) player.facingRight = false;
+}
+
+function drawPlatforms() {
+    // Draw the wooden platform
+    ctx.drawImage(loadedImages.woodPlanks, woodenPlanks.x, woodenPlanks.y, woodenPlanks.width, woodenPlanks.height);
+}
         function startDash() {
             player.isDashing = true;
             player.dashCooldown = 120;
