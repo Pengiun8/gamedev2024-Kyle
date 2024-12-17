@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Collision Detection Example</title>
+    <title>Collision Detection and Bounce Example</title>
     <style>
         body {
             margin: 0;
@@ -56,6 +56,19 @@
             );
         }
 
+        // Function to handle bouncing
+        function handleBounce(obj1, obj2) {
+            // Simple elastic collision logic: reverse velocities upon collision
+            const tempDx = obj1.dx;
+            const tempDy = obj1.dy;
+
+            // Swap velocities of the two squares
+            obj1.dx = obj2.dx;
+            obj1.dy = obj2.dy;
+            obj2.dx = tempDx;
+            obj2.dy = tempDy;
+        }
+
         // Update the positions of the squares
         function update() {
             // Clear the canvas
@@ -84,15 +97,9 @@
                 square2.dy *= -1;
             }
 
-            // Detect collision
+            // Detect and handle collision between squares
             if (isCollision(square1, square2)) {
-                // Change the color of the squares to green when they collide
-                square1.color = 'green';
-                square2.color = 'green';
-            } else {
-                // Reset to original colors if no collision
-                square1.color = 'blue';
-                square2.color = 'red';
+                handleBounce(square1, square2); // Bounce off each other
             }
 
             // Draw the squares
