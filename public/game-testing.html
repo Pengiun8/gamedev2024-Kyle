@@ -69,7 +69,7 @@
             if (player.y + player.height > canvas.height) {
                 player.y = canvas.height - player.height;
                 player.dy = 0;
-                player.grounded = true;
+                player.grounded = true; // Reset grounded state
             } else player.grounded = false;
 
             if (keys.right) player.facingRight = true;
@@ -90,7 +90,7 @@
                 const plankBottom = woodenPlanks.y + woodenPlanks.height;
                 const playerTop = player.y;
 
- if (playerBottom > plankTop && playerTop < plankTop) {
+                if (playerBottom > plankTop && playerTop < plankTop) {
                     // Collision from above
                     player.y = plankTop - player.height; // Place player on top of the plank
                     player.dy = 0; // Reset vertical velocity
