@@ -30,6 +30,7 @@
             { x: 500, y: canvas.height - 250, width: 180, height: 60 },   // elevated platform
             { x: 800, y: canvas.height - 350, width: 180, height: 60 },   // another elevated platform
             { x: 1100, y: canvas.height - 450, width: 180, height: 60 },  // even higher platform
+            { x: 0, y: canvas.height - 20, width: canvas.width, height: 20 } // bottom platform
         ];
 
         const loadedImages = {};
@@ -74,10 +75,11 @@
                 }
             });
 
+            // Explicit check for the ground (bottom of the screen)
             if (player.y + player.height > canvas.height) {
                 player.y = canvas.height - player.height;
                 player.dy = 0;
-                player.grounded = true;
+                player.grounded = true; // player is grounded at the bottom of the screen
             }
 
             player.x += player.dx;
