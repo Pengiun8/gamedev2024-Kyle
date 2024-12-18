@@ -60,19 +60,16 @@
             if (!keys.up && !player.grounded && player.jumpCharge < 0) player.dy = player.jumpCharge, player.jumpCharge = 0;
 
             player.dy += 0.5; // gravity
-            player.x += player.dx;
-            player.y += player.dy;
 
-            if (player.x < 0) player.x = 0;
-            if (player.x + player.width > canvas.width) player.x = canvas.width - player.width;
+            // Reset the player's grounded status
+            player.grounded = false;
 
             // Check platform collisions
-            player.grounded = false;
             platforms.forEach(platform => {
                 if (player.x + player.width > platform.x && player.x < platform.x + platform.width &&
                     player.y + player.height <= platform.y && player.y + player.height + player.dy >= platform.y) {
                     player.y = platform.y - player.height; // land on the platform
-                    player.dy = 0;
+                    player.dy = 0; // stop falling
                     player.grounded = true;
                 }
             });
@@ -82,6 +79,12 @@
                 player.dy = 0;
                 player.grounded = true;
             }
+
+            player.x += player.dx;
+            player.y += player.dy;
+
+            if (player.x < 0) player.x = 0;
+            if (player.x + player.width > canvas.width) player.x = canvas.width - player.width;
 
             if (keys.right) player.facingRight = true;
             if (keys.left) player.facingRight = false;
