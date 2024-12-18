@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -49,63 +50,27 @@
 
         function updatePlayer() {
             if (!keys.up) player.dx = keys.right ? 5 : (keys.left ? -5 : player.dx * 0.9);
+            if (keys.up && player.grounded) player.dx = 0;
             if (keys.dash && player.dashCooldown <= 0 && !player.isDashing) startDash();
             if (player.isDashing) moveDash();
             if (player.dashCooldown > 0) player.dashCooldown--;
+            if (keys.up && player.grounded) player.jumpCharge = Math.max(player.jumpCharge - 0.5, -25);
+            if (!keys.up && !player.grounded && player.jumpCharge < 0) player.dy = player.jumpCharge, player.jumpCharge = 0;
 
-            // Jump charge logic
-            if (keys.up && player.grounded) {
-                player.dy = -10; // Set a jump velocity
-                player.grounded = false; // Player is no longer grounded after jumping
-            }
-
-            player.dy += 0.5; // Gravity
+            player.dy += 0.5;
             player.x += player.dx;
             player.y += player.dy;
 
-            // Collision with the wooden planks
-            handleCollisionWithPlanks();
-
-            // Boundaries
             if (player.x < 0) player.x = 0;
             if (player.x + player.width > canvas.width) player.x = canvas.width - player.width;
             if (player.y + player.height > canvas.height) {
                 player.y = canvas.height - player.height;
                 player.dy = 0;
-                player.grounded = true; // Reset grounded state
-            }
-        }
+                player.grounded = true;
+            } else player.grounded = false;
 
-        function handleCollisionWithPlanks() {
-            // Check for collision with the wooden planks
-            const isColliding = player.x < woodenPlanks.x + woodenPlanks.width &&
-                                player.x + player.width > woodenPlanks.x &&
-                                player.y < woodenPlanks.y + woodenPlanks.height &&
-                                player.y + player.height > woodenPlanks.y;
-
-            if (isColliding) {
-                // Determine the side of the collision
-                const playerBottom = player.y + player.height;
-                const plankTop = woodenPlanks.y;
-                const plankBottom = woodenPlanks.y + woodenPlanks.height;
-
-                if (playerBottom > plankTop && player.y < plankTop) {
-                    // Collision from above
-                    player.y = plankTop - player.height; // Place player on top of the plank
-                    player.dy = 0; // Reset vertical velocity
-                    player.grounded = true; // Player is grounded
-                } else if (player.y < plankBottom && playerBottom > plankBottom) {
-                    // Collision from below
-                    player.y = plankBottom; // Place player below the plank
-                    player.dy = 0; // Reset vertical velocity
-                } else if (player.x < woodenPlanks.x) {
-                    // Collision from the left
-                    player.x = woodenPlanks.x - player.width; // Place player to the left of the plank
-                } else if (player.x + player.width > woodenPlanks.x + woodenPlanks.width) {
-                    // Collision from the right
-                    player.x = woodenPlanks.x + woodenPlanks.width; // Place player to the right of the plank
-                }
-            }
+            if (keys.right) player.facingRight = true;
+            if (keys.left) player.facingRight = false;
         }
 
         function startDash() {
@@ -157,7 +122,7 @@
             if (e.code === "KeyD") keys.right = false;
             if (e.code === "Space") {
                 keys.up = false;
-                if (player.grounded) player.dy = -10; // Jump velocity
+                if (player.grounded) player.dy = player.jumpCharge, player.jumpCharge = 0;
             }
             if (e.code === "KeyA") keys.left = false;
             if (e.code === "ShiftLeft" || e.code === "ShiftRight") keys.dash = false;
