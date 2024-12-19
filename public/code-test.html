@@ -96,12 +96,10 @@
 
             // Explicit check for the ground (bottom of the screen)
             if (player.y + player.height > canvas.height) {
+                console.log("Collided with bottom!"); // Debugging log to check the collision
                 player.y = canvas.height - player.height; // Correct the position to stay on the ground
                 player.dy = 0; // Stop vertical momentum and set it to zero (stop upward movement)
                 player.grounded = true; // player is grounded at the bottom of the screen
-                console.log("Collided with bottom!"); // Debugging log to check the collision
-                // Uncomment below line if you want a popup alert
-                // alert("Collided with bottom!"); 
             }
 
             // Handle horizontal collisions with platforms (left and right sides)
