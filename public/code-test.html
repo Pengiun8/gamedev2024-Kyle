@@ -49,27 +49,33 @@
 
         // Collision detection function
         function isCollide(a, b) {
-            // Check if the player is falling and colliding with the platform from the top
-            const isFalling = a.dy > 0; // Object is falling
-            if (isFalling) {
-                // Check for collision from top (falling object meets platform)
-                if (
-                    a.x + a.width > b.x && a.x < b.x + b.width && // Horizontal overlap
-                    a.y + a.height <= b.y && a.y + a.height + a.dy > b.y // Vertical overlap (falling into platform)
-                ) {
-                    a.y = b.y - a.height; // Position player on top of the platform
-                    a.dy = 0; // Stop the downward movement (gravity)
-                    a.grounded = true; // Player is now grounded
-                    return true; // Collision detected
+            // Check for falling and collision with the platform's top
+            if (a.dy > 0 && a.x + a.width > b.x && a.x < b.x + b.width) {
+                // Top collision (landing)
+                if (a.y + a.height <= b.y && a.y + a.height + a.dy > b.y) {
+                    a.y = b.y - a.height; // Position the player on top of the platform
+                    a.dy = 0; // Stop falling
+                    a.grounded = true; // Player is grounded
+                    return true;
                 }
             }
 
-            // Handle collisions from left or right (blocking movement through sides)
-            if (a.x + a.width > b.x && a.x < b.x + b.width && a.y + a.height > b.y) {
-                return true; // Player is colliding with the platform horizontally
+            // Left and Right collisions: Prevent passing through the platform horizontally
+            if (a.x + a.width > b.x && a.x < b.x + b.width) {
+                if (a.y + a.height > b.y && a.y < b.y + b.height) {
+                    // Left collision (player hits the left side of the platform)
+                    if (a.dx > 0 && a.x + a.width > b.x) {
+                        a.x = b.x - a.width; // Move player to the left of the platform
+                    }
+                    // Right collision (player hits the right side of the platform)
+                    if (a.dx < 0 && a.x < b.x + b.width) {
+                        a.x = b.x + b.width; // Move player to the right of the platform
+                    }
+                    return true; // Horizontal collision
+                }
             }
 
-            return false; // No collision
+            return false; // No collision detected
         }
 
         function updatePlayer() {
@@ -94,7 +100,7 @@
                 player.grounded = false;
             }
 
-            // Boundaries
+            // Boundaries: Keep player within the canvas
             if (player.x < 0) player.x = 0;
             if (player.x + player.width > canvas.width) player.x = canvas.width - player.width;
             if (player.y + player.height > canvas.height) {
