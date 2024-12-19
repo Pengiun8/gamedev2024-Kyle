@@ -75,6 +75,15 @@
                 }
             }
 
+            // **Bottom Collision Fix**: Prevent player from falling below the platform
+            if (a.dy < 0 && a.x + a.width > b.x && a.x < b.x + b.width) {
+                // If the player is moving up (dy < 0), and collides with the platform's bottom:
+                if (a.y + a.height <= b.y + b.height && a.y + a.height + a.dy > b.y + b.height) {
+                    a.y = b.y + b.height; // Place the player just above the platform
+                    a.dy = 0; // Stop any vertical movement
+                }
+            }
+
             return false; // No collision detected
         }
 
