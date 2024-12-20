@@ -30,7 +30,8 @@
             { x: 200, y: canvas.height - 150, width: 180, height: 60 },   // main platform
             { x: 500, y: canvas.height - 250, width: 180, height: 60 },   // elevated platform
             { x: 800, y: canvas.height - 350, width: 180, height: 60 },   // another elevated platform
-            { x: 1100, y: canvas.height - 450, width: 180, height: 60 }   // even higher platform
+            { x: 1100, y: canvas.height - 450, width: 180, height: 60 },  // even higher platform
+            { x: 0, y: canvas.height - 20, width: canvas.width, height: 20 } // bottom platform
         ];
 
         // Load images
@@ -67,6 +68,7 @@
 
         // Update player state
         function updatePlayer() {
+            // Horizontal movement
             if (!keys.up) player.dx = keys.right ? 5 : (keys.left ? -5 : player.dx * 0.9);  // Movement with deceleration
 
             if (keys.dash && player.dashCooldown <= 0 && !player.isDashing) startDash();
@@ -94,9 +96,14 @@
             player.x += player.dx;
             player.y += player.dy;
 
-            // Prevent player from going off-screen
+            // Prevent player from going off-screen (also prevents falling through bottom)
             if (player.x < 0) player.x = 0;
             if (player.x + player.width > canvas.width) player.x = canvas.width - player.width;
+            if (player.y + player.height > canvas.height - 20) { // Prevent falling through the bottom
+                player.y = canvas.height - player.height - 20; // Set player just above the bottom
+                player.dy = 0; // Stop falling
+                player.grounded = true;
+            }
 
             // Update player facing direction
             if (keys.right) player.facingRight = true;
