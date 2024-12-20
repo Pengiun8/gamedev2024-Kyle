@@ -26,7 +26,7 @@
         };
 
         const platforms = [
-            { x: 200, y: canvas.height - 150, width: 180, height: 600 },   // main platform
+            { x: 200, y: canvas.height - 150, width: 180, height: 1000 },   // main platform
             { x: 500, y: canvas.height - 250, width: 180, height: 60 },   // elevated platform
             { x: 800, y: canvas.height - 350, width: 180, height: 60 },   // another elevated platform
             { x: 1100, y: canvas.height - 450, width: 180, height: 60 },  // even higher platform
@@ -57,11 +57,13 @@ function handleHorizontalCollision(a, b) {
         if (a.y + a.height > b.y && a.y < b.y + b.height) {
             // Left collision (player hits the left side of the platform)
             if (a.dx > 0 && a.x + a.width > b.x) {
+                // If the player is moving to the right and collides with the left side of the platform
                 a.x = b.x - a.width; // Move player to the left of the platform
                 a.dx = 0; // Stop horizontal movement when hitting the left side
             }
             // Right collision (player hits the right side of the platform)
-            if (a.dx < 0 && a.x < b.x + b.width) {
+            else if (a.dx < 0 && a.x < b.x + b.width) {
+                // If the player is moving to the left and collides with the right side of the platform
                 a.x = b.x + b.width; // Move player to the right of the platform
                 a.dx = 0; // Stop horizontal movement when hitting the right side
             }
