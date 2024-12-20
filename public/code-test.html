@@ -52,30 +52,35 @@
         const keys = { right: false, up: false, left: false, dash: false };
 
         // Horizontal collision logic
-function handleHorizontalCollision(a, b) {
-    if (a.x + a.width > b.x && a.x < b.x + b.width) {
-        if (a.y + a.height > b.y && a.y < b.y + b.height) {
-            // Left collision (player hits the left side of the platform)
-            if (a.dx > 0 && a.x + a.width > b.x) {
-                // Player is moving right and collides with the left side of the platform
-                a.x = b.x - a.width;  // Move player to the left of the platform
-                a.dx = 0; // Stop horizontal movement when hitting the left side
+        function handleHorizontalCollision(a, b) {
+            if (a.x + a.width > b.x && a.x < b.x + b.width) {
+                if (a.y + a.height > b.y && a.y < b.y + b.height) {
+                    // Left collision (player hits the left side of the platform)
+                    if (a.dx > 0 && a.x + a.width > b.x) {
+                        a.x = b.x - a.width;  // Move player to the left of the platform
+                        a.dx = 0; // Stop horizontal movement when hitting the left side
+                    }
+                    // Right collision (player hits the right side of the platform)
+                    else if (a.dx < 0 && a.x < b.x + b.width) {
+                        a.x = b.x + b.width;  // Move player to the right of the platform
+                        a.dx = 0; // Stop horizontal movement when hitting the right side
+                    }
+                    return true; // Horizontal collision handled
+                }
             }
-            // Right collision (player hits the right side of the platform)
-            else if (a.dx < 0 && a.x < b.x + b.width) {
-                // Player is moving left and collides with the right side of the platform
-                a.x = b.x + b.width;  // Move player to the right of the platform
-                a.dx = 0; // Stop horizontal movement when hitting the right side
-            }
-            return true; // Horizontal collision handled
+            return false; // No collision detected horizontally
         }
-    }
-    return false; // No collision detected horizontally
-}
 
         function updatePlayer() {
             // Handle horizontal movement (left and right)
-            if (!keys.up) player.dx = keys.right ? 5 : (keys.left ? -5 : player.dx * 0.9);
+            if (!keys.right && !keys.left) {
+                player.dx *= 0.9; // Apply some deceleration when no keys are pressed
+            }
+
+            if (!keys.up) {
+                player.dx = keys.right ? 5 : (keys.left ? -5 : player.dx);
+            }
+
             if (keys.up && player.grounded) player.dx = 0;
             if (keys.dash && player.dashCooldown <= 0 && !player.isDashing) startDash();
             if (player.isDashing) moveDash();
