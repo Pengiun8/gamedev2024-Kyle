@@ -57,17 +57,17 @@ function handleHorizontalCollision(a, b) {
         if (a.y + a.height > b.y && a.y < b.y + b.height) {
             // Left collision (player hits the left side of the platform)
             if (a.dx > 0 && a.x + a.width > b.x) {
-                // If the player is moving to the right and collides with the left side of the platform
-                a.x = b.x - a.width; // Move player to the left of the platform
+                // Player is moving right and collides with the left side of the platform
+                a.x = b.x - a.width;  // Move player to the left of the platform
                 a.dx = 0; // Stop horizontal movement when hitting the left side
             }
             // Right collision (player hits the right side of the platform)
             else if (a.dx < 0 && a.x < b.x + b.width) {
-                // If the player is moving to the left and collides with the right side of the platform
-                a.x = b.x + b.width; // Move player to the right of the platform
+                // Player is moving left and collides with the right side of the platform
+                a.x = b.x + b.width;  // Move player to the right of the platform
                 a.dx = 0; // Stop horizontal movement when hitting the right side
             }
-            return true; // Horizontal collision
+            return true; // Horizontal collision handled
         }
     }
     return false; // No collision detected horizontally
