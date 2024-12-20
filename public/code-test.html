@@ -9,30 +9,31 @@
 <body>
     <canvas id="gameCanvas"></canvas>
     <script>
+        // Set up canvas and context
         const canvas = document.getElementById("gameCanvas");
         const ctx = canvas.getContext("2d");
-
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
+        // Image assets
         const images = {
             right: 'slimer right.png',
             left: 'slimer left.png',
             jumpRight: 'slimer jump right.png',
             jumpLeft: 'slimer jump left.png',
             jumpCharge: 'slimer jump charge.png',
-            woodPlanks: 'Wooden planks.png',
-            woodPlanksEnd: 'Wooden planks 2.png'
+            woodPlanks: 'Wooden planks.png'
         };
 
+        // Platforms
         const platforms = [
             { x: 200, y: canvas.height - 150, width: 180, height: 60 },   // main platform
             { x: 500, y: canvas.height - 250, width: 180, height: 60 },   // elevated platform
             { x: 800, y: canvas.height - 350, width: 180, height: 60 },   // another elevated platform
-            { x: 1100, y: canvas.height - 450, width: 180, height: 60 },  // even higher platform
-            { x: 0, y: canvas.height - 20, width: canvas.width, height: 20 } // bottom platform (this will not be checked now)
+            { x: 1100, y: canvas.height - 450, width: 180, height: 60 }   // even higher platform
         ];
 
+        // Load images
         const loadedImages = {};
         let imagesLoaded = 0;
         for (let key in images) {
@@ -43,83 +44,66 @@
             };
         }
 
+        // Player properties
         const player = {
             x: 50, y: canvas.height - 100, width: 76, height: 44,
-            dx: 0, dy: 0, grounded: false, facingRight: true,
-            isDashing: false, dashProgress: 0, dashDirection: 0, dashCooldown: 0, jumpCharge: 0
+            dx: 0, dy: 0, grounded: false, facingRight: true, isDashing: false, dashProgress: 0, dashDirection: 0, dashCooldown: 0, jumpCharge: 0
         };
 
         const keys = { right: false, up: false, left: false, dash: false };
 
-        // Horizontal collision logic
+        // Handle horizontal collisions
         function handleHorizontalCollision(a, b) {
-            if (a.x + a.width > b.x && a.x < b.x + b.width) {
-                if (a.y + a.height > b.y && a.y < b.y + b.height) {
-                    // Left collision (player hits the left side of the platform)
-                    if (a.dx > 0 && a.x + a.width > b.x) {
-                        a.x = b.x - a.width;  // Move player to the left of the platform
-                        a.dx = 0; // Stop horizontal movement when hitting the left side
-                    }
-                    // Right collision (player hits the right side of the platform)
-                    else if (a.dx < 0 && a.x < b.x + b.width) {
-                        a.x = b.x + b.width;  // Move player to the right of the platform
-                        a.dx = 0; // Stop horizontal movement when hitting the right side
-                    }
-                    return true; // Horizontal collision handled
+            if (a.x + a.width > b.x && a.x < b.x + b.width && a.y + a.height > b.y && a.y < b.y + b.height) {
+                if (a.dx > 0) {
+                    a.x = b.x - a.width;  // Collide from the left
+                    a.dx = 0;
+                } else if (a.dx < 0) {
+                    a.x = b.x + b.width;  // Collide from the right
+                    a.dx = 0;
                 }
             }
-            return false; // No collision detected horizontally
         }
 
+        // Update player state
         function updatePlayer() {
-            // Handle horizontal movement (left and right)
-            if (!keys.right && !keys.left) {
-                player.dx *= 0.9; // Apply some deceleration when no keys are pressed
-            }
+            if (!keys.up) player.dx = keys.right ? 5 : (keys.left ? -5 : player.dx * 0.9);  // Movement with deceleration
 
-            if (!keys.up) {
-                player.dx = keys.right ? 5 : (keys.left ? -5 : player.dx);
-            }
-
-            if (keys.up && player.grounded) player.dx = 0;
             if (keys.dash && player.dashCooldown <= 0 && !player.isDashing) startDash();
             if (player.isDashing) moveDash();
-            if (player.dashCooldown > 0) player.dashCooldown--;
+
             if (keys.up && player.grounded) player.jumpCharge = Math.max(player.jumpCharge - 0.5, -25);
             if (!keys.up && !player.grounded && player.jumpCharge < 0) player.dy = player.jumpCharge, player.jumpCharge = 0;
 
-            player.dy += 0.5; // gravity
+            player.dy += 0.5; // Gravity
+            player.grounded = false; // Reset grounded status
 
-            // Reset the player's grounded status
-            player.grounded = false;
-
-            // Check platform collisions for vertical direction (falling onto platforms)
+            // Check for vertical collisions (falling onto platforms)
             platforms.forEach(platform => {
                 if (player.x + player.width > platform.x && player.x < platform.x + platform.width &&
                     player.y + player.height <= platform.y && player.y + player.height + player.dy >= platform.y) {
-                    player.y = platform.y - player.height; // land on the platform
-                    player.dy = 0; // stop falling
+                    player.y = platform.y - player.height; // Land on platform
+                    player.dy = 0; // Stop falling
                     player.grounded = true;
                 }
             });
 
-            // Handle horizontal collisions with platforms (left and right sides)
-            platforms.forEach(platform => {
-                handleHorizontalCollision(player, platform);
-            });
+            // Check for horizontal collisions
+            platforms.forEach(platform => handleHorizontalCollision(player, platform));
 
             player.x += player.dx;
             player.y += player.dy;
 
-            // Boundary check for the player (no going off-screen)
+            // Prevent player from going off-screen
             if (player.x < 0) player.x = 0;
             if (player.x + player.width > canvas.width) player.x = canvas.width - player.width;
 
-            // Update facing direction based on movement
+            // Update player facing direction
             if (keys.right) player.facingRight = true;
             if (keys.left) player.facingRight = false;
         }
 
+        // Dash logic
         function startDash() {
             player.isDashing = true;
             player.dashCooldown = 120;
@@ -136,29 +120,33 @@
             }
         }
 
+        // Draw platforms on screen
         function drawPlatforms() {
             platforms.forEach(platform => {
                 ctx.drawImage(loadedImages.woodPlanks, platform.x, platform.y, platform.width, platform.height);
             });
         }
 
+        // Draw player on screen
         function drawPlayer() {
             let imageToDraw;
             if (player.grounded && keys.up) imageToDraw = loadedImages.jumpCharge;
             else if (!player.grounded) imageToDraw = player.facingRight ? loadedImages.jumpRight : loadedImages.jumpLeft;
             else imageToDraw = player.isDashing ? loadedImages.right : (player.facingRight ? loadedImages.right : loadedImages.left);
 
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            drawPlatforms(); // Draw the platforms
-            ctx.drawImage(imageToDraw, player.x, player.y, player.width, player.height);
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear previous frame
+            drawPlatforms();  // Draw the platforms
+            ctx.drawImage(imageToDraw, player.x, player.y, player.width, player.height); // Draw the player
         }
 
+        // Game loop
         function gameLoop() {
             updatePlayer();
             drawPlayer();
-            requestAnimationFrame(gameLoop);
+            requestAnimationFrame(gameLoop);  // Keep the loop going
         }
 
+        // Handle key inputs for movement and actions
         document.addEventListener("keydown", (e) => {
             if (e.code === "KeyD") keys.right = true;
             if (e.code === "Space") keys.up = true;
