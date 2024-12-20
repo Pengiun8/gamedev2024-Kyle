@@ -51,12 +51,12 @@
 
         const keys = { right: false, up: false, left: false, dash: false };
 
-        // Separate left and right wall collision logic
+        // Left wall collision check (only when moving left)
         function handleLeftWallCollision(a, b) {
             if (a.y + a.height > b.y && a.y < b.y + b.height) {
                 if (a.x < b.x + b.width && a.x + a.width > b.x) {
                     if (a.dx < 0) {
-                        a.x = b.x + b.width; // Stop the player from moving left through the wall
+                        a.x = b.x + b.width; // Stop player from moving left through the wall
                     }
                     return true; // Left wall collision detected
                 }
@@ -64,11 +64,12 @@
             return false; // No left wall collision
         }
 
+        // Right wall collision check (only when moving right)
         function handleRightWallCollision(a, b) {
             if (a.y + a.height > b.y && a.y < b.y + b.height) {
                 if (a.x + a.width > b.x && a.x < b.x + b.width) {
                     if (a.dx > 0) {
-                        a.x = b.x - a.width; // Stop the player from moving right through the wall
+                        a.x = b.x - a.width; // Stop player from moving right through the wall
                     }
                     return true; // Right wall collision detected
                 }
@@ -101,12 +102,15 @@
                 }
             });
 
-            // Handle horizontal collisions with platforms (left and right sides) separately
-            platforms.forEach(platform => {
-                handleLeftWallCollision(player, platform);
-                handleRightWallCollision(player, platform);
-            });
+            // Handle collisions with platforms for each direction separately
+            if (keys.left) {
+                platforms.forEach(platform => handleLeftWallCollision(player, platform));
+            }
+            if (keys.right) {
+                platforms.forEach(platform => handleRightWallCollision(player, platform));
+            }
 
+            // Update player position
             player.x += player.dx;
             player.y += player.dy;
 
