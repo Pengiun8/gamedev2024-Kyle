@@ -26,13 +26,9 @@
             woodPlanksEnd: 'Wooden planks 2.png'
         };
 
-        const platforms = [
-            { x: 200, y: canvas.height - 150, width: 180, height: 600 },   // main platform
-            { x: 500, y: canvas.height - 250, width: 180, height: 60 },   // elevated platform
-            { x: 800, y: canvas.height - 350, width: 180, height: 60 },   // another elevated platform
-            { x: 1100, y: canvas.height - 450, width: 180, height: 60 },  // even higher platform
-            { x: 0, y: canvas.height - 20, width: canvas.width, height: 20 } // bottom platform (this will not be checked now)
-        ];
+        const woodenPlanks = {
+            x: 200, y: canvas.height - 150, width: 180, height: 60
+        };
 
         const loadedImages = {};
         let imagesLoaded = 0;
@@ -52,28 +48,33 @@
 
         const keys = { right: false, up: false, left: false, dash: false };
 
-        // Horizontal collision logic
-function handleHorizontalCollision(a, b) {
-    if (a.x + a.width > b.x && a.x < b.x + b.width) {
-        if (a.y + a.height > b.y && a.y < b.y + b.height) {
-            // Left collision (player hits the left side of the platform)
-            if (a.dx > 0 && a.x + a.width > b.x) {
-                a.x = b.x - a.width; // Move player to the left of the platform
-                a.dx = 0; // Stop horizontal movement when hitting the left side
+        // Collision detection function
+        function isCollide(a, b) {
+            // Check if the player is falling and colliding with the platform from the top
+            const isFalling = a.dy > 0; // Object is falling
+            if (isFalling) {
+                // Check for collision from top (falling object meets platform)
+                if (
+                    a.x + a.width > b.x && a.x < b.x + b.width && // Horizontal overlap
+                    a.y + a.height <= b.y && a.y + a.height + a.dy > b.y // Vertical overlap (falling into platform)
+                ) {
+                    a.y = b.y - a.height; // Position player on top of the platform
+                    a.dy = 0; // Stop the downward movement (gravity)
+                    a.grounded = true; // Player is now grounded
+                    return true; // Collision detected
+                }
             }
-            // Right collision (player hits the right side of the platform)
-            if (a.dx < 0 && a.x < b.x + b.width) {
-                a.x = b.x + b.width; // Move player to the right of the platform
-                a.dx = 0; // Stop horizontal movement when hitting the right side
+
+            // Handle collisions from left or right (blocking movement through sides)
+            if (a.x + a.width > b.x && a.x < b.x + b.width && a.y + a.height > b.y) {
+                return true; // Player is colliding with the platform horizontally
             }
-            return true; // Horizontal collision
+
+            return false; // No collision
         }
-    }
-    return false; // No collision detected horizontally
-}
 
         function updatePlayer() {
-            // Handle horizontal movement (left and right)
+            // Horizontal movement
             if (!keys.up) player.dx = keys.right ? 5 : (keys.left ? -5 : player.dx * 0.9);
             if (keys.up && player.grounded) player.dx = 0;
             if (keys.dash && player.dashCooldown <= 0 && !player.isDashing) startDash();
@@ -82,34 +83,27 @@ function handleHorizontalCollision(a, b) {
             if (keys.up && player.grounded) player.jumpCharge = Math.max(player.jumpCharge - 0.5, -25);
             if (!keys.up && !player.grounded && player.jumpCharge < 0) player.dy = player.jumpCharge, player.jumpCharge = 0;
 
-            player.dy += 0.5; // gravity
-
-            // Reset the player's grounded status
-            player.grounded = false;
-
-            // Check platform collisions for vertical direction (falling onto platforms)
-            platforms.forEach(platform => {
-                if (player.x + player.width > platform.x && player.x < platform.x + platform.width &&
-                    player.y + player.height <= platform.y && player.y + player.height + player.dy >= platform.y) {
-                    player.y = platform.y - player.height; // land on the platform
-                    player.dy = 0; // stop falling
-                    player.grounded = true;
-                }
-            });
-
-            // Handle horizontal collisions with platforms (left and right sides)
-            platforms.forEach(platform => {
-                handleHorizontalCollision(player, platform);
-            });
-
+            player.dy += 0.5; // Gravity
             player.x += player.dx;
             player.y += player.dy;
 
-            // Boundary check for the player (no going off-screen)
+            // Check if player collides with platform
+            if (isCollide(player, woodenPlanks)) {
+                // If collided, handle grounded status and stop vertical movement
+                player.grounded = true;
+            } else {
+                player.grounded = false;
+            }
+
+            // Boundaries
             if (player.x < 0) player.x = 0;
             if (player.x + player.width > canvas.width) player.x = canvas.width - player.width;
+            if (player.y + player.height > canvas.height) {
+                player.y = canvas.height - player.height;
+                player.dy = 0;
+                player.grounded = true;
+            }
 
-            // Update facing direction based on movement
             if (keys.right) player.facingRight = true;
             if (keys.left) player.facingRight = false;
         }
@@ -131,9 +125,8 @@ function handleHorizontalCollision(a, b) {
         }
 
         function drawPlatforms() {
-            platforms.forEach(platform => {
-                ctx.drawImage(loadedImages.woodPlanks, platform.x, platform.y, platform.width, platform.height);
-            });
+            // Draw the wooden platform
+            ctx.drawImage(loadedImages.woodPlanks, woodenPlanks.x, woodenPlanks.y, woodenPlanks.width, woodenPlanks.height);
         }
 
         function drawPlayer() {
@@ -143,7 +136,7 @@ function handleHorizontalCollision(a, b) {
             else imageToDraw = player.isDashing ? loadedImages.right : (player.facingRight ? loadedImages.right : loadedImages.left);
 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            drawPlatforms(); // Draw the platforms
+            drawPlatforms(); // Draw the platform first
             ctx.drawImage(imageToDraw, player.x, player.y, player.width, player.height);
         }
 
