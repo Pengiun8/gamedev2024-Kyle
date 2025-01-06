@@ -1,4 +1,5 @@
 
+
 <script>
    // Global variables here
    let myGlobalX = 0;
@@ -42,11 +43,6 @@
       } else if (currentTop + elementHeight > window.innerHeight) {
          element.style.top = (window.innerHeight - elementHeight) + 'px';
       }
-   }
-    function startGameLoop() {
-      setInterval(() => {
-         myCheckHit();  // Continuously check for collisions every 100ms
-      }, 100);
    }
 
    function myCheckHit() {
@@ -107,7 +103,7 @@
      constrainToScreen(document.getElementById('myImg01'));  // Ensure it stays on screen
    }
 
-  
+   myCheckHit();     // checks for all collisions
 }">
 
 <h1 align=center><font color=Yellow>T4A05 Template with WASD by Fred</font></h1>
