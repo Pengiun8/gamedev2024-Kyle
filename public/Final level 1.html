@@ -22,12 +22,27 @@ function myHitOther(my1,my2){
    }
 }
 
-function moveAllImagesLeft() {
-   const images = document.querySelectorAll('img');  // Select all images
-   images.forEach(img => {
-      const currentLeft = parseInt(img.style.left);
-      img.style.left = currentLeft - 5 + 'px';  // Move each image left by 5px
-   });
+// Function to ensure image stays on the screen
+function constrainToScreen(element) {
+   const elementWidth = parseInt(element.style.width);
+   const elementHeight = parseInt(element.style.height);
+
+   let currentLeft = parseInt(element.style.left);
+   let currentTop = parseInt(element.style.top);
+
+   // Constrain left position
+   if (currentLeft < 0) {
+      element.style.left = '0px';
+   } else if (currentLeft + elementWidth > window.innerWidth) {
+      element.style.left = (window.innerWidth - elementWidth) + 'px';
+   }
+
+   // Constrain top position
+   if (currentTop < 0) {
+      element.style.top = '0px';
+   } else if (currentTop + elementHeight > window.innerHeight) {
+      element.style.top = (window.innerHeight - elementHeight) + 'px';
+   }
 }
 
 function myCheckHit(){
@@ -67,19 +82,27 @@ function myCheckHit(){
    document.all.myText01.value = event.key;
 
    if (event.key == 'd') {  // d = go right
-     document.getElementById('myImg01').style.left = parseInt(document.getElementById('myImg01').style.left) + 10 + 'px';
+     let newLeft = parseInt(document.getElementById('myImg01').style.left) + 10;
+     document.getElementById('myImg01').style.left = newLeft + 'px';
+     constrainToScreen(document.getElementById('myImg01'));  // Ensure it stays on screen
    }   
 
    if (event.key == 'a') {  // a = go left
-     document.getElementById('myImg01').style.left = parseInt(document.getElementById('myImg01').style.left) - 10 + 'px';
+     let newLeft = parseInt(document.getElementById('myImg01').style.left) - 10;
+     document.getElementById('myImg01').style.left = newLeft + 'px';
+     constrainToScreen(document.getElementById('myImg01'));  // Ensure it stays on screen
    }
 
    if (event.key == 's') {   // s = go down
-      document.getElementById('myImg01').style.top = parseInt(document.getElementById('myImg01').style.top) + 10 + 'px';
+     let newTop = parseInt(document.getElementById('myImg01').style.top) + 10;
+     document.getElementById('myImg01').style.top = newTop + 'px';
+     constrainToScreen(document.getElementById('myImg01'));  // Ensure it stays on screen
    }
 
    if (event.key == 'w') {   // w = go up
-      document.getElementById('myImg01').style.top = parseInt(document.getElementById('myImg01').style.top) - 10 + 'px';
+     let newTop = parseInt(document.getElementById('myImg01').style.top) - 10;
+     document.getElementById('myImg01').style.top = newTop + 'px';
+     constrainToScreen(document.getElementById('myImg01'));  // Ensure it stays on screen
    }
 
   myCheckHit();     // checks for all collisions
@@ -97,17 +120,20 @@ Hit Points:
       myGlobalX -= 5;
       myTemp =  myGlobalX + 'px 0px';
       document.getElementById('myBody').style.backgroundPosition = myTemp;
-      moveAllImagesLeft();  // Call this function to move all images left
   }, 100);
 }">
 
 <input type=button value="Right" onTouchStart="{this.click(); event.preventDefault();}" onclick="{
-  document.getElementById('myImg01').style.left = parseInt(document.getElementById('myImg01').style.left) + 10 + 'px';
+  let newLeft = parseInt(document.getElementById('myImg01').style.left) + 10;
+  document.getElementById('myImg01').style.left = newLeft + 'px';
+  constrainToScreen(document.getElementById('myImg01'));  // Ensure it stays on screen
   myCheckHit();     // checks for all collisions
 }">
 
 <input type=button value="Down" onTouchStart="{this.click(); event.preventDefault();}" onclick="{
-  document.getElementById('myImg01').style.top = parseInt(document.getElementById('myImg01').style.top) + 10 + 'px';
+  let newTop = parseInt(document.getElementById('myImg01').style.top) + 10;
+  document.getElementById('myImg01').style.top = newTop + 'px';
+  constrainToScreen(document.getElementById('myImg01'));  // Ensure it stays on screen
   myCheckHit();     // checks for all collisions
 }"><br><br>
 
