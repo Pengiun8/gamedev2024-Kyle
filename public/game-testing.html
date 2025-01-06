@@ -41,20 +41,26 @@
         const player = {
             x: 50, y: canvas.height - 100, width: 76, height: 44,
             dx: 0, dy: 0, grounded: false, facingRight: true,
-            isDashing: false, dashProgress: 0, dashDirection: 0, dashCooldown: 0
+            dashSpeed: 1.5 // multiplier for dash speed
         };
 
         const keys = { right: false, up: false, left: false, dash: false };
 
         function updatePlayer() {
-            // Player movement logic
-            if (!keys.up) player.dx = keys.right ? 5 : (keys.left ? -5 : player.dx * 0.9);
+            // Basic movement
             if (keys.up && player.grounded) {
                 player.dy = -15;  // Fixed jump height
                 player.grounded = false;
             }
-            if (player.isDashing) moveDash();
-            if (player.dashCooldown > 0) player.dashCooldown--;
+
+            // Horizontal movement
+            if (!keys.up) {
+                let baseSpeed = keys.right ? 5 : (keys.left ? -5 : player.dx * 0.9);
+                if (keys.dash) {
+                    baseSpeed *= player.dashSpeed; // Increase speed when dashing
+                }
+                player.dx = baseSpeed;
+            }
 
             // Apply gravity
             player.dy += 0.5;
@@ -70,25 +76,9 @@
                 player.grounded = true;
             } else player.grounded = false;
 
-            // Player facing direction
+            // Update facing direction
             if (keys.right) player.facingRight = true;
             if (keys.left) player.facingRight = false;
-        }
-
-        function startDash() {
-            player.isDashing = true;
-            player.dashCooldown = 120;
-            player.dashDirection = player.facingRight ? 1 : -1;
-            player.dashProgress = 0;
-        }
-
-        function moveDash() {
-            if (player.dashProgress < 200) {
-                player.x += player.dashDirection * 15;
-                player.dashProgress += 15;
-            } else {
-                player.isDashing = false;
-            }
         }
 
         function drawPlatforms() {
@@ -100,7 +90,7 @@
             let imageToDraw;
             if (player.grounded && keys.up) imageToDraw = loadedImages.jumpRight;
             else if (!player.grounded) imageToDraw = player.facingRight ? loadedImages.jumpRight : loadedImages.jumpLeft;
-            else imageToDraw = player.isDashing ? loadedImages.right : (player.facingRight ? loadedImages.right : loadedImages.left);
+            else imageToDraw = (player.facingRight ? loadedImages.right : loadedImages.left);
 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             drawPlatforms(); // Draw the platform first
@@ -117,15 +107,16 @@
             if (e.code === "KeyD") keys.right = true;
             if (e.code === "Space") keys.up = true;
             if (e.code === "KeyA") keys.left = true;
-            if (e.code === "ShiftLeft" || e.code === "ShiftRight") keys.dash = true;
+            if (e.code === "ShiftLeft") keys.dash = true;  // Dash when Shift is pressed
         });
 
         document.addEventListener("keyup", (e) => {
             if (e.code === "KeyD") keys.right = false;
             if (e.code === "Space") keys.up = false;
             if (e.code === "KeyA") keys.left = false;
-            if (e.code === "ShiftLeft" || e.code === "ShiftRight") keys.dash = false;
+            if (e.code === "ShiftLeft") keys.dash = false;  // Stop dashing when Shift is released
         });
     </script>
 </body>
 </html>
+
