@@ -1,81 +1,77 @@
 <script>
-   // global variables here
+   // Global variables here
    let myGlobalX = 0;
    let myClock;
    let myScore = 10;
 
-   // global functions here
-function myHitOther(my1,my2){
-   left1   = parseInt(document.getElementById(my1).style.left);
-   right1  = left1 + parseInt(document.getElementById(my1).style.width);
-   top1    = parseInt(document.getElementById(my1).style.top);   
-   bottom1 = top1   + parseInt(document.getElementById(my1).style.height);
-   left2   = parseInt(document.getElementById(my2).style.left);
-   right2  = left2 + parseInt(document.getElementById(my2).style.width);
-   top2    = parseInt(document.getElementById(my2).style.top);   
-   bottom2 = top2   + parseInt(document.getElementById(my2).style.height);
-   if ((right1  >=  left2  ) &&       
-       (bottom1 >=  top2   ) &&
-       (left1   <=  right2 ) &&
-       (top1    <=  bottom2) ){
-       return true;
-   }
-}
-
-// Function to ensure the movable image stays on the screen
-function constrainToScreen(element) {
-   const elementWidth = parseInt(element.style.width);
-   const elementHeight = parseInt(element.style.height);
-
-   let currentLeft = parseInt(element.style.left);
-   let currentTop = parseInt(element.style.top);
-
-   // Constrain left position
-   if (currentLeft < 0) {
-      element.style.left = '0px';
-   } else if (currentLeft + elementWidth > window.innerWidth) {
-      element.style.left = (window.innerWidth - elementWidth) + 'px';
+   // Global functions
+   function myHitOther(my1, my2) {
+      let left1 = parseInt(document.getElementById(my1).style.left);
+      let right1 = left1 + parseInt(document.getElementById(my1).style.width);
+      let top1 = parseInt(document.getElementById(my1).style.top);   
+      let bottom1 = top1 + parseInt(document.getElementById(my1).style.height);
+      let left2 = parseInt(document.getElementById(my2).style.left);
+      let right2 = left2 + parseInt(document.getElementById(my2).style.width);
+      let top2 = parseInt(document.getElementById(my2).style.top);   
+      let bottom2 = top2 + parseInt(document.getElementById(my2).style.height);
+      
+      if ((right1 >= left2) &&       
+          (bottom1 >= top2) &&
+          (left1 <= right2) &&
+          (top1 <= bottom2)) {
+         return true;
+      }
    }
 
-   // Constrain top position
-   if (currentTop < 0) {
-      element.style.top = '0px';
-   } else if (currentTop + elementHeight > window.innerHeight) {
-      element.style.top = (window.innerHeight - elementHeight) + 'px';
-   }
-}
+   // Function to constrain image to the screen
+   function constrainToScreen(element) {
+      const elementWidth = parseInt(element.style.width);
+      const elementHeight = parseInt(element.style.height);
+      let currentLeft = parseInt(element.style.left);
+      let currentTop = parseInt(element.style.top);
 
-function myCheckHit(){
-   document.all.myText01.value = myScore;  // show the present score
+      if (currentLeft < 0) {
+         element.style.left = '0px';
+      } else if (currentLeft + elementWidth > window.innerWidth) {
+         element.style.left = (window.innerWidth - elementWidth) + 'px';
+      }
 
-   if ( myHitOther('myImg01','myImg02') ){
-      document.getElementById('myImg01').style.left = '20px';
-      document.all.myText01.value = 'You hit myImg02';  
-      myScore -= 1;
-   }   
-
-   if ( myHitOther('myImg01','myImg03') ){
-      document.getElementById('myImg01').style.left = '20px';
-      document.all.myText01.value = 'You hit myImg03';  
-      myScore -= 1;
-   }   
-
-  // you LOSE refresh the page
-   if (myScore <= 0){
-    document.all.myText01.value = 'You Lose score at zero!';  
-    alert('Sorry you lose');
-    location.reload();
+      if (currentTop < 0) {
+         element.style.top = '0px';
+      } else if (currentTop + elementHeight > window.innerHeight) {
+         element.style.top = (window.innerHeight - elementHeight) + 'px';
+      }
    }
 
-   // YOU WIN and go to next level!
-   if ( myHitOther('myImg01','myImg04') ){
-      document.all.myText01.value = 'You hit myImg04 and you win the game!';  
-      alert('You Win, now go to the next level');
-      document.getElementById('myImg01').style.left = '20px';
-      location = 'https://pengiun8.github.io/gamedev2024-Kyle/public/game-kyle.html';
-   }
-}
+   function myCheckHit() {
+      document.all.myText01.value = myScore;  // show the present score
 
+      if (myHitOther('myImg01', 'myImg02') || myHitOther('myImg01', 'myImg05')) {
+         document.getElementById('myImg01').style.left = '20px';
+         document.all.myText01.value = 'You hit a bomb!';  
+         myScore -= 1;
+      }   
+
+      if (myHitOther('myImg01', 'myImg03') || myHitOther('myImg01', 'myImg06')) {
+         document.getElementById('myImg01').style.left = '20px';
+         document.all.myText01.value = 'You hit a bomb!';  
+         myScore -= 1;
+      }   
+
+      if (myHitOther('myImg01', 'myImg04')) {
+         document.all.myText01.value = 'You hit the crown and you win the game!';  
+         alert('You Win, now go to the next level');
+         document.getElementById('myImg01').style.left = '20px';
+         location = 'https://pengiun8.github.io/gamedev2024-Kyle/public/game-kyle.html';
+      }
+
+      // If score is zero, you lose
+      if (myScore <= 0) {
+         document.all.myText01.value = 'You Lose, score at zero!';  
+         alert('Sorry, you lose');
+         location.reload();
+      }
+   }
 </script>
 
 <body id="myBody" style="background-repeat:repeat; background-size: 80%" background="https://jooinn.com/images/blue-sky-7.jpg" onkeydown="{
@@ -105,47 +101,53 @@ function myCheckHit(){
      constrainToScreen(document.getElementById('myImg01'));  // Ensure it stays on screen
    }
 
-  myCheckHit();     // checks for all collisions
+   myCheckHit();     // checks for all collisions
 }">
 
 <h1 align=center><font color=Yellow>T4A05 Template with WASD by Fred</font></h1>
-   <h2 align=center><font color=Yellow>WASD to move, try to hit the crown to win, the mines hurt you</font></h2>
+<h2 align=center><font color=Yellow>WASD to move, try to hit the crown to win, the mines hurt you</font></h2>
 Hit Points:
 <input id="myText01" type=text value="" size=50 placeholder="Feedback here"><br>
 
+<!-- Additional button controls -->
 <input type=button value="Auto Background Left" onclick="{
-  clearInterval(myClock);
-  let myTemp = '100px 0px';
-  myClock = setInterval(function(){
+   clearInterval(myClock);
+   let myTemp = '100px 0px';
+   myClock = setInterval(function(){
       myGlobalX -= 5;
       myTemp =  myGlobalX + 'px 0px';
       document.getElementById('myBody').style.backgroundPosition = myTemp;
 
       // Move the non-player images to the left
-      let imgs = ['myImg02', 'myImg03', 'myImg04'];
+      let imgs = ['myImg02', 'myImg03', 'myImg04', 'myImg05', 'myImg06'];
       for (let imgId of imgs) {
          let imgElement = document.getElementById(imgId);
          let currentLeft = parseInt(imgElement.style.left);
          imgElement.style.left = (currentLeft - 5) + 'px';  // Move left by 5px
       }
-  }, 100);
+   }, 100);
 }">
+
+<!-- Movement buttons -->
 <input type=button value="Right" onTouchStart="{this.click(); event.preventDefault();}" onclick="{
-  let newLeft = parseInt(document.getElementById('myImg01').style.left) + 10;
-  document.getElementById('myImg01').style.left = newLeft + 'px';
-  constrainToScreen(document.getElementById('myImg01'));  // Ensure it stays on screen
-  myCheckHit();     // checks for all collisions
+   let newLeft = parseInt(document.getElementById('myImg01').style.left) + 10;
+   document.getElementById('myImg01').style.left = newLeft + 'px';
+   constrainToScreen(document.getElementById('myImg01'));  // Ensure it stays on screen
+   myCheckHit();     // checks for all collisions
 }">
 
 <input type=button value="Down" onTouchStart="{this.click(); event.preventDefault();}" onclick="{
-  let newTop = parseInt(document.getElementById('myImg01').style.top) + 10;
-  document.getElementById('myImg01').style.top = newTop + 'px';
-  constrainToScreen(document.getElementById('myImg01'));  // Ensure it stays on screen
-  myCheckHit();     // checks for all collisions
+   let newTop = parseInt(document.getElementById('myImg01').style.top) + 10;
+   document.getElementById('myImg01').style.top = newTop + 'px';
+   constrainToScreen(document.getElementById('myImg01'));  // Ensure it stays on screen
+   myCheckHit();     // checks for all collisions
 }"><br><br>
 
-<img id="myImg01" src="https://th.bing.com/th/id/OIP.sb8Fl0K-tp0oZ7JkaiKhZwHaJY?rs=1&pid=ImgDetMain"  style="position:absolute; width:100px; height:80px; left: 50px; top:250px;">
-<img id="myImg02" src="https://cdn.pixabay.com/photo/2012/04/18/13/48/bomb-37077_1280.png"  style="position:absolute; width:100px; height:80px; left:350px; top:190px;">
-<img id="myImg03" src="https://cdn.pixabay.com/photo/2012/04/18/13/48/bomb-37077_1280.png"  style="position:absolute; width:100px; height:80px; left:500px; top:190px;">
-<img id="myImg04" src="https://img.freepik.com/free-vector/realistic-illustration-gold-crown-with-red-gems-jewelry-award-royalty_1262-13473.jpg"  style="position:absolute; width:100px; height:80px; left:500px; top:400px;">
+<!-- Player and obstacle images -->
+<img id="myImg01" src="https://th.bing.com/th/id/OIP.sb8Fl0K-tp0oZ7JkaiKhZwHaJY?rs=1&pid=ImgDetMain" style="position:absolute; width:100px; height:80px; left: 50px; top:250px;">
+<img id="myImg02" src="https://cdn.pixabay.com/photo/2012/04/18/13/48/bomb-37077_1280.png" style="position:absolute; width:100px; height:80px; left:350px; top:190px;">
+<img id="myImg03" src="https://cdn.pixabay.com/photo/2012/04/18/13/48/bomb-37077_1280.png" style="position:absolute; width:100px; height:80px; left:500px; top:190px;">
+<img id="myImg04" src="https://img.freepik.com/free-vector/realistic-illustration-gold-crown-with-red-gems-jewelry-award-royalty_1262-13473.jpg" style="position:absolute; width:100px; height:80px; left:500px; top:400px;">
+<img id="myImg05" src="https://cdn.pixabay.com/photo/2012/04/18/13/48/bomb-37077_1280.png" style="position:absolute; width:100px; height:80px; left:650px; top:150px;">
+<img id="myImg06" src="https://cdn.pixabay.com/photo/2012/04/18/13/48/bomb-37077_1280.png" style="position:absolute; width:100px; height:80px; left:800px; top:300px;">
 </body>
