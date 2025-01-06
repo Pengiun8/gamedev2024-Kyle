@@ -120,9 +120,16 @@ Hit Points:
       myGlobalX -= 5;
       myTemp =  myGlobalX + 'px 0px';
       document.getElementById('myBody').style.backgroundPosition = myTemp;
+
+      // Move the non-player images to the left
+      let imgs = ['myImg02', 'myImg03', 'myImg04'];
+      for (let imgId of imgs) {
+         let imgElement = document.getElementById(imgId);
+         let currentLeft = parseInt(imgElement.style.left);
+         imgElement.style.left = (currentLeft - 5) + 'px';  // Move left by 5px
+      }
   }, 100);
 }">
-
 <input type=button value="Right" onTouchStart="{this.click(); event.preventDefault();}" onclick="{
   let newLeft = parseInt(document.getElementById('myImg01').style.left) + 10;
   document.getElementById('myImg01').style.left = newLeft + 'px';
