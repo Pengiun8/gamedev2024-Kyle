@@ -41,13 +41,33 @@
         const player = {
             x: 50, y: canvas.height - 100, width: 76, height: 44,
             dx: 0, dy: 0, grounded: false, facingRight: true,
-            dashSpeed: 2.0, // multiplier for dash speed
-            dashDuration: 200, // boost lasts for 1 second
+            dashSpeed: 3.0, // multiplier for dash speed
+            dashDuration: 400, // boost lasts for 1 second
             dashStartTime: 0, // track when the boost started
             isDashing: false, // flag to track if boost is active
         };
 
         const keys = { right: false, up: false, left: false, dash: false };
+
+        // The collision detection function you provided
+        function myHitOther(my1, my2) {
+            const left1 = parseInt(document.getElementById(my1).style.left);
+            const right1 = left1 + parseInt(document.getElementById(my1).style.width);
+            const top1 = parseInt(document.getElementById(my1).style.top);   
+            const bottom1 = top1 + parseInt(document.getElementById(my1).style.height);
+            const left2 = woodenPlanks.x;
+            const right2 = left2 + woodenPlanks.width;
+            const top2 = woodenPlanks.y;   
+            const bottom2 = top2 + woodenPlanks.height;
+
+            if ((right1 >= left2) &&       
+                (bottom1 >= top2) &&
+                (left1 <= right2) &&
+                (top1 <= bottom2)) {
+                return true;
+            }
+            return false;
+        }
 
         function updatePlayer() {
             // Check if dash boost is active and if the duration has ended
@@ -80,7 +100,16 @@
                 player.y = canvas.height - player.height;
                 player.dy = 0;
                 player.grounded = true;
-            } else player.grounded = false;
+            } else {
+                player.grounded = false;
+            }
+
+            // Check for collision with the wooden planks
+            if (myHitOther('slimer', 'woodenPlanks')) {
+                player.y = woodenPlanks.y - player.height; // Stop Slimer on top of the planks
+                player.dy = 0;
+                player.grounded = true;
+            }
 
             // Update facing direction
             if (keys.right) player.facingRight = true;
