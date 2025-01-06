@@ -41,12 +41,20 @@
         const player = {
             x: 50, y: canvas.height - 100, width: 76, height: 44,
             dx: 0, dy: 0, grounded: false, facingRight: true,
-            dashSpeed: 1.5 // multiplier for dash speed
+            dashSpeed: 2.0, // multiplier for dash speed
+            dashDuration: 1000, // boost lasts for 1 second
+            dashStartTime: 0, // track when the boost started
+            isDashing: false, // flag to track if boost is active
         };
 
         const keys = { right: false, up: false, left: false, dash: false };
 
         function updatePlayer() {
+            // Check if dash boost is active and if the duration has ended
+            if (player.isDashing && (performance.now() - player.dashStartTime > player.dashDuration)) {
+                player.isDashing = false; // End the dash boost after the duration
+            }
+
             // Basic movement
             if (keys.up && player.grounded) {
                 player.dy = -15;  // Fixed jump height
@@ -54,13 +62,11 @@
             }
 
             // Horizontal movement
-            if (!keys.up) {
-                let baseSpeed = keys.right ? 5 : (keys.left ? -5 : player.dx * 0.9);
-                if (keys.dash) {
-                    baseSpeed *= player.dashSpeed; // Increase speed when dashing
-                }
-                player.dx = baseSpeed;
+            let baseSpeed = keys.right ? 5 : (keys.left ? -5 : player.dx * 0.9);
+            if (player.isDashing) {
+                baseSpeed *= player.dashSpeed; // Apply the dash speed multiplier if dash is active
             }
+            player.dx = baseSpeed;
 
             // Apply gravity
             player.dy += 0.5;
@@ -107,16 +113,19 @@
             if (e.code === "KeyD") keys.right = true;
             if (e.code === "Space") keys.up = true;
             if (e.code === "KeyA") keys.left = true;
-            if (e.code === "ShiftLeft") keys.dash = true;  // Dash when Shift is pressed
+            if (e.code === "ShiftLeft" && !player.isDashing) {
+                keys.dash = true;  // Dash starts when Shift is pressed
+                player.isDashing = true;
+                player.dashStartTime = performance.now(); // Start the dash boost time
+            }
         });
 
         document.addEventListener("keyup", (e) => {
             if (e.code === "KeyD") keys.right = false;
             if (e.code === "Space") keys.up = false;
             if (e.code === "KeyA") keys.left = false;
-            if (e.code === "ShiftLeft") keys.dash = false;  // Stop dashing when Shift is released
+            if (e.code === "ShiftLeft") keys.dash = false; // Dash ends when Shift is released
         });
     </script>
 </body>
 </html>
-
