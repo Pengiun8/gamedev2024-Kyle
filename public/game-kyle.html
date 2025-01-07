@@ -82,6 +82,7 @@
             }
         });
 
+        // Update collision detection
         function myHitOther(player, woodenPlanks) {
             let left1 = player.x;
             let right1 = left1 + player.width;
@@ -93,10 +94,18 @@
             let top2 = woodenPlanks.y;
             let bottom2 = top2 + woodenPlanks.height;
 
-            if (right1 >= left2 && bottom1 >= top2 && left1 <= right2 && top1 <= bottom2) {
-                return true; // Collision detected
+            // Check for collision on the X axis
+            if (right1 >= left2 && left1 <= right2) {
+                // Check if falling down (dy > 0) and the player is above the plank (top1 < bottom2)
+                if (bottom1 <= top2 && bottom1 + player.dy >= top2) {
+                    // Collision detected, land on the plank
+                    player.y = top2 - player.height; // Adjust position to sit on top of the plank
+                    player.dy = 0;
+                    player.grounded = true;
+                    return true; // Player has landed on the platform
+                }
             }
-            return false; // No collision
+            return false; // No collision or not landing on the platform
         }
 
         function updatePlayer() {
@@ -120,10 +129,11 @@
             }
             player.dx = baseSpeed;
 
-            player.dy += 0.5;
+            player.dy += 0.5; // Gravity
             player.x += player.dx;
             player.y += player.dy;
 
+            // Prevent the player from going off-screen
             if (player.x < 0) player.x = 0;
             if (player.x + player.width > canvas.width) player.x = canvas.width - player.width;
             if (player.y + player.height > canvas.height) {
@@ -132,13 +142,12 @@
                 player.grounded = true;
             } else player.grounded = false;
 
+            // Handle collision with the wooden plank platform
             if (myHitOther(player, woodenPlanks)) {
                 alert("Collision Detected! The player hit the wooden plank.");
-                player.y = woodenPlanks.y - player.height;
-                player.dy = 0;
-                player.grounded = true;
             }
 
+            // Player's facing direction
             if (keys.right) player.facingRight = true;
             if (keys.left) player.facingRight = false;
         }
