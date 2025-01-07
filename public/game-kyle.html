@@ -24,9 +24,7 @@
             woodPlanksEnd: 'Wooden planks 2.png'
         };
 
-        const woodenPlanks = {
-            x: 200, y: canvas.height - 150, width: 180, height: 60
-        };
+        const woodenPlanks = { x: 200, y: canvas.height - 150, width: 180, height: 60 };
 
         const loadedImages = {};
         let imagesLoaded = 0;
@@ -44,23 +42,14 @@
         const player = {
             x: 50, y: canvas.height - 100, width: 76, height: 44,
             dx: 0, dy: 0, grounded: false, facingRight: true,
-            dashSpeed: 3.0,
-            dashDuration: 400,
-            dashCooldown: 1000,
-            dashStartTime: 0,
-            dashEndTime: 0,
-            isDashing: false,
-            canDash: true
+            dashSpeed: 3.0, dashDuration: 400, dashCooldown: 1000,
+            dashStartTime: 0, dashEndTime: 0, isDashing: false, canDash: true
         };
 
-        const keys = {
-            right: false,
-            left: false,
-            up: false,
-            dash: false
-        };
+        const keys = { right: false, left: false, up: false, dash: false };
 
-        document.addEventListener("keydown", (e) => {
+        // Use onkeydown and onkeyup directly
+        document.onkeydown = (e) => {
             if (e.code === "KeyD") keys.right = true;
             if (e.code === "Space") keys.up = true;
             if (e.code === "KeyA") keys.left = true;
@@ -71,32 +60,21 @@
                 player.canDash = false;
                 player.dashEndTime = player.dashStartTime + player.dashDuration;
             }
-        });
+        };
 
-        document.addEventListener("keyup", (e) => {
+        document.onkeyup = (e) => {
             if (e.code === "KeyD") keys.right = false;
             if (e.code === "Space") keys.up = false;
             if (e.code === "KeyA") keys.left = false;
-            if (e.code === "ShiftLeft") {
-                keys.dash = false;
-            }
-        });
+            if (e.code === "ShiftLeft") keys.dash = false;
+        };
 
         function myHitOther(player, woodenPlanks) {
-            let left1 = player.x;
-            let right1 = left1 + player.width;
-            let top1 = player.y;
-            let bottom1 = top1 + player.height;
-
-            let left2 = woodenPlanks.x;
-            let right2 = left2 + woodenPlanks.width;
-            let top2 = woodenPlanks.y;
-            let bottom2 = top2 + woodenPlanks.height;
-
-            if (right1 >= left2 && bottom1 >= top2 && left1 <= right2 && top1 <= bottom2) {
-                return true; // Collision detected
-            }
-            return false; // No collision
+            let left1 = player.x, right1 = left1 + player.width;
+            let top1 = player.y, bottom1 = top1 + player.height;
+            let left2 = woodenPlanks.x, right2 = left2 + woodenPlanks.width;
+            let top2 = woodenPlanks.y, bottom2 = top2 + woodenPlanks.height;
+            return right1 >= left2 && bottom1 >= top2 && left1 <= right2 && top1 <= bottom2;
         }
 
         function updatePlayer() {
@@ -165,4 +143,4 @@
         }
     </script>
 </body>
-</html> 
+</html>
