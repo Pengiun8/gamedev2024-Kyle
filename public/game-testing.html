@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,16 +20,41 @@
             left: 'slimer left.png',
             jumpRight: 'slimer jump right.png',
             jumpLeft: 'slimer jump left.png',
-            woodPlanks: 'Wooden planks.png',
-            woodPlanksEnd: 'Wooden planks 2.png'
+            woodPlanks: 'Wooden planks.png'
         };
 
-        const woodenPlanks = {
-            x: 200, y: canvas.height - 150, width: 180, height: 60
+        let player = {
+            x: 50, y: canvas.height - 100, width: 76, height: 44, dx: 0, dy: 0, grounded: false, facingRight: true,
+            dashSpeed: 3, dashDuration: 400, dashCooldown: 1000, isDashing: false, canDash: true, dashStartTime: 0, dashEndTime: 0
         };
+
+        let keys = { right: false, left: false, up: false, dash: false };
+
+        document.onkeydown = (e) => {
+            if (e.code === "KeyD") keys.right = true;
+            if (e.code === "Space") keys.up = true;
+            if (e.code === "KeyA") keys.left = true;
+            if (e.code === "ShiftLeft" && player.canDash && !player.isDashing) {
+                keys.dash = true;
+                player.isDashing = true;
+                player.dashStartTime = performance.now();
+                player.dashEndTime = player.dashStartTime + player.dashDuration;
+                player.canDash = false;
+            }
+        };
+
+        document.onkeyup = (e) => {
+            if (e.code === "KeyD") keys.right = false;
+            if (e.code === "Space") keys.up = false;
+            if (e.code === "KeyA") keys.left = false;
+            if (e.code === "ShiftLeft") keys.dash = false;
+        };
+
+        const woodenPlanks = { x: 400, y: canvas.height - 400, width: 180, height: 300 };
 
         const loadedImages = {};
         let imagesLoaded = 0;
+
         for (let key in images) {
             loadedImages[key] = new Image();
             loadedImages[key].src = images[key];
@@ -40,85 +63,67 @@
             };
         }
 
-        const player = {
-            x: 50, y: canvas.height - 100, width: 76, height: 44,
-            dx: 0, dy: 0, grounded: false, facingRight: true,
-            dashSpeed: 3.0, // multiplier for dash speed
-            dashDuration: 400, // boost lasts for 1 second
-            dashStartTime: 0, // track when the boost started
-            isDashing: false, // flag to track if boost is active
-        };
-
-        const keys = { right: false, up: false, left: false, dash: false };
-
-        function myHitOther(my1,my2){
-   left1   = parseInt(document.getElementById(my1).style.left)
-   right1  = left1 + parseInt(document.getElementById(my1).style.width)
-   top1    = parseInt(document.getElementById(my1).style.top)   
-   bottom1 = top1   + parseInt(document.getElementById(my1).style.height)
-   left2   = parseInt(document.getElementById(my2).style.left)
-   right2  = left2 + parseInt(document.getElementById(my2).style.width)
-   top2    = parseInt(document.getElementById(my2).style.top)   
-   bottom2 = top2   + parseInt(document.getElementById(my2).style.height)
-   if ((right1  >=  left2  ) &&       
-       (bottom1 >=  top2   ) &&
-       (left1   <=  right2 ) &&
-       (top1    <=  bottom2) ){
-       return true
-   }
-}
+        function checkCollision() {
+            if (player.x < woodenPlanks.x + woodenPlanks.width &&
+                player.x + player.width > woodenPlanks.x &&
+                player.y < woodenPlanks.y + woodenPlanks.height &&
+                player.y + player.height > woodenPlanks.y) {
+                
+                player.dy = 0;
+                player.grounded = true;
+                player.y = woodenPlanks.y - player.height;
+            } else {
+                player.grounded = false;
+            }
+        }
 
         function updatePlayer() {
-            // Check if dash boost is active and if the duration has ended
+            // Dash logic
             if (player.isDashing && (performance.now() - player.dashStartTime > player.dashDuration)) {
-                player.isDashing = false; // End the dash boost after the duration
+                player.isDashing = false;
+                player.dashEndTime = performance.now();
             }
 
-            // Basic movement
+            if (!player.canDash && performance.now() - player.dashEndTime > player.dashCooldown) {
+                player.canDash = true;
+            }
+
+            // Jumping
             if (keys.up && player.grounded) {
-                player.dy = -15;  // Fixed jump height
+                player.dy = -15;
                 player.grounded = false;
             }
 
             // Horizontal movement
-            let baseSpeed = keys.right ? 5 : (keys.left ? -5 : player.dx * 0.9);
-            if (player.isDashing) {
-                baseSpeed *= player.dashSpeed; // Apply the dash speed multiplier if dash is active
-            }
-            player.dx = baseSpeed;
+            let baseSpeed = keys.right ? 5 : (keys.left ? -5 : 0);
+            if (player.isDashing) baseSpeed *= player.dashSpeed;
 
-            // Apply gravity
-            player.dy += 0.5;
+            player.dx = baseSpeed;
+            player.dy += 0.5; // Gravity
             player.x += player.dx;
             player.y += player.dy;
 
-            // Collision boundaries
-            if (player.x < 0) player.x = 0;
-            if (player.x + player.width > canvas.width) player.x = canvas.width - player.width;
             if (player.y + player.height > canvas.height) {
                 player.y = canvas.height - player.height;
                 player.dy = 0;
                 player.grounded = true;
-            } else player.grounded = false;
+            }
 
-            // Update facing direction
-            if (keys.right) player.facingRight = true;
-            if (keys.left) player.facingRight = false;
-        }
-
-        function drawPlatforms() {
-            // Draw the wooden platform
-            ctx.drawImage(loadedImages.woodPlanks, woodenPlanks.x, woodenPlanks.y, woodenPlanks.width, woodenPlanks.height);
+            checkCollision();
         }
 
         function drawPlayer() {
             let imageToDraw;
-            if (player.grounded && keys.up) imageToDraw = loadedImages.jumpRight;
-            else if (!player.grounded) imageToDraw = player.facingRight ? loadedImages.jumpRight : loadedImages.jumpLeft;
-            else imageToDraw = (player.facingRight ? loadedImages.right : loadedImages.left);
+            if (player.grounded && keys.up) {
+                imageToDraw = loadedImages.jumpRight;
+            } else if (!player.grounded) {
+                imageToDraw = player.facingRight ? loadedImages.jumpRight : loadedImages.jumpLeft;
+            } else {
+                imageToDraw = player.facingRight ? loadedImages.right : loadedImages.left;
+            }
 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            drawPlatforms(); // Draw the platform first
+            ctx.drawImage(loadedImages.woodPlanks, woodenPlanks.x, woodenPlanks.y, woodenPlanks.width, woodenPlanks.height);
             ctx.drawImage(imageToDraw, player.x, player.y, player.width, player.height);
         }
 
@@ -127,24 +132,6 @@
             drawPlayer();
             requestAnimationFrame(gameLoop);
         }
-
-        document.addEventListener("keydown", (e) => {
-            if (e.code === "KeyD") keys.right = true;
-            if (e.code === "Space") keys.up = true;
-            if (e.code === "KeyA") keys.left = true;
-            if (e.code === "ShiftLeft" && !player.isDashing) {
-                keys.dash = true;  // Dash starts when Shift is pressed
-                player.isDashing = true;
-                player.dashStartTime = performance.now(); // Start the dash boost time
-            }
-        });
-
-        document.addEventListener("keyup", (e) => {
-            if (e.code === "KeyD") keys.right = false;
-            if (e.code === "Space") keys.up = false;
-            if (e.code === "KeyA") keys.left = false;
-            if (e.code === "ShiftLeft") keys.dash = false; // Dash ends when Shift is released
-        });
     </script>
 </body>
 </html>
