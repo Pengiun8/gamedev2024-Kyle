@@ -94,63 +94,68 @@
             return hitSide;
         }
 
-        function updatePlayer() {
-            if (player.isDashing && (performance.now() - player.dashStartTime > player.dashDuration)) {
-                player.isDashing = false;
-                player.dashEndTime = performance.now();
-            }
+      function updatePlayer() {
+    if (player.isDashing && (performance.now() - player.dashStartTime > player.dashDuration)) {
+        player.isDashing = false;
+        player.dashEndTime = performance.now();
+    }
 
-            if (!player.canDash && performance.now() - player.dashEndTime > player.dashCooldown) {
-                player.canDash = true;
-            }
+    if (!player.canDash && performance.now() - player.dashEndTime > player.dashCooldown) {
+        player.canDash = true;
+    }
 
-            if (keys.up && player.grounded) {
-                player.dy = -15;
-                player.grounded = false;
-            }
+    // Allow jumping only when grounded
+    if (keys.up && player.grounded) {
+        player.dy = -15;  // Set vertical speed for jump
+        player.grounded = false;  // Player is no longer grounded after jump
+    }
 
-            let baseSpeed = keys.right ? 5 : (keys.left ? -5 : player.dx * 0.9);
-            if (player.isDashing) {
-                baseSpeed *= player.dashSpeed;
-            }
-            player.dx = baseSpeed;
+    let baseSpeed = keys.right ? 5 : (keys.left ? -5 : player.dx * 0.9);
+    if (player.isDashing) {
+        baseSpeed *= player.dashSpeed;
+    }
+    player.dx = baseSpeed;
 
-            player.dy += 0.5;
-            player.x += player.dx;
-            player.y += player.dy;
+    player.dy += 0.5;  // Gravity effect
+    player.x += player.dx;
+    player.y += player.dy;
 
-            if (player.x < 0) player.x = 0;
-            if (player.x + player.width > canvas.width) player.x = canvas.width - player.width;
-            if (player.y + player.height > canvas.height) {
-                player.y = canvas.height - player.height;
-                player.dy = 0;
-                player.grounded = true;
-            } else player.grounded = false;
+    // Ensure the player stays within the canvas boundaries
+    if (player.x < 0) player.x = 0;
+    if (player.x + player.width > canvas.width) player.x = canvas.width - player.width;
+    if (player.y + player.height > canvas.height) {
+        player.y = canvas.height - player.height;
+        player.dy = 0;  // Reset vertical speed when hitting the ground
+        player.grounded = true;  // Player is grounded
+    } else {
+        player.grounded = false;  // Player is not grounded when falling
+    }
 
-            let hitSide = checkHit(player, woodenPlanks);
-            if (hitSide) {
-                if (hitSide === "top" || hitSide === "bottom") {
-                    player.dy = 0;
-                }
-                if (hitSide === "top") {
-                    player.y = woodenPlanks.y - player.height;
-                    player.grounded = true;
-                } else if (hitSide === "bottom") {
-                    player.y = woodenPlanks.y + woodenPlanks.height;
-                    player.grounded = true;
-                }
-                
-                // Handle collisions for left and right sides (prevent movement)
-                if (hitSide === "left" && player.dx > 0) {
-                    player.dx = 0; // Stop moving right
-                } else if (hitSide === "right" && player.dx < 0) {
-                    player.dx = 0; // Stop moving left
-                }
-            }
-
-            if (keys.right) player.facingRight = true;
-            if (keys.left) player.facingRight = false;
+    let hitSide = checkHit(player, woodenPlanks);
+    if (hitSide) {
+        if (hitSide === "top" || hitSide === "bottom") {
+            player.dy = 0;  // Reset vertical speed when hitting top or bottom
         }
+        if (hitSide === "top") {
+            player.y = woodenPlanks.y - player.height;
+            player.grounded = true;
+        } else if (hitSide === "bottom") {
+            player.y = woodenPlanks.y + woodenPlanks.height;
+            player.dy = 0;  // Stop vertical speed after hitting the bottom
+            player.grounded = true;  // Player is grounded
+        }
+
+        // Handle collisions for left and right sides (prevent movement)
+        if (hitSide === "left" && player.dx > 0) {
+            player.dx = 0; // Stop moving right
+        } else if (hitSide === "right" && player.dx < 0) {
+            player.dx = 0; // Stop moving left
+        }
+    }
+
+    if (keys.right) player.facingRight = true;
+    if (keys.left) player.facingRight = false;
+}
 
         function drawPlatforms() {
             ctx.drawImage(loadedImages.woodPlanks, woodenPlanks.x, woodenPlanks.y, woodenPlanks.width, woodenPlanks.height);
