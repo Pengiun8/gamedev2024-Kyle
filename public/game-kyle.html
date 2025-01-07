@@ -130,7 +130,7 @@
 
             let hitSide = checkHit(player, woodenPlanks);
             if (hitSide) {
-                alert(`Collision Detected! The player hit the ${hitSide} side of the platform.`);
+            
                 if (hitSide === "top" || hitSide === "bottom") {
                     player.dy = 0;
                 }
