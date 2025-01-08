@@ -32,8 +32,8 @@
         ];
 
         const spikes = [
-            { x: 300, y: canvas.height - 100, width: 40, height: 40 },
-            { x: 600, y: canvas.height - 200, width: 40, height: 40 }
+            { x: 300, y: canvas.height - 100, width: 40, height: 40, direction: 'down' },  // Down-facing spike
+            { x: 600, y: canvas.height - 200, width: 40, height: 40, direction: 'up' }    // Up-facing spike
         ];
 
         const loadedImages = {};
@@ -186,21 +186,45 @@
 
         function drawSpikes() {
             spikes.forEach(spike => {
+                ctx.save(); // Save the current context
+
+                // Rotate the spike based on direction
+                if (spike.direction === 'up') {
+                    ctx.translate(spike.x + spike.width / 2, spike.y + spike.height / 2);
+                    ctx.rotate(-Math.PI / 2);
+                    ctx.translate(-spike.x - spike.width / 2, -spike.y - spike.height / 2);
+                } else if (spike.direction === 'down') {
+                    ctx.translate(spike.x + spike.width / 2, spike.y + spike.height / 2);
+                    ctx.rotate(Math.PI / 2);
+                    ctx.translate(-spike.x - spike.width / 2, -spike.y - spike.height / 2);
+                } else if (spike.direction === 'left') {
+                    ctx.translate(spike.x + spike.width / 2, spike.y + spike.height / 2);
+                    ctx.rotate(Math.PI);
+                    ctx.translate(-spike.x - spike.width / 2, -spike.y - spike.height / 2);
+                }
+
                 ctx.drawImage(loadedImages.redSpikes, spike.x, spike.y, spike.width, spike.height);
+
+                ctx.restore(); // Restore the context to undo the transformation
             });
         }
 
-        function drawPlayer() {
-            let imageToDraw;
-            if (player.grounded && keys.up) imageToDraw = loadedImages.jumpRight;
-            else if (!player.grounded) imageToDraw = player.facingRight ? loadedImages.jumpRight : loadedImages.jumpLeft;
-            else imageToDraw = (player.facingRight ? loadedImages.right : loadedImages.left);
+       function drawPlayer() {
+    let imageToDraw;
+    if (player.grounded && keys.up) {
+        imageToDraw = loadedImages.jumpRight;
+    } else if (!player.grounded) {
+        imageToDraw = player.facingRight ? loadedImages.jumpRight : loadedImages.jumpLeft;
+    } else {
+        imageToDraw = player.facingRight ? loadedImages.right : loadedImages.left;
+    }
 
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            drawPlatforms();
-            drawSpikes();
-            ctx.drawImage(imageToDraw, player.x, player.y, player.width, player.height);
-        }
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawPlatforms();
+    drawSpikes();
+    ctx.drawImage(imageToDraw, player.x, player.y, player.width, player.height);
+}
+
 
         function gameLoop() {
             updatePlayer();
