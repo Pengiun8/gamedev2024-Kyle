@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,13 +22,18 @@
             jumpRight: 'slimer jump right.png',
             jumpLeft: 'slimer jump left.png',
             woodPlanks: 'Wooden planks.png',
-            redSpikes: 'spikes sprite.png'
+            redSpikes: 'spikes sprite.png' // Added spike image
         };
 
         const platforms = [
             { x: 200, y: canvas.height - 150, width: 180, height: 70 },
             { x: 500, y: canvas.height - 250, width: 180, height: 70 },
             { x: 200, y: canvas.height - 400, width: 180, height: 70 }
+        ];
+
+        const spikes = [
+            { x: 300, y: canvas.height - 100, width: 40, height: 40 },
+            { x: 600, y: canvas.height - 200, width: 40, height: 40 }
         ];
 
         const loadedImages = {};
@@ -43,9 +49,16 @@
             };
         }
 
+        const playerSpawnPosition = { x: 50, y: canvas.height - 100 };
         const player = {
-            x: 50, y: canvas.height - 100, width: 76, height: 44,
-            dx: 0, dy: 0, grounded: false, facingRight: true
+            x: playerSpawnPosition.x,
+            y: playerSpawnPosition.y,
+            width: 76,
+            height: 44,
+            dx: 0,
+            dy: 0,
+            grounded: false,
+            facingRight: true
         };
 
         const keys = { right: false, left: false, up: false };
@@ -110,6 +123,32 @@
             return hitSide;
         }
 
+        function checkCollisionWithSpikes(player, spikes) {
+            spikes.forEach(spike => {
+                let top1 = player.y;
+                let bottom1 = player.y + player.height;
+                let left1 = player.x;
+                let right1 = player.x + player.width;
+
+                let top2 = spike.y;
+                let bottom2 = spike.y + spike.height;
+                let left2 = spike.x;
+                let right2 = spike.x + spike.width;
+
+                // Check if there's any overlap
+                if (right1 > left2 && left1 < right2 && bottom1 > top2 && top1 < bottom2) {
+                    resetPlayerPosition();
+                }
+            });
+        }
+
+        function resetPlayerPosition() {
+            player.x = playerSpawnPosition.x;
+            player.y = playerSpawnPosition.y;
+            player.dx = 0;
+            player.dy = 0;
+        }
+
         function updatePlayer() {
             if (keys.up && player.grounded) {
                 player.dy = -15;
@@ -133,6 +172,7 @@
 
             // Check for collisions
             checkCollision(player, platforms);
+            checkCollisionWithSpikes(player, spikes);
 
             if (keys.right) player.facingRight = true;
             if (keys.left) player.facingRight = false;
@@ -144,6 +184,12 @@
             });
         }
 
+        function drawSpikes() {
+            spikes.forEach(spike => {
+                ctx.drawImage(loadedImages.redSpikes, spike.x, spike.y, spike.width, spike.height);
+            });
+        }
+
         function drawPlayer() {
             let imageToDraw;
             if (player.grounded && keys.up) imageToDraw = loadedImages.jumpRight;
@@ -152,6 +198,7 @@
 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             drawPlatforms();
+            drawSpikes();
             ctx.drawImage(imageToDraw, player.x, player.y, player.width, player.height);
         }
 
