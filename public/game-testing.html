@@ -34,7 +34,7 @@
             loadedImages[key].src = images[key];
             loadedImages[key].onload = () => {
                 if (++imagesLoaded === Object.keys(images).length) {
-                    gameLoop();  // Start the game loop once all images are loaded
+                    gameLoop(); // Start the game loop once all images are loaded
                 }
             };
         }
@@ -125,7 +125,6 @@
                 baseSpeed *= player.dashSpeed;
             }
             player.dx = baseSpeed;
-
             player.dy += 0.5; // Apply gravity
             player.x += player.dx;
             player.y += player.dy;
