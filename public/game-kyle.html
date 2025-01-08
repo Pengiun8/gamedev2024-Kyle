@@ -129,6 +129,12 @@
 
             let hitSide = checkHit(player, woodenPlanks);
             if (hitSide) {
+
+                if (hitSide === "left" && player.dx > 0) {
+                    player.dx = 0; // Stop moving right
+                } else if (hitSide === "right" && player.dx < 0) {
+                    player.dx = 0; // Stop moving left
+                }
                 if (hitSide === "top" || hitSide === "bottom") {
                     player.dy = 0;
                 }
@@ -140,12 +146,7 @@
                     player.grounded = false;
                 }
                 
-                // Handle collisions for left and right sides (prevent movement)
-                if (hitSide === "left" && player.dx > 0) {
-                    player.dx = 0; // Stop moving right
-                } else if (hitSide === "right" && player.dx < 0) {
-                    player.dx = 0; // Stop moving left
-                }
+                
             }
 
             if (keys.right) player.facingRight = true;
