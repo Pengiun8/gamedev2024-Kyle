@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,8 +25,11 @@
             woodPlanksEnd: 'Wooden planks 2.png'
         };
 
-        const woodenPlanks = { x: 200, y: canvas.height - 150, width: 180, height: 70 };
-  
+        const platforms = [
+            { x: 200, y: canvas.height - 150, width: 180, height: 70 },
+            { x: 500, y: canvas.height - 250, width: 180, height: 70 },
+            { x: 200, y: canvas.height - 400, width: 180, height: 70 }
+        ];
 
         const loadedImages = {};
         let imagesLoaded = 0;
@@ -69,39 +73,50 @@
             if (e.code === "ShiftLeft") keys.dash = false;
         };
 
-        function checkCollision(player, woodenPlanks) {
-            let top1 = player.y;
-            let bottom1 = player.y + player.height;
-            let left1 = player.x;
-            let right1 = player.x + player.width;
-
-            let top2 = woodenPlanks.y;
-            let bottom2 = woodenPlanks.y + woodenPlanks.height;
-            let left2 = woodenPlanks.x;
-            let right2 = woodenPlanks.x + woodenPlanks.width;
-
+        function checkCollision(player, platforms) {
             let hitSide = null;
 
-            // Check if there's any overlap
-            if (right1 > left2 && left1 < right2 && bottom1 > top2 && top1 < bottom2) {
-                let overlapX = Math.min(right1 - left2, right2 - left1);
-                let overlapY = Math.min(bottom1 - top2, bottom2 - top1);
+            platforms.forEach(platform => {
+                let top1 = player.y;
+                let bottom1 = player.y + player.height;
+                let left1 = player.x;
+                let right1 = player.x + player.width;
 
-                // Prioritize smaller overlap
-                if (overlapY < overlapX) {
-                    if (bottom1 >= top2 && player.dy >= 0) {
-                        hitSide = "top";
-                    } else if (top1 <= bottom2 && player.dy <= 0) {
-                        hitSide = "bottom";
-                    }
-                } else {
-                    if (right1 >= left2 && player.dx > 0) {
-                        hitSide = "left";
-                    } else if (left1 <= right2 && player.dx < 0) {
-                        hitSide = "right";
+                let top2 = platform.y;
+                let bottom2 = platform.y + platform.height;
+                let left2 = platform.x;
+                let right2 = platform.x + platform.width;
+
+                // Check if there's any overlap
+                if (right1 > left2 && left1 < right2 && bottom1 > top2 && top1 < bottom2) {
+                    let overlapX = Math.min(right1 - left2, right2 - left1);
+                    let overlapY = Math.min(bottom1 - top2, bottom2 - top1);
+
+                    // Prioritize smaller overlap
+                    if (overlapY < overlapX) {
+                        if (bottom1 >= top2 && player.dy >= 0) {
+                            hitSide = "top";
+                            player.dy = 0; // Stop moving down
+                            player.y = platform.y - player.height;
+                            player.grounded = true;
+                        } else if (top1 <= bottom2 && player.dy <= 0) {
+                            hitSide = "bottom";
+                            player.dy = 0; // Stop moving up
+                            player.y = platform.y + platform.height;
+                        }
+                    } else {
+                        if (right1 >= left2 && player.dx > 0) {
+                            hitSide = "left";
+                            player.dx = 0; // Stop moving right
+                            player.x = platform.x - player.width;
+                        } else if (left1 <= right2 && player.dx < 0) {
+                            hitSide = "right";
+                            player.dx = 0; // Stop moving left
+                            player.x = platform.x + platform.width;
+                        }
                     }
                 }
-            }
+            });
 
             return hitSide;
         }
@@ -141,30 +156,16 @@
             }
 
             // Check for collisions
-            let hitSide = checkCollision(player, woodenPlanks);
-            if (hitSide) {
-                if (hitSide === "top") {
-                    player.dy = 0; // Stop moving down
-                    player.y = woodenPlanks.y - player.height;
-                    player.grounded = true;
-                } else if (hitSide === "bottom") {
-                    player.dy = 0; // Stop moving up
-                    player.y = woodenPlanks.y + woodenPlanks.height;
-                } else if (hitSide === "left") {
-                    player.dx = 0; // Stop moving right
-                    player.x = woodenPlanks.x - player.width;
-                } else if (hitSide === "right") {
-                    player.dx = 0; // Stop moving left
-                    player.x = woodenPlanks.x + woodenPlanks.width;
-                }
-            }
+            checkCollision(player, platforms);
 
             if (keys.right) player.facingRight = true;
             if (keys.left) player.facingRight = false;
         }
 
         function drawPlatforms() {
-            ctx.drawImage(loadedImages.woodPlanks, woodenPlanks.x, woodenPlanks.y, woodenPlanks.width, woodenPlanks.height);
+            platforms.forEach(platform => {
+                ctx.drawImage(loadedImages.woodPlanks, platform.x, platform.y, platform.width, platform.height);
+            });
         }
 
         function drawPlayer() {
