@@ -128,7 +128,7 @@ function updatePlayer() {
     }
     player.dx = baseSpeed;
 
-    player.dy += 0.5;
+    player.dy += 0.5; // Apply gravity
     player.x += player.dx;
     player.y += player.dy;
 
@@ -142,6 +142,7 @@ function updatePlayer() {
         player.grounded = false;
     }
 
+    // Check for side collisions
     let sideHit = checkSideCollision(player, woodenPlanks);
     if (sideHit) {
         if (sideHit === "left" && player.dx > 0) {
@@ -153,14 +154,15 @@ function updatePlayer() {
         }
     }
 
+    // Check for top/bottom collisions
     let topBottomHit = checkTopBottomCollision(player, woodenPlanks);
     if (topBottomHit) {
         if (topBottomHit === "top") {
-            player.dy = 0;
+            player.dy = 0; // Stop moving down
             player.y = woodenPlanks.y - player.height;
             player.grounded = true;
         } else if (topBottomHit === "bottom") {
-            player.dy = 0;
+            player.dy = 0; // Stop moving up
             player.y = woodenPlanks.y + woodenPlanks.height;
         }
     }
@@ -168,6 +170,7 @@ function updatePlayer() {
     if (keys.right) player.facingRight = true;
     if (keys.left) player.facingRight = false;
 }
+
 
 
 
