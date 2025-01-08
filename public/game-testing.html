@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,7 +24,11 @@
             woodPlanksEnd: 'Wooden planks 2.png'
         };
 
-        const woodenPlanks = { x: 400, y: canvas.height - 400, width: 180, height: 300 };
+        const platforms = [
+            { x: 200, y: canvas.height - 150, width: 180, height: 70 },
+            { x: 500, y: canvas.height - 250, width: 180, height: 70 },
+            { x: 200, y: canvas.height - 400, width: 180, height: 70 }
+        ];
 
         const loadedImages = {};
         let imagesLoaded = 0;
@@ -35,153 +38,110 @@
             loadedImages[key].src = images[key];
             loadedImages[key].onload = () => {
                 if (++imagesLoaded === Object.keys(images).length) {
-                    gameLoop();  // Start the game loop once all images are loaded
+                    gameLoop(); // Start the game loop once all images are loaded
                 }
             };
         }
 
         const player = {
             x: 50, y: canvas.height - 100, width: 76, height: 44,
-            dx: 0, dy: 0, grounded: false, facingRight: true,
-            dashSpeed: 3.0, dashDuration: 400, dashCooldown: 1000,
-            dashStartTime: 0, dashEndTime: 0, isDashing: false, canDash: true
+            dx: 0, dy: 0, grounded: false, facingRight: true
         };
 
-        const keys = { right: false, left: false, up: false, dash: false };
+        const keys = { right: false, left: false, up: false };
 
         document.onkeydown = (e) => {
             if (e.code === "KeyD") keys.right = true;
             if (e.code === "Space") keys.up = true;
             if (e.code === "KeyA") keys.left = true;
-            if (e.code === "ShiftLeft" && player.canDash && !player.isDashing) {
-                keys.dash = true;
-                player.isDashing = true;
-                player.dashStartTime = performance.now();
-                player.canDash = false;
-                player.dashEndTime = player.dashStartTime + player.dashDuration;
-            }
         };
 
         document.onkeyup = (e) => {
             if (e.code === "KeyD") keys.right = false;
             if (e.code === "Space") keys.up = false;
             if (e.code === "KeyA") keys.left = false;
-            if (e.code === "ShiftLeft") keys.dash = false;
         };
 
-        // Function to check which side of the platform the player hit
-function checkTopBottomCollision(player, woodenPlanks) {
-    let hitSide = null;
+        function checkCollision(player, platforms) {
+            let hitSide = null;
 
-    let left1 = player.x, right1 = left1 + player.width;
-    let top1 = player.y, bottom1 = top1 + player.height;
+            platforms.forEach(platform => {
+                let top1 = player.y;
+                let bottom1 = player.y + player.height;
+                let left1 = player.x;
+                let right1 = player.x + player.width;
 
-    let top2 = woodenPlanks.y, bottom2 = top2 + woodenPlanks.height;
+                let top2 = platform.y;
+                let bottom2 = platform.y + platform.height;
+                let left2 = platform.x;
+                let right2 = platform.x + platform.width;
 
-    // Check only for top/bottom collisions
-    if (right1 > woodenPlanks.x && left1 < woodenPlanks.x + woodenPlanks.width && bottom1 > top2 && top1 < bottom2) {
-        if (bottom1 >= top2 && player.dy >= 0) { // Hit the top of the platform
-            hitSide = "top";
-        } else if (top1 <= bottom2 && player.dy <= 0) { // Hit the bottom of the platform
-            hitSide = "bottom";
+                // Check if there's any overlap
+                if (right1 > left2 && left1 < right2 && bottom1 > top2 && top1 < bottom2) {
+                    let overlapX = Math.min(right1 - left2, right2 - left1);
+                    let overlapY = Math.min(bottom1 - top2, bottom2 - top1);
+
+                    // Prioritize smaller overlap
+                    if (overlapY < overlapX) {
+                        if (bottom1 >= top2 && player.dy >= 0) {
+                            hitSide = "top";
+                            player.dy = 0; // Stop moving down
+                            player.y = platform.y - player.height;
+                            player.grounded = true;
+                        } else if (top1 <= bottom2 && player.dy <= 0) {
+                            hitSide = "bottom";
+                            player.dy = 0; // Stop moving up
+                            player.y = platform.y + platform.height;
+                        }
+                    } else {
+                        if (right1 >= left2 && player.dx > 0) {
+                            hitSide = "left";
+                            player.dx = 0; // Stop moving right
+                            player.x = platform.x - player.width;
+                        } else if (left1 <= right2 && player.dx < 0) {
+                            hitSide = "right";
+                            player.dx = 0; // Stop moving left
+                            player.x = platform.x + platform.width;
+                        }
+                    }
+                }
+            });
+
+            return hitSide;
         }
-    }
 
-    return hitSide;
-}
+        function updatePlayer() {
+            if (keys.up && player.grounded) {
+                player.dy = -15;
+                player.grounded = false;
+            }
 
-function checkSideCollision(player, woodenPlanks) {
-    let hitSide = null;
+            player.dx = keys.right ? 5 : (keys.left ? -5 : player.dx * 0.9);
+            player.dy += 0.5; // Apply gravity
+            player.x += player.dx;
+            player.y += player.dy;
 
-    let left1 = player.x, right1 = left1 + player.width;
-    let top1 = player.y, bottom1 = top1 + player.height;
+            if (player.x < 0) player.x = 0;
+            if (player.x + player.width > canvas.width) player.x = canvas.width - player.width;
+            if (player.y + player.height > canvas.height) {
+                player.y = canvas.height - player.height;
+                player.dy = 0;
+                player.grounded = true;
+            } else {
+                player.grounded = false;
+            }
 
-    let left2 = woodenPlanks.x, right2 = left2 + woodenPlanks.width;
+            // Check for collisions
+            checkCollision(player, platforms);
 
-    // Check only for side collisions
-    if (right1 > left2 && left1 < right2 && bottom1 > woodenPlanks.y && top1 < woodenPlanks.y + woodenPlanks.height) {
-        if (right1 >= left2 && player.dx > 0) { // Hit the left side of the platform
-            hitSide = "left";
-        } else if (left1 <= right2 && player.dx < 0) { // Hit the right side of the platform
-            hitSide = "right";
+            if (keys.right) player.facingRight = true;
+            if (keys.left) player.facingRight = false;
         }
-    }
-
-    return hitSide;
-}
-
-
-
-function updatePlayer() {
-    if (player.isDashing && (performance.now() - player.dashStartTime > player.dashDuration)) {
-        player.isDashing = false;
-        player.dashEndTime = performance.now();
-    }
-
-    if (!player.canDash && performance.now() - player.dashEndTime > player.dashCooldown) {
-        player.canDash = true;
-    }
-
-    if (keys.up && player.grounded) {
-        player.dy = -15;
-        player.grounded = false;
-    }
-
-    let baseSpeed = keys.right ? 5 : (keys.left ? -5 : player.dx * 0.9);
-    if (player.isDashing) {
-        baseSpeed *= player.dashSpeed;
-    }
-    player.dx = baseSpeed;
-
-    player.dy += 0.5; // Apply gravity
-    player.x += player.dx;
-    player.y += player.dy;
-
-    if (player.x < 0) player.x = 0;
-    if (player.x + player.width > canvas.width) player.x = canvas.width - player.width;
-    if (player.y + player.height > canvas.height) {
-        player.y = canvas.height - player.height;
-        player.dy = 0;
-        player.grounded = true;
-    } else {
-        player.grounded = false;
-    }
-
-    // Check for side collisions independently
-    let sideHit = checkSideCollision(player, woodenPlanks);
-    if (sideHit) {
-        if (sideHit === "left" && player.dx > 0) {
-            player.dx = 0; // Stop moving right
-            player.x = woodenPlanks.x - player.width;
-        } else if (sideHit === "right" && player.dx < 0) {
-            player.dx = 0; // Stop moving left
-            player.x = woodenPlanks.x + woodenPlanks.width;
-        }
-    }
-
-    // Check for top/bottom collisions independently
-    let topBottomHit = checkTopBottomCollision(player, woodenPlanks);
-    if (topBottomHit) {
-        if (topBottomHit === "top") {
-            player.dy = 0; // Stop moving down
-            player.y = woodenPlanks.y - player.height;
-            player.grounded = true;
-        } else if (topBottomHit === "bottom") {
-            player.dy = 0; // Stop moving up
-            player.y = woodenPlanks.y + woodenPlanks.height;
-        }
-    }
-
-    if (keys.right) player.facingRight = true;
-    if (keys.left) player.facingRight = false;
-}
-
-
-
-
 
         function drawPlatforms() {
-            ctx.drawImage(loadedImages.woodPlanks, woodenPlanks.x, woodenPlanks.y, woodenPlanks.width, woodenPlanks.height);
+            platforms.forEach(platform => {
+                ctx.drawImage(loadedImages.woodPlanks, platform.x, platform.y, platform.width, platform.height);
+            });
         }
 
         function drawPlayer() {
