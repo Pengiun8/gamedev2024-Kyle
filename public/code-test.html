@@ -34,8 +34,7 @@
             loadedImages[key].src = images[key];
             loadedImages[key].onload = () => {
                 if (++imagesLoaded === Object.keys(images).length) {
-                    lastTime = performance.now(); // Initialize the time tracking
-                    gameLoop(lastTime); // Start the game loop once all images are loaded
+                    gameLoop(); // Start the game loop once all images are loaded
                 }
             };
         }
@@ -108,7 +107,7 @@
             return hitSide;
         }
 
-        function updatePlayer(deltaTime) {
+        function updatePlayer() {
             if (player.holdingJump) {
                 let jumpDuration = (performance.now() - player.jumpStart) / 1000; // Convert to seconds
                 let jumpPower = Math.min(jumpDuration * 10, player.maxJumpHeight);
@@ -116,9 +115,9 @@
             }
 
             let baseSpeed = keys.right ? 5 : (keys.left ? -5 : player.dx * 0.9);
-            player.dx = baseSpeed * (deltaTime / 16.67); // Adjusting speed based on deltaTime
+            player.dx = baseSpeed; // Adjusting speed without deltaTime
 
-            player.dy += 0.5 * (deltaTime / 16.67); // Apply gravity based on deltaTime
+            player.dy += 0.5; // Apply gravity
             player.x += player.dx;
             player.y += player.dy;
 
@@ -170,13 +169,8 @@
             ctx.drawImage(imageToDraw, player.x, player.y, player.width, player.height);
         }
 
-        let lastTime = performance.now(); // Track the time for the first frame
-
-        function gameLoop(currentTime) {
-            let deltaTime = currentTime - lastTime;
-            lastTime = currentTime;
-
-            updatePlayer(deltaTime);
+        function gameLoop() {
+            updatePlayer();
             drawPlayer();
             requestAnimationFrame(gameLoop);
         }
