@@ -69,7 +69,7 @@
         };
 
         // Function to check which side of the platform the player hit
-        function checkTopBottomCollision(player, woodenPlanks) {
+function checkTopBottomCollision(player, woodenPlanks) {
     let hitSide = null;
 
     let left1 = player.x, right1 = left1 + player.width;
@@ -77,6 +77,7 @@
 
     let top2 = woodenPlanks.y, bottom2 = top2 + woodenPlanks.height;
 
+    // Check only for top/bottom collisions
     if (right1 > woodenPlanks.x && left1 < woodenPlanks.x + woodenPlanks.width && bottom1 > top2 && top1 < bottom2) {
         if (bottom1 >= top2 && player.dy >= 0) { // Hit the top of the platform
             hitSide = "top";
@@ -87,6 +88,7 @@
 
     return hitSide;
 }
+
 function checkSideCollision(player, woodenPlanks) {
     let hitSide = null;
 
@@ -95,6 +97,7 @@ function checkSideCollision(player, woodenPlanks) {
 
     let left2 = woodenPlanks.x, right2 = left2 + woodenPlanks.width;
 
+    // Check only for side collisions
     if (right1 > left2 && left1 < right2 && bottom1 > woodenPlanks.y && top1 < woodenPlanks.y + woodenPlanks.height) {
         if (right1 >= left2 && player.dx > 0) { // Hit the left side of the platform
             hitSide = "left";
@@ -105,6 +108,7 @@ function checkSideCollision(player, woodenPlanks) {
 
     return hitSide;
 }
+
 
 
 function updatePlayer() {
