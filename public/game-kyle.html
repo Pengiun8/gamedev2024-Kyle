@@ -69,30 +69,43 @@
         };
 
         // Function to check which side of the platform the player hit
-        function checkHit(player, woodenPlanks) {
-            let hitSide = null;
+        function checkTopBottomCollision(player, woodenPlanks) {
+    let hitSide = null;
 
-            let left1 = player.x, right1 = left1 + player.width;
-            let top1 = player.y, bottom1 = top1 + player.height;
+    let left1 = player.x, right1 = left1 + player.width;
+    let top1 = player.y, bottom1 = top1 + player.height;
 
-            let left2 = woodenPlanks.x, right2 = left2 + woodenPlanks.width;
-            let top2 = woodenPlanks.y, bottom2 = top2 + woodenPlanks.height;
+    let top2 = woodenPlanks.y, bottom2 = top2 + woodenPlanks.height;
 
-            // Check for collisions on each side of the platform
-            if (right1 > left2 && left1 < right2 && bottom1 > top2 && top1 < bottom2) {
-                if (right1 >= left2 && player.dx > 0) { // Hit the left side of the platform
-                    hitSide = "left";
-                }  else if (left1 <= right2 && player.dx < 0) { // Hit the right side of the platform
-                    hitSide = "right";
-                }  else if (bottom1 >= top2 && player.dy >= 0) { // Hit the top of the platform
-                    hitSide = "top";
-                }  else if (top1 <= bottom2 && player.dy <= 0) { // Hit the bottom of the platform
-                    hitSide = "bottom";
-                } 
-            }
-
-            return hitSide;
+    if (right1 > woodenPlanks.x && left1 < woodenPlanks.x + woodenPlanks.width && bottom1 > top2 && top1 < bottom2) {
+        if (bottom1 >= top2 && player.dy >= 0) { // Hit the top of the platform
+            hitSide = "top";
+        } else if (top1 <= bottom2 && player.dy <= 0) { // Hit the bottom of the platform
+            hitSide = "bottom";
         }
+    }
+
+    return hitSide;
+}
+function checkSideCollision(player, woodenPlanks) {
+    let hitSide = null;
+
+    let left1 = player.x, right1 = left1 + player.width;
+    let top1 = player.y, bottom1 = top1 + player.height;
+
+    let left2 = woodenPlanks.x, right2 = left2 + woodenPlanks.width;
+
+    if (right1 > left2 && left1 < right2 && bottom1 > woodenPlanks.y && top1 < woodenPlanks.y + woodenPlanks.height) {
+        if (right1 >= left2 && player.dx > 0) { // Hit the left side of the platform
+            hitSide = "left";
+        } else if (left1 <= right2 && player.dx < 0) { // Hit the right side of the platform
+            hitSide = "right";
+        }
+    }
+
+    return hitSide;
+}
+
 
 function updatePlayer() {
     if (player.isDashing && (performance.now() - player.dashStartTime > player.dashDuration)) {
@@ -129,27 +142,33 @@ function updatePlayer() {
         player.grounded = false;
     }
 
-    let hitSide = checkHit(player, woodenPlanks);
-    if (hitSide) {
-        if (hitSide === "left" && player.dx > 0) {
+    let sideHit = checkSideCollision(player, woodenPlanks);
+    if (sideHit) {
+        if (sideHit === "left" && player.dx > 0) {
             player.dx = 0; // Stop moving right
             player.x = woodenPlanks.x - player.width;
-        } else if (hitSide === "right" && player.dx < 0) {
+        } else if (sideHit === "right" && player.dx < 0) {
             player.dx = 0; // Stop moving left
             player.x = woodenPlanks.x + woodenPlanks.width;
-        } else if (hitSide === "top") {
+        }
+    }
+
+    let topBottomHit = checkTopBottomCollision(player, woodenPlanks);
+    if (topBottomHit) {
+        if (topBottomHit === "top") {
             player.dy = 0;
-            player.y = Math.min(player.y, woodenPlanks.y - player.height);
+            player.y = woodenPlanks.y - player.height;
             player.grounded = true;
-        } else if (hitSide === "bottom") {
+        } else if (topBottomHit === "bottom") {
             player.dy = 0;
-            player.y = Math.max(player.y, woodenPlanks.y + woodenPlanks.height);
+            player.y = woodenPlanks.y + woodenPlanks.height;
         }
     }
 
     if (keys.right) player.facingRight = true;
     if (keys.left) player.facingRight = false;
 }
+
 
 
         function drawPlatforms() {
