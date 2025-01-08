@@ -34,7 +34,8 @@
             loadedImages[key].src = images[key];
             loadedImages[key].onload = () => {
                 if (++imagesLoaded === Object.keys(images).length) {
-                    gameLoop();  // Start the game loop once all images are loaded
+                    lastTime = performance.now(); // Initialize the time tracking
+                    gameLoop(lastTime); // Start the game loop once all images are loaded
                 }
             };
         }
@@ -42,30 +43,32 @@
         const player = {
             x: 50, y: canvas.height - 100, width: 76, height: 44,
             dx: 0, dy: 0, grounded: false, facingRight: true,
-            dashSpeed: 3.0, dashDuration: 400, dashCooldown: 1000,
-            dashStartTime: 0, dashEndTime: 0, isDashing: false, canDash: true
+            jumpStart: 0, maxJumpHeight: 15, holdingJump: false
         };
 
-        const keys = { right: false, left: false, up: false, dash: false };
+        const keys = { right: false, left: false, up: false };
 
         document.onkeydown = (e) => {
             if (e.code === "KeyD") keys.right = true;
-            if (e.code === "Space") keys.up = true;
             if (e.code === "KeyA") keys.left = true;
-            if (e.code === "ShiftLeft" && player.canDash && !player.isDashing) {
-                keys.dash = true;
-                player.isDashing = true;
-                player.dashStartTime = performance.now();
-                player.canDash = false;
-                player.dashEndTime = player.dashStartTime + player.dashDuration;
+            if (e.code === "Space") {
+                keys.up = true;
+                if (player.grounded) {
+                    player.jumpStart = performance.now();
+                    player.holdingJump = true;
+                    player.dy = -5; // Start with a small jump
+                    player.grounded = false;
+                }
             }
         };
 
         document.onkeyup = (e) => {
             if (e.code === "KeyD") keys.right = false;
-            if (e.code === "Space") keys.up = false;
             if (e.code === "KeyA") keys.left = false;
-            if (e.code === "ShiftLeft") keys.dash = false;
+            if (e.code === "Space") {
+                keys.up = false;
+                player.holdingJump = false;
+            }
         };
 
         function checkCollision(player, woodenPlanks) {
@@ -105,28 +108,17 @@
             return hitSide;
         }
 
-        function updatePlayer() {
-            if (player.isDashing && (performance.now() - player.dashStartTime > player.dashDuration)) {
-                player.isDashing = false;
-                player.dashEndTime = performance.now();
-            }
-
-            if (!player.canDash && performance.now() - player.dashEndTime > player.dashCooldown) {
-                player.canDash = true;
-            }
-
-            if (keys.up && player.grounded) {
-                player.dy = -15;
-                player.grounded = false;
+        function updatePlayer(deltaTime) {
+            if (player.holdingJump) {
+                let jumpDuration = (performance.now() - player.jumpStart) / 1000; // Convert to seconds
+                let jumpPower = Math.min(jumpDuration * 10, player.maxJumpHeight);
+                player.dy = -jumpPower;
             }
 
             let baseSpeed = keys.right ? 5 : (keys.left ? -5 : player.dx * 0.9);
-            if (player.isDashing) {
-                baseSpeed *= player.dashSpeed;
-            }
-            player.dx = baseSpeed;
+            player.dx = baseSpeed * (deltaTime / 16.67); // Adjusting speed based on deltaTime
 
-            player.dy += 0.5; // Apply gravity
+            player.dy += 0.5 * (deltaTime / 16.67); // Apply gravity based on deltaTime
             player.x += player.dx;
             player.y += player.dy;
 
@@ -178,8 +170,13 @@
             ctx.drawImage(imageToDraw, player.x, player.y, player.width, player.height);
         }
 
-        function gameLoop() {
-            updatePlayer();
+        let lastTime = performance.now(); // Track the time for the first frame
+
+        function gameLoop(currentTime) {
+            let deltaTime = currentTime - lastTime;
+            lastTime = currentTime;
+
+            updatePlayer(deltaTime);
             drawPlayer();
             requestAnimationFrame(gameLoop);
         }
