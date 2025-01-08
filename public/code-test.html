@@ -36,12 +36,35 @@
             };
         }
 
-        const player = { x: 50, y: canvas.height - 100, width: 76, height: 44, dx: 0, dy: 0, grounded: false, facingRight: true, dashSpeed: 3.0, dashDuration: 400, dashCooldown: 1000, dashStartTime: 0, dashEndTime: 0, isDashing: false, canDash: true };
+        const player = {
+            x: 50, y: canvas.height - 100, width: 76, height: 44,
+            dx: 0, dy: 0, grounded: false, facingRight: true,
+            dashSpeed: 3.0, dashDuration: 400, dashCooldown: 1000,
+            dashStartTime: 0, dashEndTime: 0, isDashing: false, canDash: true,
+            lastDirection: 'right'
+        };
+
         const keys = { right: false, left: false, up: false, dash: false };
         const woodenPlanks = { x: 400, y: canvas.height - 400, width: 180, height: 300 };
 
-        document.onkeydown = (e) => { keys[e.code] = true; if (e.code === "ShiftLeft" && player.canDash && !player.isDashing) { keys.dash = true; player.isDashing = true; player.dashStartTime = performance.now(); player.canDash = false; player.dashEndTime = player.dashStartTime + player.dashDuration; } };
-        document.onkeyup = (e) => { keys[e.code] = false; };
+        document.onkeydown = (e) => {
+            if (e.code === "KeyD") keys.right = true;
+            if (e.code === "Space") keys.up = true;
+            if (e.code === "KeyA") keys.left = true;
+            if (e.code === "ShiftLeft" && player.canDash && !player.isDashing) {
+                player.isDashing = true;
+                player.dashStartTime = performance.now();
+                player.canDash = false;
+                player.dashEndTime = player.dashStartTime + player.dashDuration;
+            }
+        };
+
+        document.onkeyup = (e) => {
+            if (e.code === "KeyD") keys.right = false;
+            if (e.code === "Space") keys.up = false;
+            if (e.code === "KeyA") keys.left = false;
+            if (e.code === "ShiftLeft") keys.dash = false;
+        };
 
         function checkCollision(player, woodenPlanks) {
             const [top1, bottom1, left1, right1] = [player.y, player.y + player.height, player.x, player.x + player.width];
@@ -58,13 +81,31 @@
         }
 
         function updatePlayer() {
-            if (player.isDashing && (performance.now() - player.dashStartTime > player.dashDuration)) { player.isDashing = false; player.dashEndTime = performance.now(); }
-            if (!player.canDash && performance.now() - player.dashEndTime > player.dashCooldown) player.canDash = true;
+            if (player.isDashing && (performance.now() - player.dashStartTime > player.dashDuration)) {
+                player.isDashing = false;
+                player.dashEndTime = performance.now();
+            }
 
-            if (keys["Space"] && player.grounded) { player.dy = -15; player.grounded = false; }
+            if (!player.canDash && performance.now() - player.dashEndTime > player.dashCooldown) {
+                player.canDash = true;
+            }
 
-            player.dx = keys["KeyD"] ? 5 : keys["KeyA"] ? -5 : player.dx * 0.9;
-            if (player.isDashing) player.dx *= player.dashSpeed;
+            if (keys["Space"] && player.grounded) {
+                player.dy = -15;
+                player.grounded = false;
+            }
+
+            if (keys["KeyD"]) {
+                player.dx = player.isDashing ? 5 * player.dashSpeed : 5;
+                player.facingRight = true;
+                player.lastDirection = 'right';
+            } else if (keys["KeyA"]) {
+                player.dx = player.isDashing ? -5 * player.dashSpeed : -5;
+                player.facingRight = false;
+                player.lastDirection = 'left';
+            } else {
+                player.dx *= 0.9;
+            }
 
             player.dy += 0.5; // Apply gravity
             player.x += player.dx;
@@ -72,23 +113,48 @@
 
             if (player.x < 0) player.x = 0;
             if (player.x + player.width > canvas.width) player.x = canvas.width - player.width;
-            if (player.y + player.height > canvas.height) { player.y = canvas.height - player.height; player.dy = 0; player.grounded = true; } else { player.grounded = false; }
+            if (player.y + player.height > canvas.height) {
+                player.y = canvas.height - player.height;
+                player.dy = 0;
+                player.grounded = true;
+            } else {
+                player.grounded = false;
+            }
 
             const hitSide = checkCollision(player, woodenPlanks);
             if (hitSide) {
-                if (hitSide === "top") { player.dy = 0; player.y = woodenPlanks.y - player.height; player.grounded = true; }
-                if (hitSide === "bottom") { player.dy = 0; player.y = woodenPlanks.y + woodenPlanks.height; }
-                if (hitSide === "left") { player.dx = 0; player.x = woodenPlanks.x - player.width; }
-                if (hitSide === "right") { player.dx = 0; player.x = woodenPlanks.x + woodenPlanks.width; }
+                if (hitSide === "top") {
+                    player.dy = 0;
+                    player.y = woodenPlanks.y - player.height;
+                    player.grounded = true;
+                } else if (hitSide === "bottom") {
+                    player.dy = 0;
+                    player.y = woodenPlanks.y + woodenPlanks.height;
+                } else if (hitSide === "left") {
+                    player.dx = 0;
+                    player.x = woodenPlanks.x - player.width;
+                } else if (hitSide === "right") {
+                    player.dx = 0;
+                    player.x = woodenPlanks.x + woodenPlanks.width;
+                }
             }
-
-            player.facingRight = !keys["KeyA"];
         }
 
         function drawGame() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.drawImage(loadedImages.woodPlanks, woodenPlanks.x, woodenPlanks.y, woodenPlanks.width, woodenPlanks.height);
-            const img = !player.grounded && keys["Space"] ? loadedImages.jumpRight : loadedImages[player.facingRight ? "right" : "left"];
+
+            let img;
+            if (!player.grounded && keys["Space"]) {
+                img = player.facingRight ? loadedImages.jumpRight : loadedImages.jumpLeft;
+            } else {
+                img = player.facingRight ? loadedImages.right : loadedImages.left;
+            }
+
+            if (!keys["KeyD"] && !keys["KeyA"]) {
+                img = player.lastDirection === 'right' ? (player.grounded ? loadedImages.right : loadedImages.jumpRight) : (player.grounded ? loadedImages.left : loadedImages.jumpLeft);
+            }
+
             ctx.drawImage(img, player.x, player.y, player.width, player.height);
         }
 
