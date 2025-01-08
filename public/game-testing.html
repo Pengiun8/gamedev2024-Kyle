@@ -20,34 +20,8 @@
             left: 'slimer left.png',
             jumpRight: 'slimer jump right.png',
             jumpLeft: 'slimer jump left.png',
-            woodPlanks: 'Wooden planks.png'
-        };
-
-        let player = {
-            x: 50, y: canvas.height - 100, width: 76, height: 44, dx: 0, dy: 0, grounded: false, facingRight: true,
-            dashSpeed: 3, dashDuration: 400, dashCooldown: 1000, isDashing: false, canDash: true, dashStartTime: 0, dashEndTime: 0
-        };
-
-        let keys = { right: false, left: false, up: false, dash: false };
-
-        document.onkeydown = (e) => {
-            if (e.code === "KeyD") keys.right = true;
-            if (e.code === "Space") keys.up = true;
-            if (e.code === "KeyA") keys.left = true;
-            if (e.code === "ShiftLeft" && player.canDash && !player.isDashing) {
-                keys.dash = true;
-                player.isDashing = true;
-                player.dashStartTime = performance.now();
-                player.dashEndTime = player.dashStartTime + player.dashDuration;
-                player.canDash = false;
-            }
-        };
-
-        document.onkeyup = (e) => {
-            if (e.code === "KeyD") keys.right = false;
-            if (e.code === "Space") keys.up = false;
-            if (e.code === "KeyA") keys.left = false;
-            if (e.code === "ShiftLeft") keys.dash = false;
+            woodPlanks: 'Wooden planks.png',
+            woodPlanksEnd: 'Wooden planks 2.png'
         };
 
         const woodenPlanks = { x: 400, y: canvas.height - 400, width: 180, height: 300 };
@@ -59,71 +33,58 @@
             loadedImages[key] = new Image();
             loadedImages[key].src = images[key];
             loadedImages[key].onload = () => {
-                if (++imagesLoaded === Object.keys(images).length) gameLoop();
+                if (++imagesLoaded === Object.keys(images).length) {
+                    gameLoop();  // Start the game loop once all images are loaded
+                }
             };
         }
 
-        function checkCollision() {
-            if (player.x < woodenPlanks.x + woodenPlanks.width &&
-                player.x + player.width > woodenPlanks.x &&
-                player.y < woodenPlanks.y + woodenPlanks.height &&
-                player.y + player.height > woodenPlanks.y) {
-                
-                player.dy = 0;
-                player.grounded = true;
-                player.y = woodenPlanks.y - player.height;
-            } else {
-                player.grounded = false;
+        const player = {
+            x: 50, y: canvas.height - 100, width: 76, height: 44,
+            dx: 0, dy: 0, grounded: false, facingRight: true,
+            dashSpeed: 3.0, dashDuration: 400, dashCooldown: 1000,
+            dashStartTime: 0, dashEndTime: 0, isDashing: false, canDash: true
+        };
+
+        const keys = { right: false, left: false, up: false, dash: false };
+
+        document.onkeydown = (e) => {
+            if (e.code === "KeyD") keys.right = true;
+            if (e.code === "Space") keys.up = true;
+            if (e.code === "KeyA") keys.left = true;
+            if (e.code === "ShiftLeft" && player.canDash && !player.isDashing) {
+                keys.dash = true;
+                player.isDashing = true;
+                player.dashStartTime = performance.now();
+                player.canDash = false;
+                player.dashEndTime = player.dashStartTime + player.dashDuration;
             }
-        }
+        };
 
-        function updatePlayer() {
-            // Dash logic
-            if (player.isDashing && (performance.now() - player.dashStartTime > player.dashDuration)) {
-                player.isDashing = false;
-                player.dashEndTime = performance.now();
-            }
+        document.onkeyup = (e) => {
+            if (e.code === "KeyD") keys.right = false;
+            if (e.code === "Space") keys.up = false;
+            if (e.code === "KeyA") keys.left = false;
+            if (e.code === "ShiftLeft") keys.dash = false;
+        };
 
-            if (!player.canDash && performance.now() - player.dashEndTime > player.dashCooldown) {
-                player.canDash = true;
-            }
+        // Function to check which side of the platform the player hit
+       function checkHit(player, woodenPlanks) { let hitSide = null; let left1 = player.x, right1 = left1 + player.width; let top1 = player.y, bottom1 = top1 + player.height; let left2 = woodenPlanks.x, right2 = left2 + woodenPlanks.width; let top2 = woodenPlanks.y, bottom2 = top2 + woodenPlanks.height; // Check for collisions on each side of the platform if (right1 > left2 && left1 < right2 && bottom1 > top2 && top1 < bottom2) { let overlapTop = bottom1 - top2; let overlapBottom = bottom2 - top1; let overlapLeft = right1 - left2; let overlapRight = right2 - left1; let minOverlap = Math.min(overlapTop, overlapBottom, overlapLeft, overlapRight); if (minOverlap === overlapTop) { hitSide = "top"; } else if (minOverlap === overlapBottom) { hitSide = "bottom"; } else if (minOverlap === overlapLeft) { hitSide = "left"; } else if (minOverlap === overlapRight) { hitSide = "right"; } } return hitSide; }
 
-            // Jumping
-            if (keys.up && player.grounded) {
-                player.dy = -15;
-                player.grounded = false;
-            }
+function updatePlayer() { if (player.isDashing && (performance.now() - player.dashStartTime > player.dashDuration)) { player.isDashing = false; player.dashEndTime = performance.now(); } if (!player.canDash && performance.now() - player.dashEndTime > player.dashCooldown) { player.canDash = true; } if (keys.up && player.grounded) { player.dy = -15; player.grounded = false; } let baseSpeed = keys.right ? 5 : (keys.left ? -5 : player.dx * 0.9); if (player.isDashing) { baseSpeed *= player.dashSpeed; } player.dx = baseSpeed; player.dy += 0.5; player.x += player.dx; player.y += player.dy; if (player.x < 0) player.x = 0; if (player.x + player.width > canvas.width) player.x = canvas.width - player.width; if (player.y + player.height > canvas.height) { player.y = canvas.height - player.height; player.dy = 0; player.grounded = true; } else player.grounded = false; let hitSide = checkHit(player, woodenPlanks); if (hitSide) { if (hitSide === "top" || hitSide === "bottom") { player.dy = 0; if (hitSide === "top") { player.y = woodenPlanks.y - player.height; player.grounded = true; } else if (hitSide === "bottom") { player.y = woodenPlanks.y + woodenPlanks.height; } } else if (hitSide === "left" || hitSide === "right") { player.dx = 0; if (hitSide === "left") { player.x = woodenPlanks.x - player.width; } else if (hitSide === "right") { player.x = woodenPlanks.x + woodenPlanks.width; } } } if (keys.right) player.facingRight = true; if (keys.left) player.facingRight = false; }
 
-            // Horizontal movement
-            let baseSpeed = keys.right ? 5 : (keys.left ? -5 : 0);
-            if (player.isDashing) baseSpeed *= player.dashSpeed;
-
-            player.dx = baseSpeed;
-            player.dy += 0.5; // Gravity
-            player.x += player.dx;
-            player.y += player.dy;
-
-            if (player.y + player.height > canvas.height) {
-                player.y = canvas.height - player.height;
-                player.dy = 0;
-                player.grounded = true;
-            }
-
-            checkCollision();
+        function drawPlatforms() {
+            ctx.drawImage(loadedImages.woodPlanks, woodenPlanks.x, woodenPlanks.y, woodenPlanks.width, woodenPlanks.height);
         }
 
         function drawPlayer() {
             let imageToDraw;
-            if (player.grounded && keys.up) {
-                imageToDraw = loadedImages.jumpRight;
-            } else if (!player.grounded) {
-                imageToDraw = player.facingRight ? loadedImages.jumpRight : loadedImages.jumpLeft;
-            } else {
-                imageToDraw = player.facingRight ? loadedImages.right : loadedImages.left;
-            }
+            if (player.grounded && keys.up) imageToDraw = loadedImages.jumpRight;
+            else if (!player.grounded) imageToDraw = player.facingRight ? loadedImages.jumpRight : loadedImages.jumpLeft;
+            else imageToDraw = (player.facingRight ? loadedImages.right : loadedImages.left);
 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.drawImage(loadedImages.woodPlanks, woodenPlanks.x, woodenPlanks.y, woodenPlanks.width, woodenPlanks.height);
+            drawPlatforms();
             ctx.drawImage(imageToDraw, player.x, player.y, player.width, player.height);
         }
 
