@@ -80,15 +80,15 @@
 
             // Check for collisions on each side of the platform
             if (right1 > left2 && left1 < right2 && bottom1 > top2 && top1 < bottom2) {
-                if (bottom1 >= top2 && player.dy >= 0) { // Hit the top of the platform
-                    hitSide = "top";
-                } else if (top1 <= bottom2 && player.dy <= 0) { // Hit the bottom of the platform
-                    hitSide = "bottom";
-                } else if (right1 >= left2 && player.dx > 0) { // Hit the left side of the platform
+                if (right1 >= left2 && player.dx > 0) { // Hit the left side of the platform
                     hitSide = "left";
-                } else if (left1 <= right2 && player.dx < 0) { // Hit the right side of the platform
+                }  else if (left1 <= right2 && player.dx < 0) { // Hit the right side of the platform
                     hitSide = "right";
-                }
+                }  else if (bottom1 >= top2 && player.dy >= 0) { // Hit the top of the platform
+                    hitSide = "top";
+                }  else if (top1 <= bottom2 && player.dy <= 0) { // Hit the bottom of the platform
+                    hitSide = "bottom";
+                } 
             }
 
             return hitSide;
