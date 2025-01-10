@@ -161,6 +161,27 @@
                 }
             });
         }
+        function checkCollisionWithCrowns(player, crowns) {
+    crowns.forEach(crown => {
+        let top1 = player.y;
+        let bottom1 = player.y + player.height;
+        let left1 = player.x;
+        let right1 = player.x + player.width;
+
+        let top2 = crown.y;
+        let bottom2 = crown.y + crown.height;
+        let left2 = crown.x;
+        let right2 = crown.x + crown.width;
+
+        // Check if there's any overlap
+        if (right1 > left2 && left1 < right2 && bottom1 > top2 && top1 < bottom2) {
+            console.log("Crown collected!");
+            // You can trigger some event here, like winning or removing the crown
+            resetPlayerPosition();  // You could reset the player or change the state here
+        }
+    });
+}
+
 
         function resetPlayerPosition() {
             player.x = playerSpawnPosition.x;
@@ -169,34 +190,30 @@
             player.dy = 0;
         }
 
-        function updatePlayer() {
-            if (keys.up && player.grounded) {
-                player.dy = -15;
-                player.grounded = false;
-            }
+function drawPlayer() {
+    let imageToDraw;
+    if (player.grounded && keys.up) {
+        imageToDraw = loadedImages.jumpRight;
+    } else if (!player.grounded) {
+        imageToDraw = player.facingRight ? loadedImages.jumpRight : loadedImages.jumpLeft;
+    } else {
+        imageToDraw = player.facingRight ? loadedImages.right : loadedImages.left;
+    }
 
-            player.dx = keys.right ? 5 : (keys.left ? -5 : player.dx * 0.9);
-            player.dy += 0.5; // Apply gravity
-            player.x += player.dx;
-            player.y += player.dy;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawPlatforms();
+    drawSpikes();
+    drawCrowns(); // Add this line to draw the crowns
+    ctx.drawImage(imageToDraw, player.x, player.y, player.width, player.height);
+}
 
-            if (player.x < 0) player.x = 0;
-            if (player.x + player.width > canvas.width) player.x = canvas.width - player.width;
-            if (player.y + player.height > canvas.height) {
-                player.y = canvas.height - player.height;
-                player.dy = 0;
-                player.grounded = true;
-            } else {
-                player.grounded = false;
-            }
+function gameLoop() {
+    updatePlayer();
+    checkCollisionWithCrowns(player, crowns); // Check for crown collisions
+    drawPlayer();
+    requestAnimationFrame(gameLoop);
+}
 
-            // Check for collisions
-            checkCollision(player, platforms);
-            checkCollisionWithSpikes(player, spikes);
-
-            if (keys.right) player.facingRight = true;
-            if (keys.left) player.facingRight = false;
-        }
 
         function drawPlatforms() {
             platforms.forEach(platform => {
