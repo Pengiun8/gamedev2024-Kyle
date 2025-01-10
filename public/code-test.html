@@ -21,18 +21,38 @@
             jumpRight: 'slimer jump right.png',
             jumpLeft: 'slimer jump left.png',
             woodPlanks: 'Wooden planks.png',
-            redSpikes: 'spikes sprite.png' // Added spike image
+            redSpikes: 'spikes sprite.png',
+            crownWin: 'crown-big-dubski.gif'
         };
 
         const platforms = [
             { x: 200, y: canvas.height - 150, width: 180, height: 70 },
-            { x: 500, y: canvas.height - 250, width: 180, height: 70 },
-            { x: 200, y: canvas.height - 400, width: 180, height: 70 }
+            { x: 500, y: canvas.height - 275, width: 180, height: 70 },
+            { x: 200, y: canvas.height - 400, width: 180, height: 70 },
+            { x: 500, y: canvas.height - 550, width: 240, height: 70 },
+            { x: 800, y: canvas.height - 800, width: 90, height: 70 },
+            { x: 400, y: canvas.height - 700, width: 180, height: 40 },
+            { x: 1310, y: canvas.height - 300, width: 180, height: 70 },
+            { x: 1490, y: canvas.height - 300, width: 180, height: 70 },
+            { x: 1650, y: canvas.height - 300, width: 180, height: 70 },
         ];
 
         const spikes = [
-            { x: 300, y: canvas.height - 100, width: 40, height: 40, direction: 'down' },  // Down-facing spike
-            { x: 600, y: canvas.height - 200, width: 40, height: 40, direction: 'up' }    // Up-facing spike
+            { x: 160, y: canvas.height - 150, width: 40, height: 40, direction: 'up' },  
+            { x: 380, y: canvas.height - 150, width: 40, height: 40, direction: 'down' } ,
+            { x: 340, y: canvas.height - 330, width: 40, height: 40, direction: 'left' },
+            { x: 640, y: canvas.height - 315, width: 40, height: 40, direction: 'right' },
+            { x: 380, y: canvas.height - 400, width: 40, height: 40, direction: 'down' },
+            { x: 340, y: canvas.height - 410, width: 40, height: 10, direction: 'right' },
+            { x: 800, y: canvas.height - 50, width: 600, height: 70, direction: 'right' },
+            { x: 1400, y: canvas.height - 50, width: 600, height: 70, direction: 'right' },
+            { x: 475, y: canvas.height - 230, width: 40, height: 10, direction: 'up' },
+            { x: 565, y: canvas.height - 685, width: 40, height: 10, direction: 'down' },
+            { x: 1400, y: canvas.height - 340, width: 40, height: 40, direction: 'right' },
+        ];
+
+        const crowns = [
+            { x: 1200, y: canvas.height - 300, width: 50, height: 50 }
         ];
 
         const loadedImages = {};
@@ -88,31 +108,29 @@
                 let left2 = platform.x;
                 let right2 = platform.x + platform.width;
 
-                // Check if there's any overlap
                 if (right1 > left2 && left1 < right2 && bottom1 > top2 && top1 < bottom2) {
                     let overlapX = Math.min(right1 - left2, right2 - left1);
                     let overlapY = Math.min(bottom1 - top2, bottom2 - top1);
 
-                    // Prioritize smaller overlap
                     if (overlapY < overlapX) {
                         if (bottom1 >= top2 && player.dy >= 0) {
                             hitSide = "top";
-                            player.dy = 0; // Stop moving down
+                            player.dy = 0;
                             player.y = platform.y - player.height;
                             player.grounded = true;
                         } else if (top1 <= bottom2 && player.dy <= 0) {
                             hitSide = "bottom";
-                            player.dy = 0; // Stop moving up
+                            player.dy = 0;
                             player.y = platform.y + platform.height;
                         }
                     } else {
                         if (right1 >= left2 && player.dx > 0) {
                             hitSide = "left";
-                            player.dx = 0; // Stop moving right
+                            player.dx = 0;
                             player.x = platform.x - player.width;
                         } else if (left1 <= right2 && player.dx < 0) {
                             hitSide = "right";
-                            player.dx = 0; // Stop moving left
+                            player.dx = 0;
                             player.x = platform.x + platform.width;
                         }
                     }
@@ -134,9 +152,27 @@
                 let left2 = spike.x;
                 let right2 = spike.x + spike.width;
 
-                // Check if there's any overlap
                 if (right1 > left2 && left1 < right2 && bottom1 > top2 && top1 < bottom2) {
                     resetPlayerPosition();
+                }
+            });
+        }
+
+        function checkCollisionWithCrowns(player, crowns) {
+            crowns.forEach(crown => {
+                let top1 = player.y;
+                let bottom1 = player.y + player.height;
+                let left1 = player.x;
+                let right1 = player.x + player.width;
+
+                let top2 = crown.y;
+                let bottom2 = crown.y + crown.height;
+                let left2 = crown.x;
+                let right2 = crown.x + crown.width;
+
+                if (right1 > left2 && left1 < right2 && bottom1 > top2 && top1 < bottom2) {
+                    console.log("Crown collected!");
+                    resetPlayerPosition(); // Example action on crown collection
                 }
             });
         }
@@ -148,33 +184,28 @@
             player.dy = 0;
         }
 
-        function updatePlayer() {
-            if (keys.up && player.grounded) {
-                player.dy = -15;
-                player.grounded = false;
-            }
-
-            player.dx = keys.right ? 5 : (keys.left ? -5 : player.dx * 0.9);
-            player.dy += 0.5; // Apply gravity
-            player.x += player.dx;
-            player.y += player.dy;
-
-            if (player.x < 0) player.x = 0;
-            if (player.x + player.width > canvas.width) player.x = canvas.width - player.width;
-            if (player.y + player.height > canvas.height) {
-                player.y = canvas.height - player.height;
-                player.dy = 0;
-                player.grounded = true;
+        function drawPlayer() {
+            let imageToDraw;
+            if (player.grounded && keys.up) {
+                imageToDraw = loadedImages.jumpRight;
+            } else if (!player.grounded) {
+                imageToDraw = player.facingRight ? loadedImages.jumpRight : loadedImages.jumpLeft;
             } else {
-                player.grounded = false;
+                imageToDraw = player.facingRight ? loadedImages.right : loadedImages.left;
             }
 
-            // Check for collisions
-            checkCollision(player, platforms);
-            checkCollisionWithSpikes(player, spikes);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawPlatforms();
+            drawSpikes();
+            drawCrowns(); // Make sure crowns are drawn here
+            ctx.drawImage(imageToDraw, player.x, player.y, player.width, player.height);
+        }
 
-            if (keys.right) player.facingRight = true;
-            if (keys.left) player.facingRight = false;
+        function gameLoop() {
+            updatePlayer();
+            checkCollisionWithCrowns(player, crowns); // Check for crown collisions
+            drawPlayer();
+            requestAnimationFrame(gameLoop);
         }
 
         function drawPlatforms() {
@@ -183,11 +214,16 @@
             });
         }
 
+        function drawCrowns() {
+            crowns.forEach(crown => {
+                ctx.drawImage(loadedImages.crownWin, crown.x, crown.y, crown.width, crown.height);
+            });
+        }
+
         function drawSpikes() {
             spikes.forEach(spike => {
-                ctx.save(); // Save the current context
+                ctx.save();
 
-                // Rotate the spike based on direction
                 if (spike.direction === 'up') {
                     ctx.translate(spike.x + spike.width / 2, spike.y + spike.height / 2);
                     ctx.rotate(-Math.PI / 2);
@@ -204,32 +240,10 @@
 
                 ctx.drawImage(loadedImages.redSpikes, spike.x, spike.y, spike.width, spike.height);
 
-                ctx.restore(); // Restore the context to undo the transformation
+                ctx.restore();
             });
         }
 
-       function drawPlayer() {
-    let imageToDraw;
-    if (player.grounded && keys.up) {
-        imageToDraw = loadedImages.jumpRight;
-    } else if (!player.grounded) {
-        imageToDraw = player.facingRight ? loadedImages.jumpRight : loadedImages.jumpLeft;
-    } else {
-        imageToDraw = player.facingRight ? loadedImages.right : loadedImages.left;
-    }
-
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawPlatforms();
-    drawSpikes();
-    ctx.drawImage(imageToDraw, player.x, player.y, player.width, player.height);
-}
-
-
-        function gameLoop() {
-            updatePlayer();
-            drawPlayer();
-            requestAnimationFrame(gameLoop);
-        }
     </script>
 </body>
 </html>
