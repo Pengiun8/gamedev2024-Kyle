@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,8 +23,7 @@
             jumpRight: 'slimer jump right.png',
             jumpLeft: 'slimer jump left.png',
             woodPlanks: 'Wooden planks.png',
-            redSpikes: 'spikes sprite.png',
-            crownWin: 'crown.png',
+            redSpikes: 'spikes sprite.png' // Added spike image
         };
 
         const platforms = [
@@ -50,6 +50,7 @@
              { x: 475, y: canvas.height - 230, width: 40, height: 10, direction: 'up' },
             { x: 565, y: canvas.height - 685, width: 40, height: 10, direction: 'down' },
             { x: 1400, y: canvas.height - 340, width: 40, height: 40, direction: 'right' },
+            { x: 715, y: canvas.height - 525, width: 70, height: 20, direction: 'down' },
         ];
 
         const loadedImages = {};
