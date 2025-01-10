@@ -52,6 +52,9 @@
             { x: 565, y: canvas.height - 685, width: 40, height: 10, direction: 'down' },
             { x: 1400, y: canvas.height - 340, width: 40, height: 40, direction: 'right' },
         ];
+        const crowns = [
+    { x: 1200, y: canvas.height - 300, width: 50, height: 50 }
+];
 
         const loadedImages = {};
         let imagesLoaded = 0;
@@ -200,6 +203,11 @@
                 ctx.drawImage(loadedImages.woodPlanks, platform.x, platform.y, platform.width, platform.height);
             });
         }
+        function drawCrowns() {
+    crowns.forEach(crown => {
+        ctx.drawImage(loadedImages.crownWin, crown.x, crown.y, crown.width, crown.height);
+    });
+}
 
         function drawSpikes() {
             spikes.forEach(spike => {
