@@ -22,7 +22,7 @@
             left: 'slimer left.png',
             jumpRight: 'slimer jump right.png',
             jumpLeft: 'slimer jump left.png',
-            woodPlanks: 'Wooden planks.png',
+            stoneBrick: 'level 3 tile.png',
             redSpikes: 'spikes sprite.png' ,
             crownWin: 'new-crown.png'
         };
@@ -224,7 +224,7 @@
 
         function drawPlatforms() {
             platforms.forEach(platform => {
-                ctx.drawImage(loadedImages.woodPlanks, platform.x, platform.y, platform.width, platform.height);
+                ctx.drawImage(loadedImages.stoneBricks, platform.x, platform.y, platform.width, platform.height);
             });
         }
 
