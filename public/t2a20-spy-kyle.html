@@ -21,59 +21,43 @@
 
 <textarea id="myArea03" rows="4" cols="70"></textarea><br>
 
-<input type="hidden" id="spaceIndices" value=""> 
-
 <script>
 function encrypt() {
   let text = document.getElementById('myArea01').value;
-  let spaceIndices = [];
-  let spaceCounter = 0;
 
-  // Encrypt the text
-  let encryptedText = text.split('').map((char, index) => {
+  let encryptedText = text.split('').map(char => {
     if (char === ' ') {
-      spaceIndices.push(index);
-      return String.fromCharCode((spaceCounter++ % 26) + 97); // Replace space with a letter
+      return '\\';
     } else if (/[a-z]/.test(char)) {
-      return String.fromCharCode(((char.charCodeAt(0) - 97 - 1 + 26) % 26) + 97); // Shift lowercase
+      return String.fromCharCode(((char.charCodeAt(0) - 97 - 1 + 26) % 26) + 97);
     } else if (/[A-Z]/.test(char)) {
-      return String.fromCharCode(((char.charCodeAt(0) - 65 - 1 + 26) % 26) + 65); // Shift uppercase
+      return String.fromCharCode(((char.charCodeAt(0) - 65 - 1 + 26) % 26) + 65);
     } else if (/\d/.test(char)) {
-      return String.fromCharCode(((char.charCodeAt(0) - 48 - 1 + 10) % 10) + 48); // Shift number
+      return String.fromCharCode(((char.charCodeAt(0) - 48 - 1 + 10) % 10) + 48);
     }
-    return char; // Return unchanged if not a space, letter, or number
+    return char;
   }).join('');
 
-  // Store the space indices for decryption
-  document.getElementById('spaceIndices').value = spaceIndices.join(',');
-
-  // Show encrypted text
   document.getElementById('myArea02').value = encryptedText;
 }
 
 function decrypt() {
   let text = document.getElementById('myArea02').value;
-  let spaceIndices = document.getElementById('spaceIndices').value.split(',');
-  
-  // Decrypt the text
-  let decryptedText = text.split('').map((char, index) => {
-    if (/[a-z]/.test(char)) {
-      return String.fromCharCode(((char.charCodeAt(0) - 97 + 1) % 26) + 97); // Shift lowercase
+
+  let decryptedText = text.split('').map(char => {
+    if (char === '\\') {
+      return ' ';
+    } else if (/[a-z]/.test(char)) {
+      return String.fromCharCode(((char.charCodeAt(0) - 97 + 1) % 26) + 97);
     } else if (/[A-Z]/.test(char)) {
-      return String.fromCharCode(((char.charCodeAt(0) - 65 + 1) % 26) + 65); // Shift uppercase
+      return String.fromCharCode(((char.charCodeAt(0) - 65 + 1) % 26) + 65);
     } else if (/\d/.test(char)) {
-      return String.fromCharCode(((char.charCodeAt(0) - 48 + 1) % 10) + 48); // Shift number
+      return String.fromCharCode(((char.charCodeAt(0) - 48 + 1) % 10) + 48);
     }
-    return char; // Return unchanged if not a letter or number
-  });
+    return char;
+  }).join('');
 
-  // Restore spaces
-  spaceIndices.forEach(index => {
-    decryptedText[index] = ' ';
-  });
-
-  // Show decrypted text
-  document.getElementById('myArea03').value = decryptedText.join('');
+  document.getElementById('myArea03').value = decryptedText;
 }
 </script>
 
